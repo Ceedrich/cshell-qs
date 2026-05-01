@@ -16,7 +16,7 @@ RowLayout {
                 return iconsDischarging[num];
             } else {
                 var num = bat.percentage * iconsCharging.length;
-                num = Math.floor(num);
+                num = Math.round(num);
                 return iconsCharging[num];
             }
         }
@@ -32,6 +32,7 @@ RowLayout {
             if (perc < 30) {
                 return "orange";
             }
+            return "black";
         }
     }
 }

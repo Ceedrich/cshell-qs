@@ -33,6 +33,8 @@ Scope {
 
                 Workspaces {}
 
+                Volume {}
+
                 Battery {}
 
                 Brightness {}
