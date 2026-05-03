@@ -38,6 +38,8 @@ Scope {
                 Battery {}
 
                 Brightness {}
+
+                Tray {}
             }
         }
     }

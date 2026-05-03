@@ -11,15 +11,23 @@ Text {
     property PwObjectTracker tracker: PwObjectTracker {
         objects: [Pipewire.defaultAudioSink]
     }
-    enabled: sink.audio != null
+    enabled: sink?.audio != null
 
-    property bool muted: sink.audio.muted
-    property int perc: Math.round(sink.audio.volume * 100)
+    property string icon: {
+        if (sink?.audio == null) {
+            return "";
+        }
+        const muted = sink?.audio?.muted || false;
 
-    property string icon: muted ? icon_muted : icons[Math.floor(sink.audio.volume * icons.length)]
-    color: muted ? "gray" : "black"
+        if (muted) {
+            return icon_muted;
+        }
+        icon = icons[Math.floor(sink.audio.volume * icons.length)];
+        return icon || "";
+    }
+    color: sink?.audio?.muted ? "gray" : "black"
 
-    text: `${perc}% ${icon}`
+    text: `${Math.round((sink?.audio?.volume || 0) * 100)}% ${icon}`
 
     MouseArea {
         anchors.fill: parent
