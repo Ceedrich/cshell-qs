@@ -1,6 +1,9 @@
 import Quickshell
 import QtQuick
 import QtQuick.Layouts
+
+import qs.config
+
 import "./widgets"
 
 Scope {
@@ -13,6 +16,7 @@ Scope {
         PanelWindow {
             required property var modelData
             screen: modelData
+            color: Style.base
 
             anchors {
                 top: true
@@ -29,6 +33,7 @@ Scope {
 
                 Text {
                     text: Time.time
+                    color: Style.overlay0
                 }
 
                 Workspaces {}

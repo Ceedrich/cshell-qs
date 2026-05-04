@@ -1,6 +1,8 @@
 import QtQuick
 import Quickshell.Services.Pipewire
 
+import qs.config
+
 Text {
     id: root
     property list<string> icons: ["󰕿", "󰖀", "󰕾"]
@@ -22,10 +24,11 @@ Text {
         if (muted) {
             return icon_muted;
         }
+        const icon_idx = Math.floor(sink.audio.volume * icons.length);
         icon = icons[Math.floor(sink.audio.volume * icons.length)];
         return icon || "";
     }
-    color: sink?.audio?.muted ? "gray" : "black"
+    color: sink?.audio?.muted ? Style.overlay0 : Style.text
 
     text: `${Math.round((sink?.audio?.volume || 0) * 100)}% ${icon}`
 

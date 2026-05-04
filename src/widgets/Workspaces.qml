@@ -1,7 +1,8 @@
 import Quickshell.Hyprland
-import Quickshell.Widgets
 import QtQuick
 import QtQuick.Layouts
+
+import qs.config
 
 RowLayout {
 
@@ -32,7 +33,7 @@ RowLayout {
             property var isActive: Hyprland.focusedWorkspace?.id === modelData.id
 
             text: modelData.name
-            color: isActive ? "green" : (modelData.urgent ? "red" : "gray")
+            color: isActive ? Style.accent : (modelData.urgent ? Style.red : Style.overlay0)
 
             MouseArea {
                 anchors.fill: parent

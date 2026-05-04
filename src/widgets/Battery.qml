@@ -2,6 +2,8 @@ import Quickshell.Services.UPower
 import QtQuick
 import QtQuick.Layouts
 
+import qs.config
+
 RowLayout {
     Text {
         property var iconsCharging: ["󰢜", "󰂇", "󰢝", "󰢞", "󰂅"]
@@ -24,15 +26,15 @@ RowLayout {
         text: perc + "% " + icon
         color: {
             if (!UPower.onBattery) {
-                return "green";
+                return Style.green;
             }
             if (perc < 15) {
-                return "red";
+                return Style.red;
             }
             if (perc < 30) {
-                return "orange";
+                return Style.yellow;
             }
-            return "black";
+            return Style.text;
         }
     }
 }
