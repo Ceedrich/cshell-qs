@@ -14,10 +14,19 @@ Scope {
 
         PanelWindow {
             id: window
+
+            PopupWindow {
+                id: controlCenterWindow
+                anchor.window: parentWindow
+                width: 500
+                height: 500
+                visible: true
+            }
+
             margins {
-                top: Config.spacing
-                right: Config.spacing * 2
-                left: Config.spacing * 2
+                top: Config.margin
+                right: Config.margin
+                left: Config.margin
             }
             required property var modelData
             screen: modelData
@@ -36,8 +45,21 @@ Scope {
                 anchors.centerIn: parent
             }
 
-            Right {
+            RowLayout {
                 anchors.right: parent.right
+                BarPill {
+                    RowLayout {
+                        Tray {}
+                    }
+                }
+
+                BarPill {
+                    RowLayout {
+                        ControlCenterToggle {
+                            controlPanelWindow: controlCenterWindow
+                        }
+                    }
+                }
             }
         }
     }

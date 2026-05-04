@@ -3,11 +3,13 @@ import Quickshell.Widgets
 import qs.config
 
 WrapperRectangle {
+    implicitHeight: 45
+
     color: Colors.base
-    leftMargin: Config.spacing * 2
-    rightMargin: Config.spacing * 2
-    topMargin: Config.spacing
-    bottomMargin: Config.spacing
+    leftMargin: 16
+    rightMargin: 16
+    topMargin: 4
+    bottomMargin: 4
 
     border.color: Colors.overlay0
     border.width: 0.5

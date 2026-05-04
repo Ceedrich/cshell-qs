@@ -1,9 +1,11 @@
 import Quickshell.Services.SystemTray
 import Quickshell.Widgets
+import Quickshell
 import QtQuick
 import QtQuick.Layouts
 
 Repeater {
+    id: root
     model: SystemTray.items
 
     RowLayout {
@@ -16,12 +18,33 @@ Repeater {
 
             MouseArea {
                 anchors.fill: parent
+                acceptedButtons: Qt.RightButton | Qt.LeftButton
+
                 onClicked: evt => {
-                    if (model.modelData.onlyMenu) {} else {
-                        model.modelData.activate();
+                    if (!model.modelData.onlyMenu && evt.button & Qt.LeftButton) {
+                        model.primaryAction();
+                        return;
+                    }
+                    if (model.modelData.hasMenu) {
+                        model.openMenu(evt);
                     }
                 }
             }
+        }
+
+        PopupWindow {
+            id: popup
+            anchor.window: parentWindow
+        }
+
+        function primaryAction() {
+            modelData.activate();
+        }
+
+        function openMenu(evt) {
+            const p = parent.mapToItem(popup.contentItem, evt.x, evt.y);
+
+            modelData.display(popup, p.x, p.y);
         }
 
         // from <https://github.com/AvengeMedia/DankMaterialShell/blob/7c991bc4e3ca3a559b31ae76572eae96c25d2b57/quickshell/Modules/DankBar/Widgets/SystemTrayBar.qml#L47-L70>
