@@ -34,30 +34,18 @@ Scope {
                 spacing: 8
 
                 // left items
-
-                Item {
-                    Layout.fillWidth: true
-                }
-
-                // center items
-
-                Clock {}
-
+                Clock{}
                 Workspaces {}
-
-                Volume {}
-
-                Battery {}
-
-                Brightness {}
 
                 Item {
                     Layout.fillWidth: true
                 }
 
                 // right items
-
                 Tray {}
+                Volume {}
+                Battery {}
+                Brightness {}
             }
         }
     }
