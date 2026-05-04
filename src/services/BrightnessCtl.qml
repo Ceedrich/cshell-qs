@@ -7,7 +7,12 @@ Scope {
     property int percentage: 100
 
     Process {
-        id: proc
+        id: set_proc
+        command: ["brightnessctl", "-m", "s", `${root.percentage}%`]
+    }
+
+    Process {
+        id: query_proc
         command: ["brightnessctl", "-m", "i"]
         stdout: SplitParser {
             onRead: data => {
@@ -26,6 +31,6 @@ Scope {
         interval: 1000
         running: true
         repeat: true
-        onTriggered: proc.running = true
+        onTriggered: query_proc.running = true
     }
 }
