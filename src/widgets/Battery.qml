@@ -1,12 +1,12 @@
 import Quickshell.Services.UPower
-import QtQuick
 import QtQuick.Layouts
 
 import qs.config
 import qs.utils
+import qs.widgets
 
 RowLayout {
-    Text {
+    CText {
         property var iconsCharging: ["󰢜", "󰂇", "󰢝", "󰢞", "󰂅"]
         property var iconsDischarging: ["󰁺", "󰁼", "󰁾", "󰂀", "󰂂", "󰁹"]
 

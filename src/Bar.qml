@@ -37,13 +37,16 @@ Scope {
                 anchors.fill: parent
                 spacing: Config.spacing
 
-                // left items
-                Clock {}
-                Workspaces {}
-
                 Item {
                     Layout.fillWidth: true
                 }
+
+                // center items
+                Clock {}
+                Workspaces {}
+                Volume {}
+                Battery {}
+                Brightness {}
 
                 Item {
                     Layout.fillWidth: true
@@ -51,9 +54,6 @@ Scope {
 
                 // right items
                 Tray {}
-                Volume {}
-                Battery {}
-                Brightness {}
             }
         }
     }

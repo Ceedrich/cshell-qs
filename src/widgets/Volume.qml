@@ -3,8 +3,9 @@ import Quickshell.Services.Pipewire
 
 import qs.config
 import qs.utils
+import qs.widgets
 
-Text {
+CText {
     id: root
     property list<string> icons: ["󰕿", "󰖀", "󰕾"]
     property string icon_muted: "󰝟"
