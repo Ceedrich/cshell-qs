@@ -3,8 +3,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import qs.config
-
-import "./widgets"
+import qs.widgets
 
 Scope {
     id: root
@@ -15,6 +14,11 @@ Scope {
 
         PanelWindow {
             id: window
+            margins {
+                top: Config.spacing
+                right: Config.spacing
+                left: Config.spacing
+            }
             required property var modelData
             screen: modelData
             color: Colors.base
@@ -28,14 +32,18 @@ Scope {
             implicitHeight: 30
 
             RowLayout {
-                anchors.leftMargin: 8
-                anchors.rightMargin: 8
+                anchors.leftMargin: Config.spacing
+                anchors.rightMargin: Config.spacing
                 anchors.fill: parent
-                spacing: 8
+                spacing: Config.spacing
 
                 // left items
-                Clock{}
+                Clock {}
                 Workspaces {}
+
+                Item {
+                    Layout.fillWidth: true
+                }
 
                 Item {
                     Layout.fillWidth: true

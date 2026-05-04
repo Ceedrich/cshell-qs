@@ -2,11 +2,13 @@ import QtQuick
 import Quickshell.Services.Pipewire
 
 import qs.config
+import qs.utils
 
 Text {
     id: root
     property list<string> icons: ["󰕿", "󰖀", "󰕾"]
     property string icon_muted: "󰝟"
+
     property double scroll_factor: 0.05
 
     property PwNode sink: Pipewire.defaultAudioSink
@@ -24,9 +26,8 @@ Text {
         if (muted) {
             return icon_muted;
         }
-        const icon_idx = Math.floor(sink.audio.volume * icons.length);
-        icon = icons[Math.floor(sink.audio.volume * icons.length)];
-        return icon || "";
+        const icon = Utils.select_from_list(sink.audio.volume, icons);
+        return icon;
     }
     color: sink?.audio?.muted ? Colors.overlay0 : Colors.text
 

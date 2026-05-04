@@ -3,6 +3,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import qs.config
+import qs.utils
 
 RowLayout {
     Text {
@@ -13,13 +14,9 @@ RowLayout {
         property int perc: bat.percentage * 100
         property var icon: {
             if (UPower.onBattery) {
-                var num = bat.percentage * iconsDischarging.length;
-                num = Math.floor(num);
-                return iconsDischarging[num];
+                return Utils.select_from_list(bat.percentage, iconsDischarging);
             } else {
-                var num = bat.percentage * iconsCharging.length;
-                num = Math.round(num);
-                return iconsCharging[num];
+                return Utils.select_from_list(bat.percentage, iconsCharging);
             }
         }
 
