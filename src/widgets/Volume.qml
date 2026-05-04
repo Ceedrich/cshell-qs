@@ -30,7 +30,7 @@ CText {
         const icon = Utils.select_from_list(sink.audio.volume, icons);
         return icon;
     }
-    color: sink?.audio?.muted ? Colors.overlay0 : Colors.text
+    color: sink?.audio?.muted ? Colors.overlay0 : Colors.blue
 
     text: `${Math.round((sink?.audio?.volume || 0) * 100)}% ${icon}`
 

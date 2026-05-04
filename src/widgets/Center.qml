@@ -1,9 +1,14 @@
 import QtQuick.Layouts
 
-RowLayout {
-    Clock {}
-    Workspaces {}
-    Volume {}
-    Battery {}
-    Brightness {}
+import qs.config
+
+BarPill {
+    RowLayout {
+        spacing: Config.spacing
+        Clock {}
+        Workspaces {}
+        Volume {}
+        Battery {}
+        Brightness {}
+    }
 }

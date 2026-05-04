@@ -16,12 +16,13 @@ Scope {
             id: window
             margins {
                 top: Config.spacing
-                right: Config.spacing
-                left: Config.spacing
+                right: Config.spacing * 2
+                left: Config.spacing * 2
             }
             required property var modelData
             screen: modelData
-            color: Colors.base
+
+            color: "transparent"
 
             anchors {
                 top: true
@@ -29,31 +30,14 @@ Scope {
                 right: true
             }
 
-            implicitHeight: 30
+            implicitHeight: 45
 
-            RowLayout {
-                anchors.leftMargin: Config.spacing
-                anchors.rightMargin: Config.spacing
-                anchors.fill: parent
-                spacing: Config.spacing
+            Center {
+                anchors.centerIn: parent
+            }
 
-                Item {
-                    Layout.fillWidth: true
-                }
-
-                // center items
-                Clock {}
-                Workspaces {}
-                Volume {}
-                Battery {}
-                Brightness {}
-
-                Item {
-                    Layout.fillWidth: true
-                }
-
-                // right items
-                Tray {}
+            Right {
+                anchors.right: parent.right
             }
         }
     }

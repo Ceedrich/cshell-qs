@@ -5,5 +5,5 @@ import qs.config
 Text {
     font: Config.defaultFont
 
-    color: Colors.text
+    color: Colors.blue
 }
