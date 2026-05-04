@@ -14,9 +14,10 @@ Scope {
         model: Quickshell.screens
 
         PanelWindow {
+            id: window
             required property var modelData
             screen: modelData
-            color: Style.base
+            color: Colors.base
 
             anchors {
                 top: true
@@ -27,14 +28,20 @@ Scope {
             implicitHeight: 30
 
             RowLayout {
-                anchors.centerIn: parent
-
+                anchors.leftMargin: 8
+                anchors.rightMargin: 8
+                anchors.fill: parent
                 spacing: 8
 
-                Text {
-                    text: Time.time
-                    color: Style.overlay0
+                // left items
+
+                Item {
+                    Layout.fillWidth: true
                 }
+
+                // center items
+
+                Clock {}
 
                 Workspaces {}
 
@@ -43,6 +50,12 @@ Scope {
                 Battery {}
 
                 Brightness {}
+
+                Item {
+                    Layout.fillWidth: true
+                }
+
+                // right items
 
                 Tray {}
             }

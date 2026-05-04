@@ -12,10 +12,7 @@ Repeater {
 
         IconImage {
             implicitSize: 20
-            source: {
-                console.log(model.modelData.title, model.modelData.icon);
-                return model.modelData.icon;
-            }
+            source: model.modelData.icon
 
             MouseArea {
                 anchors.fill: parent

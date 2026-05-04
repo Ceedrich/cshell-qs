@@ -28,7 +28,7 @@ Text {
         icon = icons[Math.floor(sink.audio.volume * icons.length)];
         return icon || "";
     }
-    color: sink?.audio?.muted ? Style.overlay0 : Style.text
+    color: sink?.audio?.muted ? Colors.overlay0 : Colors.text
 
     text: `${Math.round((sink?.audio?.volume || 0) * 100)}% ${icon}`
 

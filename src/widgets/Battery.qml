@@ -26,15 +26,15 @@ RowLayout {
         text: perc + "% " + icon
         color: {
             if (!UPower.onBattery) {
-                return Style.green;
+                return Colors.green;
             }
             if (perc < 15) {
-                return Style.red;
+                return Colors.red;
             }
             if (perc < 30) {
-                return Style.yellow;
+                return Colors.yellow;
             }
-            return Style.text;
+            return Colors.text;
         }
     }
 }
