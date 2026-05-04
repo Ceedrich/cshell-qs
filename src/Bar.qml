@@ -17,10 +17,18 @@ Scope {
 
             PopupWindow {
                 id: controlCenterWindow
-                anchor.window: parentWindow
-                width: 500
-                height: 500
-                visible: true
+                anchor.window: window
+                anchor.rect.x: parentWindow.width - width
+                anchor.rect.y: parentWindow.height + Config.spacing
+
+                implicitWidth: child.implicitWidth
+                implicitHeight: child.implicitHeight
+
+                color: "transparent"
+
+                ControlCenter {
+                    id: child
+                }
             }
 
             margins {
