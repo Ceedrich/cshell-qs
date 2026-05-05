@@ -6,5 +6,5 @@ import qs.widgets
 
 CText {
     text: Time.time
-    color: Colors.overlay0
+    color: Colors.overlay1
 }

@@ -17,7 +17,7 @@ RowLayout {
 
             padding: Config.spacing / 2
             text: modelData.name
-            color: isActive ? Colors.accent : (modelData.urgent ? Colors.red : Colors.overlay0)
+            color: isActive ? Colors.accent : (modelData.urgent ? Colors.red : Colors.overlay1)
 
             MouseArea {
                 anchors.fill: parent

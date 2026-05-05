@@ -31,7 +31,7 @@ RowLayout {
             if (perc < 30) {
                 return Colors.yellow;
             }
-            return Colors.blue;
+            return Colors.text;
         }
     }
 }
