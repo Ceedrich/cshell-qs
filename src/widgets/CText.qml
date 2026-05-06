@@ -18,6 +18,16 @@ Text {
     bottomPadding: Config.spacing / 2
     topPadding: Config.spacing / 2
 
+    Rectangle {
+        visible: root.underline
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+
+        height: 1
+        color: root.color
+    }
+
     MouseArea {
         anchors.fill: parent
 

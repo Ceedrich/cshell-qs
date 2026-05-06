@@ -20,6 +20,8 @@ RowLayout {
             color: isActive ? Colors.accent : (modelData.urgent ? Colors.red : Colors.overlay1)
 
             onClicked: () => Hyprland.dispatch(`workspace ${ws.modelData.id}`)
+
+            underline: isActive
         }
     }
 }
