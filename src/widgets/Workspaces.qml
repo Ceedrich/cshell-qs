@@ -19,10 +19,7 @@ RowLayout {
             text: modelData.name
             color: isActive ? Colors.accent : (modelData.urgent ? Colors.red : Colors.overlay1)
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: Hyprland.dispatch("workspace " + (ws.modelData.id))
-            }
+            onClicked: () => Hyprland.dispatch(`workspace ${ws.modelData.id}`)
         }
     }
 }

@@ -8,10 +8,5 @@ CText {
     required property PopupWindow controlPanelWindow
 
     text: "󰍜"
-
-    MouseArea {
-        anchors.fill: parent
-
-        onClicked: root.controlPanelWindow.visible = !root.controlPanelWindow.visible
-    }
+    onClicked: () => root.controlPanelWindow.visible = !root.controlPanelWindow.visible
 }
