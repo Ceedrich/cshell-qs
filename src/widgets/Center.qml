@@ -7,8 +7,14 @@ BarPill {
         spacing: Config.spacing
         Clock {}
         Workspaces {}
-        Volume {}
-        Battery {}
-        Brightness {}
+        Volume {
+            defaultColor: Colors.blue
+        }
+        Battery {
+            defaultColor: Colors.mauve
+        }
+        Brightness {
+            defaultColor: Colors.blue
+        }
     }
 }

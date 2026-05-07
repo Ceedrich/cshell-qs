@@ -4,6 +4,7 @@ import qs.config
 
 Text {
     id: root
+    property color defaultColor: Colors.text
     property bool underline: false
     property var onEntered
     property var onClicked
@@ -13,7 +14,7 @@ Text {
     font.family: Config.fontFamily
     font.pixelSize: Config.fontSize
 
-    color: Colors.text
+    color: defaultColor
 
     bottomPadding: Config.spacing / 2
     topPadding: Config.spacing / 2
@@ -38,6 +39,8 @@ Text {
                 root.onClicked(evt);
             }
         }
+
+        cursorShape: (root.onClicked && Qt.PointingHandCursor)
 
         onEntered: () => {
             if (root.onEntered) {

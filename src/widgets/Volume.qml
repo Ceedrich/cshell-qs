@@ -12,6 +12,8 @@ CText {
 
     property double scroll_factor: 0.05
 
+    readonly property bool muted: sink?.audio?.muted || false
+
     property PwNode sink: Pipewire.defaultAudioSink
     property PwObjectTracker tracker: PwObjectTracker {
         objects: [Pipewire.defaultAudioSink]
@@ -22,7 +24,6 @@ CText {
         if (sink?.audio == null) {
             return "";
         }
-        const muted = sink?.audio?.muted || false;
 
         if (muted) {
             return icon_muted;
@@ -30,7 +31,8 @@ CText {
         const icon = Utils.select_from_list(sink.audio.volume, icons);
         return icon;
     }
-    color: sink?.audio?.muted ? Colors.overlay1 : Colors.text
+    color: muted ? Colors.overlay1 : defaultColor
+    underline: !muted
 
     text: `${Math.round((sink?.audio?.volume || 0) * 100)}% ${icon}`
 
