@@ -25,7 +25,7 @@ CText {
 
     Process {
         id: inhibit_process
-        command: ["systemd-inhibit", "--who=CShell", "--why='Idle Inhibit Module is turned on'", "--mode=block", "sleep", "100d",]
+        command: ["systemd-inhibit", "--who=CShell", "--why='Idle Inhibit Module is turned on'", "--mode=block-weak", "sleep", "100d",]
 
         onExited: () => root.inhibiting = false
     }
