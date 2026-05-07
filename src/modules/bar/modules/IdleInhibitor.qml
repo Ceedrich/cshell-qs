@@ -1,7 +1,7 @@
 import Quickshell.Io
 
-import qs.widgets
 import qs.config
+import qs.widgets
 
 CText {
     id: root

@@ -1,9 +1,8 @@
 import QtQuick
 
 import qs.utils
-import qs.config
-import qs.services
 import qs.widgets
+import qs.services
 
 CText {
     property var icons: ["󱩎", "󱩎", "󱩏", "󱩐", "󱩑", "󱩒", "󱩓", "󱩔", "󱩕", "󱩖", "󰛨"]

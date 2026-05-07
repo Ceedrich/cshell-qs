@@ -3,7 +3,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import qs.config
-import qs.widgets
+import qs.modules.bar.modules
 
 Scope {
     id: root
