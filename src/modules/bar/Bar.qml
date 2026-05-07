@@ -49,12 +49,7 @@ Scope {
 
             implicitHeight: 45
 
-            BarPill {
-                anchors.left: parent.left
-                RowLayout {
-                    Mpris {}
-                }
-            }
+            Mpris {}
 
             Center {
                 anchors.centerIn: parent
