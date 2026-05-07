@@ -11,12 +11,27 @@
   }: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {inherit system;};
+
+    buildInputs = with pkgs; [
+      quickshell
+      kdePackages.qtdeclarative
+    ];
   in {
     devShells.${system}.default = pkgs.mkShell {
-      buildInputs = with pkgs; [
-        quickshell
-        kdePackages.qtdeclarative
-      ];
+      inherit buildInputs;
+    };
+    packages.${system}.default = pkgs.writeShellApplication {
+      name = "cshell";
+      runtimeInputs = with pkgs;
+        [
+          brightnessctl
+          swaynotificationcenter
+        ]
+        ++ buildInputs;
+
+      text = ''
+        qs -p ${./.}/src "$@"
+      '';
     };
   };
 }
