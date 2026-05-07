@@ -57,6 +57,8 @@ Scope {
                 anchors.right: parent.right
                 BarPill {
                     RowLayout {
+                        spacing: Config.spacing
+                        IdleInhibitor {}
                         Tray {}
                     }
                 }
