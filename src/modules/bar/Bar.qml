@@ -45,7 +45,9 @@ Scope {
                 BarPill {
                     RowLayout {
                         spacing: Config.spacing
-                        IdleInhibitor {}
+                        IdleInhibitor {
+                            barWindow: window
+                        }
                         Tray {
                             barWindow: window
                         }

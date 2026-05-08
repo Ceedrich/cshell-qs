@@ -1,10 +1,13 @@
-import Quickshell.Io
+import Quickshell.Wayland as WL
+import QtQuick
 
 import qs.config
 import qs.widgets
 
 CText {
     id: root
+    required property QtObject barWindow
+
     property bool inhibiting: false
 
     text: inhibiting ? "󰈈" : "󰈉"
@@ -15,18 +18,7 @@ CText {
 
     onClicked: () => inhibiting = !inhibiting
 
-    onInhibitingChanged: () => {
-        if (inhibiting) {
-            inhibit_process.running = true;
-        } else {
-            inhibit_process.running = false;
-        }
-    }
-
-    Process {
-        id: inhibit_process
-        command: ["systemd-inhibit", "--who=CShell", "--why='Idle Inhibit Module is turned on'", "--mode=block-weak", "sleep", "100d",]
-
-        onExited: () => root.inhibiting = false
+    WL.IdleInhibitor {
+        enabled: root.inhibiting
     }
 }
