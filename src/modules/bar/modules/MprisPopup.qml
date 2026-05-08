@@ -100,19 +100,35 @@ GridLayout {
         }
     }
 
-    CSlider {
-        id: slider
-        Layout.fillWidth: true
+    RowLayout {
+        id: positionDisplay
         visible: root.player?.positionSupported && root.player?.lengthSupported && root.player?.canSeek
-        value: root.player.position
-        from: 0
-        to: root.player.length
-        onMoved: () => root.player.position = value
 
-        FrameAnimation {
-            running: slider.visible
-            onTriggered: () => root.player.positionChanged()
+        CSlider {
+            id: slider
+            Layout.fillWidth: true
+            value: root.player.position
+            from: 0
+            to: root.player.length
+            onMoved: () => root.player.position = value
+
+            FrameAnimation {
+                running: slider.visible
+                onTriggered: () => root.player.positionChanged()
+            }
         }
+
+        CText {
+            text: root.formatMinutes(root.player.position)
+        }
+
+    }
+
+    function formatMinutes(seconds: real): string {
+        const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+        const s = String(Math.floor(seconds % 60)).padStart(2, '0');
+
+        return `${m}:${s}`;
     }
 
     component ElidedText: TextMetrics {
