@@ -1,4 +1,3 @@
-import Quickshell.Widgets
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick
@@ -6,59 +5,44 @@ import QtQuick
 import qs.config
 import qs.widgets
 
-WrapperRectangle {
-    border.color: Colors.overlay1
-    border.width: 0.5
-    radius: 32
+ColumnLayout {
+    id: root
+    spacing: 0
 
-    color: Colors.base
+    PlainText {
+        horizontalAlignment: Text.AlignHCenter
+        Layout.fillWidth: true
+        text: grid.title
+        font.bold: true
+    }
 
-    WrapperRectangle {
-        color: "transparent"
-        margin: Config.spacing
-        leftMargin: 2 * Config.spacing
-        rightMargin: 2 * Config.spacing
+    DayOfWeekRow {
+        locale: grid.locale
 
-        ColumnLayout {
-            id: root
-            spacing: 0
+        Layout.fillWidth: true
 
-            PlainText {
-                horizontalAlignment: Text.AlignHCenter
-                Layout.fillWidth: true
-                text: grid.title
-                font.bold: true
-            }
+        delegate: PlainText {
+            required property string shortName
 
-            DayOfWeekRow {
-                locale: grid.locale
-
-                Layout.fillWidth: true
-
-                delegate: PlainText {
-                    required property string shortName
-
-                    font.bold: true
-                    text: shortName
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-
-            MonthGrid {
-                id: grid
-                delegate: PlainText {
-                    required property var model
-
-                    color: model.month === grid.month ? model.today ? Colors.accent : defaultColor : Colors.overlay1
-
-                    text: model.day
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-
-                Layout.fillWidth: true
-            }
+            font.bold: true
+            text: shortName
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
+    }
+
+    MonthGrid {
+        id: grid
+        delegate: PlainText {
+            required property var model
+
+            color: model.month === grid.month ? model.today ? Colors.accent : defaultColor : Colors.overlay1
+
+            text: model.day
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        Layout.fillWidth: true
     }
 }

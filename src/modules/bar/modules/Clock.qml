@@ -14,23 +14,10 @@ CText {
 
     onClicked: () => popup.visible = !popup.visible
 
-    PopupWindow {
+    BarPopup {
         id: popup
-        anchor.item: root
-        anchor.rect.y: root.barWindow.height
-        anchor.rect.x: root.width / 2 - width / 2
+        barItem: root
 
-        grabFocus: true
-
-        implicitWidth: cal.implicitWidth
-        implicitHeight: cal.implicitHeight
-
-        visible: true
-
-        color: "transparent"
-
-        CalendarPopup {
-            id: cal
-        }
+        CalendarPopup {}
     }
 }
