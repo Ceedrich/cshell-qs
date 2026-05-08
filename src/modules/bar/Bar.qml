@@ -15,22 +15,6 @@ Scope {
         PanelWindow {
             id: window
 
-            PopupWindow {
-                id: controlCenterWindow
-                anchor.window: window
-                anchor.rect.x: parentWindow.width - width
-                anchor.rect.y: parentWindow.height + Config.spacing
-
-                implicitWidth: child.implicitWidth
-                implicitHeight: child.implicitHeight
-
-                color: "transparent"
-
-                ControlCenter {
-                    id: child
-                }
-            }
-
             margins {
                 top: Config.margin
                 right: Config.margin
@@ -71,7 +55,7 @@ Scope {
                 BarPill {
                     RowLayout {
                         ControlCenterToggle {
-                            controlPanelWindow: controlCenterWindow
+                            barWindow: window
                         }
                     }
                 }
