@@ -1,61 +1,122 @@
-import Quickshell.Services.Mpris
-import QtQuick.Layouts
 import QtQuick
+import QtQuick.Layouts
+import Quickshell.Services.Mpris
 
 import qs.widgets
 import qs.config
 
-ColumnLayout {
+GridLayout {
     id: root
-    spacing: 0
     required property MprisPlayer player
     required property QtObject popup
-    visible: player != null
 
-    function openApp() {
-        player.dbusName;
-    }
+    columnSpacing: Config.spacing
 
-    CText {
-        visible: text != null
+    Image {
         Layout.alignment: Qt.AlignHCenter
-        text: root.player?.trackTitle || ""
+        Layout.preferredWidth: 100
+        Layout.preferredHeight: 100
 
-        onClicked: () => {
-            root.player.raise();
-            root.popup.visible = false;
+        source: root.player.trackArtUrl
+
+        TapHandler {
+            onTapped: () => {
+                root.popup.visible = false;
+                root.player.raise();
+            }
+        }
+        HoverHandler {
+            cursorShape: hovered && Qt.PointingHandCursor
         }
     }
 
-    PlainText {
-        visible: text != null
-        Layout.alignment: Qt.AlignHCenter
-        text: root.player?.trackArtist || ""
-    }
+    ColumnLayout {
 
-    PlainText {
-        visible: text != null
-        Layout.alignment: Qt.AlignHCenter
-        text: root.player?.trackAlbum || ""
+        visible: root.player != null
+        Layout.alignment: Qt.AlignVCenter
+        spacing: 0
+
+        CText {
+            font: titleText.font
+            text: titleText.elidedText
+
+            ElidedText {
+                id: titleText
+                text: root.player?.trackTitle || ""
+                font.pixelSize: Config.fontSize * 1.25
+            }
+        }
+
+        PlainText {
+            text: artistText.elidedText
+
+            ElidedText {
+                id: artistText
+                text: root.player?.trackArtist || ""
+            }
+        }
+
+        PlainText {
+            text: albumText.elidedText
+
+            ElidedText {
+                id: albumText
+                text: root.player?.trackAlbum || ""
+            }
+        }
+
+        TapHandler {
+            onTapped: () => {
+                root.popup.visible = false;
+                root.player.raise();
+            }
+        }
+        HoverHandler {
+            cursorShape: hovered && Qt.PointingHandCursor
+        }
     }
 
     RowLayout {
+        Layout.row: 1
         Layout.alignment: Qt.AlignHCenter
         spacing: Config.spacing
 
         CText {
             text: "󰒮"
+            font.pixelSize: Config.fontSize * 1.25
             onClicked: () => root.player.previous()
         }
 
         CText {
             text: root.player?.isPlaying ? "󰏤" : "󰐊"
+            font.pixelSize: Config.fontSize * 1.25
             onClicked: () => root.player.togglePlaying()
         }
 
         CText {
             text: "󰒭"
+            font.pixelSize: Config.fontSize * 1.25
             onClicked: () => root.player.next()
         }
+    }
+
+    CSlider {
+        id: slider
+        Layout.fillWidth: true
+        visible: root.player?.positionSupported && root.player?.lengthSupported && root.player?.canSeek
+        value: root.player.position
+        from: 0
+        to: root.player.length
+        onMoved: () => root.player.position = value
+
+        FrameAnimation {
+            running: slider.visible
+            onTriggered: () => root.player.positionChanged()
+        }
+    }
+
+    component ElidedText: TextMetrics {
+        elideWidth: Config.maxMprisWidth
+        elide: Qt.ElideRight
     }
 }

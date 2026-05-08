@@ -12,7 +12,6 @@ BarPill {
         CTextNoHandlers {
             id: textRoot
             property MprisPlayer player: {
-                console.log(Mpris.players.values);
                 Mpris.players.values[0];
             }
             property int max_length: 30
