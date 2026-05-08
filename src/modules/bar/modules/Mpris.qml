@@ -17,7 +17,7 @@ BarPill {
 
             visible: player != null
 
-            text: formatText()
+            text: textMetrics.elidedText
             color: Colors.overlay1
 
             function getPlayerIcon(player: MprisPlayer): string {
@@ -27,6 +27,15 @@ BarPill {
                 default:
                     return "󰐊";
                 }
+            }
+
+            TextMetrics {
+                id: textMetrics
+
+                elideWidth: Config.maxMprisWidth
+                elide: Qt.ElideRight
+
+                text: textRoot.formatText()
             }
 
             function formatText(): string {

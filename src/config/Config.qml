@@ -9,6 +9,8 @@ Singleton {
     readonly property string fontFamily: "Jetbrains Mono Nerd Font"
     readonly property int fontSize: 14
 
+    readonly property int maxMprisWidth: 300
+
     readonly property var border: ({
             width: 1,
             radius: spacing
