@@ -36,7 +36,7 @@ GridLayout {
         Layout.alignment: Qt.AlignVCenter
         spacing: 0
 
-        CText {
+        CTextNoHandlers {
             font: titleText.font
             text: titleText.elidedText
 
