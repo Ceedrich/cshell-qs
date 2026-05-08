@@ -62,7 +62,9 @@ Scope {
                     RowLayout {
                         spacing: Config.spacing
                         IdleInhibitor {}
-                        Tray {}
+                        Tray {
+                            barWindow: window
+                        }
                     }
                 }
 

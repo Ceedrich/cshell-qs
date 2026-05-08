@@ -2,39 +2,42 @@ import Quickshell.Services.SystemTray
 import Quickshell.Widgets
 import Quickshell
 import QtQuick
-import QtQuick.Layouts
 
 Repeater {
     id: root
+    required property QtObject barWindow
     model: SystemTray.items
 
-    RowLayout {
+    IconImage {
         id: model
         required property SystemTrayItem modelData
+        implicitSize: 20
+        source: model.trayIconSourceFor(model.modelData)
 
-        IconImage {
-            implicitSize: 20
-            source: model.trayIconSourceFor(model.modelData)
+        MouseArea {
+            anchors.fill: parent
+            acceptedButtons: Qt.RightButton | Qt.LeftButton
 
-            MouseArea {
-                anchors.fill: parent
-                acceptedButtons: Qt.RightButton | Qt.LeftButton
-
-                onClicked: evt => {
-                    if (!model.modelData.onlyMenu && evt.button & Qt.LeftButton) {
-                        model.primaryAction();
-                        return;
-                    }
-                    if (model.modelData.hasMenu) {
-                        model.openMenu(evt);
-                    }
+            onClicked: evt => {
+                if (!model.modelData.onlyMenu && evt.button & Qt.LeftButton) {
+                    model.primaryAction();
+                    return;
+                }
+                if (model.modelData.hasMenu) {
+                    model.openMenu(evt);
                 }
             }
         }
-
         PopupWindow {
             id: popup
-            anchor.window: parentWindow
+            anchor.window: root.barWindow
+
+            implicitWidth: 1
+            implicitHeight: 1
+
+            color: "transparent"
+
+            grabFocus: true
         }
 
         function primaryAction() {
@@ -43,6 +46,8 @@ Repeater {
 
         function openMenu(evt) {
             const p = parent.mapToItem(popup.contentItem, evt.x, evt.y);
+
+            popup.visible = true;
 
             modelData.display(popup, p.x, p.y);
         }
