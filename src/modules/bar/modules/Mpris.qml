@@ -6,12 +6,11 @@ import qs.widgets
 import qs.config
 
 BarPill {
-  visible: textRoot.visible
+    visible: Mpris.players.values.length > 0
     RowLayout {
-
         CTextNoHandlers {
             id: textRoot
-            property MprisPlayer player: Mpris.players.values[0]
+            property MprisPlayer player: Mpris.players.values[0] || null
             property int max_length: 30
 
             readonly property string icon: getPlayerIcon(player)
@@ -22,7 +21,7 @@ BarPill {
             color: Colors.overlay1
 
             function getPlayerIcon(player: MprisPlayer): string {
-                switch (player.desktopEntry) {
+                switch (player?.desktopEntry) {
                 case "spotify":
                     return "󰓇";
                 default:
@@ -31,9 +30,9 @@ BarPill {
             }
 
             function formatText(): string {
-                const title = player.trackTitle;
-                const album = player.trackAlbum;
-                const artist = player.trackArtist;
+                const title = player?.trackTitle;
+                const album = player?.trackAlbum;
+                const artist = player?.trackArtist;
 
                 return `${icon} ${title} - ${artist}`;
             }
@@ -48,8 +47,12 @@ BarPill {
                 onTapped: (eventPoint, button) => _onClicked(button)
 
                 function _onClicked(button): void {
-                    if (button === Qt.LeftButton) {
+                    if (button === Qt.RightButton) {
                         textRoot.player.togglePlaying();
+                        return;
+                    }
+                    if (button === Qt.LeftButton) {
+                        playerPopup.visible = !playerPopup.visible;
                         return;
                     }
                 }
@@ -82,6 +85,16 @@ BarPill {
 
                     handled = true;
                 }
+            }
+        }
+
+        BarPopup {
+            id: playerPopup
+            barItem: textRoot
+
+            MprisPopup {
+                popup: playerPopup
+                player: textRoot.player
             }
         }
     }

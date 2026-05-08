@@ -10,7 +10,7 @@ PopupWindow {
     default required property Item child
 
     anchor.item: barItem
-    anchor.rect.y: parentWindow?.height
+    anchor.rect.y: parentWindow?.height || barItem.height
     anchor.rect.x: barItem.width / 2 - width / 2
 
     grabFocus: true
