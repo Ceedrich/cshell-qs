@@ -7,10 +7,14 @@ import qs.config
 
 BarPill {
     visible: Mpris.players.values.length > 0
+    enabled: visible
     RowLayout {
         CTextNoHandlers {
             id: textRoot
-            property MprisPlayer player: Mpris.players.values[0] || null
+            property MprisPlayer player: {
+                console.log(Mpris.players.values);
+                Mpris.players.values[0];
+            }
             property int max_length: 30
 
             readonly property string icon: getPlayerIcon(player)
