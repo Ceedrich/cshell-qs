@@ -34,6 +34,7 @@ BarPill {
 
             TextMetrics {
                 id: textMetrics
+                font: textRoot.font
 
                 elideWidth: Config.maxMprisWidth
                 elide: Qt.ElideRight

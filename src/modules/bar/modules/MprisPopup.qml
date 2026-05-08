@@ -37,30 +37,35 @@ GridLayout {
         spacing: 0
 
         CTextNoHandlers {
-            font: titleText.font
+            id: title
             text: titleText.elidedText
+            font.pixelSize: Config.fontSize * 1.25
 
             ElidedText {
                 id: titleText
+                font: title.font
                 text: root.player?.trackTitle || ""
-                font.pixelSize: Config.fontSize * 1.25
             }
         }
 
         PlainText {
+            id: artist
             text: artistText.elidedText
 
             ElidedText {
                 id: artistText
+                font: artist.font
                 text: root.player?.trackArtist || ""
             }
         }
 
         PlainText {
+            id: album
             text: albumText.elidedText
 
             ElidedText {
                 id: albumText
+                font: album.font
                 text: root.player?.trackAlbum || ""
             }
         }
@@ -121,7 +126,6 @@ GridLayout {
         CText {
             text: root.formatMinutes(root.player.position)
         }
-
     }
 
     function formatMinutes(seconds: real): string {
