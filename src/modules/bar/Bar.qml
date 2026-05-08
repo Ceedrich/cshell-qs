@@ -52,6 +52,7 @@ Scope {
             Mpris {}
 
             Center {
+                barWindow: window
                 anchors.centerIn: parent
             }
 

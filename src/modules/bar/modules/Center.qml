@@ -1,11 +1,17 @@
 import QtQuick.Layouts
+import QtQuick
 
 import qs.config
 
 BarPill {
+    id: root
+    required property QtObject barWindow
+
     RowLayout {
         spacing: Config.spacing
-        Clock {}
+        Clock {
+            barWindow: root.barWindow
+        }
         Workspaces {}
         Volume {
             defaultColor: Colors.blue
