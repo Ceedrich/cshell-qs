@@ -1,13 +1,12 @@
 import QtQuick
 import QtQuick.Layouts
-import Quickshell.Services.Mpris
 
+import qs.services
 import qs.widgets
 import qs.config
 
 GridLayout {
     id: root
-    required property MprisPlayer player
     required property QtObject popup
 
     columnSpacing: Config.spacing
@@ -17,12 +16,12 @@ GridLayout {
         Layout.preferredWidth: 100
         Layout.preferredHeight: 100
 
-        source: root.player.trackArtUrl
+        source: Mpris.trackArtUrl
 
         TapHandler {
             onTapped: () => {
                 root.popup.visible = false;
-                root.player.raise();
+                Mpris.raise();
             }
         }
         HoverHandler {
@@ -31,8 +30,7 @@ GridLayout {
     }
 
     ColumnLayout {
-
-        visible: root.player != null
+        visible: Mpris.available
         Layout.alignment: Qt.AlignVCenter
         spacing: 0
 
@@ -44,7 +42,7 @@ GridLayout {
             ElidedText {
                 id: titleText
                 font: title.font
-                text: root.player?.trackTitle || ""
+                text: Mpris.title
             }
         }
 
@@ -55,7 +53,7 @@ GridLayout {
             ElidedText {
                 id: artistText
                 font: artist.font
-                text: root.player?.trackArtist || ""
+                text: Mpris.artist
             }
         }
 
@@ -66,14 +64,14 @@ GridLayout {
             ElidedText {
                 id: albumText
                 font: album.font
-                text: root.player?.trackAlbum || ""
+                text: Mpris.album
             }
         }
 
         TapHandler {
             onTapped: () => {
                 root.popup.visible = false;
-                root.player.raise();
+                Mpris.raise();
             }
         }
         HoverHandler {
@@ -89,42 +87,42 @@ GridLayout {
         CText {
             text: "󰒮"
             font.pixelSize: Config.fontSize * 1.25
-            onClicked: () => root.player.previous()
+            onClicked: () => Mpris.previous()
         }
 
         CText {
-            text: root.player?.isPlaying ? "󰏤" : "󰐊"
+            text: Mpris.isPlaying ? "󰏤" : "󰐊"
             font.pixelSize: Config.fontSize * 1.25
-            onClicked: () => root.player.togglePlaying()
+            onClicked: () => Mpris.togglePlaying()
         }
 
         CText {
             text: "󰒭"
             font.pixelSize: Config.fontSize * 1.25
-            onClicked: () => root.player.next()
+            onClicked: () => Mpris.next()
         }
     }
 
     RowLayout {
         id: positionDisplay
-        visible: root.player?.positionSupported && root.player?.lengthSupported && root.player?.canSeek
+        visible: Mpris.progressAvailable
 
         CSlider {
             id: slider
             Layout.fillWidth: true
-            value: root.player.position
+            value: Mpris.player.position
             from: 0
-            to: root.player.length
-            onMoved: () => root.player.position = value
+            to: Mpris.player.length
+            onMoved: () => Mpris.player.position = value
 
             FrameAnimation {
                 running: slider.visible
-                onTriggered: () => root.player.positionChanged()
+                onTriggered: () => Mpris.player.positionChanged()
             }
         }
 
         CText {
-            text: root.formatMinutes(root.player.position)
+            text: root.formatMinutes(Mpris.player.position)
         }
     }
 

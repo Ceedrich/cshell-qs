@@ -1,36 +1,22 @@
-import Quickshell.Services.Mpris
 import QtQuick
 import QtQuick.Layouts
 
 import qs.widgets
+import qs.services
 import qs.config
 
 BarPill {
-    visible: Mpris.players.values.length > 0
+    visible: Mpris.available
     enabled: visible
     RowLayout {
         CTextNoHandlers {
             id: textRoot
-            property MprisPlayer player: {
-                Mpris.players.values[0];
-            }
             property int max_length: 30
 
-            readonly property string icon: getPlayerIcon(player)
-
-            visible: player != null
+            readonly property string icon: Mpris.playerIcon
 
             text: textMetrics.elidedText
             color: Colors.overlay1
-
-            function getPlayerIcon(player: MprisPlayer): string {
-                switch (player?.desktopEntry) {
-                case "spotify":
-                    return "󰓇";
-                default:
-                    return "󰐊";
-                }
-            }
 
             TextMetrics {
                 id: textMetrics
@@ -43,11 +29,7 @@ BarPill {
             }
 
             function formatText(): string {
-                const title = player?.trackTitle;
-                const album = player?.trackAlbum;
-                const artist = player?.trackArtist;
-
-                return `${icon} ${title} - ${artist}`;
+                return `${icon} ${Mpris.title} - ${Mpris.artist}`;
             }
 
             HoverHandler {
@@ -61,7 +43,7 @@ BarPill {
 
                 function _onClicked(button): void {
                     if (button === Qt.RightButton) {
-                        textRoot.player.togglePlaying();
+                        Mpris.togglePlaying();
                         return;
                     }
                     if (button === Qt.LeftButton) {
@@ -89,11 +71,11 @@ BarPill {
                     }
                     const delta = evt.angleDelta.x;
                     if (delta < 0) {
-                        textRoot.player.previous();
+                        Mpris.previous();
                     }
 
                     if (delta > 0) {
-                        textRoot.player.next();
+                        Mpris.next();
                     }
 
                     handled = true;
@@ -107,7 +89,6 @@ BarPill {
 
             MprisPopup {
                 popup: playerPopup
-                player: textRoot.player
             }
         }
     }
