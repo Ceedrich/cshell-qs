@@ -110,9 +110,9 @@ GridLayout {
         CSlider {
             id: slider
             Layout.fillWidth: true
-            value: Mpris.player.position
+            value: Mpris.player?.position || 0
             from: 0
-            to: Mpris.player.length
+            to: Mpris.player?.length || 0
             onMoved: () => Mpris.player.position = value
 
             FrameAnimation {
@@ -122,7 +122,7 @@ GridLayout {
         }
 
         CText {
-            text: root.formatMinutes(Mpris.player.position)
+            text: root.formatMinutes(Mpris.player?.position || 0)
         }
     }
 
