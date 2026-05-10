@@ -20,5 +20,6 @@ CText {
 
     WL.IdleInhibitor {
         enabled: root.inhibiting
+        window: root.barWindow
     }
 }
