@@ -1,3 +1,5 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick
@@ -9,11 +11,30 @@ ColumnLayout {
     id: root
     spacing: 0
 
-    PlainText {
-        horizontalAlignment: Text.AlignHCenter
-        Layout.fillWidth: true
-        text: grid.title
-        font.bold: true
+    RowLayout {
+        CText {
+            bottomPadding: 0
+            topPadding: 0
+            text: "󰁍"
+            onClicked: grid.prevMonth
+        }
+
+        CText {
+            bottomPadding: 0
+            topPadding: 0
+            horizontalAlignment: Text.AlignHCenter
+            Layout.fillWidth: true
+            text: grid.title
+            font.bold: true
+            onClicked: grid.selectToday
+        }
+
+        CText {
+            bottomPadding: 0
+            topPadding: 0
+            text: "󰁔"
+            onClicked: grid.nextMonth
+        }
     }
 
     DayOfWeekRow {
@@ -33,10 +54,27 @@ ColumnLayout {
 
     MonthGrid {
         id: grid
+        property date selectedDate: new Date()
+
         delegate: PlainText {
             required property var model
 
-            color: model.month === grid.month ? model.today ? Colors.accent : defaultColor : Colors.overlay1
+            property bool isSelected: (model.day === grid.selectedDate.getDate() && model.month === grid.selectedDate.getMonth() && model.year === grid.selectedDate.getFullYear())
+
+            // color: model.month === grid.month ? model.today ? Colors.accent : defaultColor : Colors.overlay1
+            color: {
+                if (model.month === grid.month) {
+                    if (model.today) {
+                        return Colors.accent;
+                    }
+                    if (isSelected) {
+                        return Colors.accent;
+                    }
+                    return defaultColor;
+                }
+                return Colors.overlay1;
+            }
+            font.bold: isSelected
 
             text: model.day
             horizontalAlignment: Text.AlignHCenter
@@ -44,5 +82,31 @@ ColumnLayout {
         }
 
         Layout.fillWidth: true
+
+        onClicked: date => selectedDate = date
+
+        function prevMonth() {
+            if (month == Calendar.January) {
+                month = Calendar.December;
+                year -= 1;
+            } else {
+                month -= 1;
+            }
+        }
+
+        function nextMonth() {
+            if (month == Calendar.December) {
+                month = Calendar.January;
+                year += 1;
+            } else {
+                month += 1;
+            }
+        }
+
+        function selectToday() {
+            selectedDate = new Date();
+            month = selectedDate.getMonth();
+            year = selectedDate.getFullYear();
+        }
     }
 }
