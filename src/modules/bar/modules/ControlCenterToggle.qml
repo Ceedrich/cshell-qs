@@ -11,6 +11,13 @@ CText {
     // onClicked: () => root.controlPanelWindow.visible = !root.controlPanelWindow.visible
     onClicked: () => toggle_swaync.running = true
 
+    IpcHandler {
+        target: "control-center"
+        function toggle(): void {
+            toggle_swaync.running = true;
+        }
+    }
+
     Process {
         id: toggle_swaync
         command: ["swaync-client", "-t", "-sw"]
