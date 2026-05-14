@@ -4,20 +4,43 @@ import Quickshell
 import Quickshell.Io
 import QtQuick
 
+// updatePercentage => set_proc
+
 Singleton {
     id: root
-    property int percentage: 100
+    property int percentage: _perc
+
+    property int _perc: 100
+
+    onPercentageChanged: () => {
+        if (percentage === _perc) {
+            return;
+        }
+        timer.restart();
+        query_proc.running = false;
+        set_proc.running = true;
+    }
+
+    Process {
+        id: set_proc
+        command: ["brightnessctl", "-m", "s", `${root.percentage}%`]
+    }
 
     Process {
         id: query_proc
         command: ["brightnessctl", "-m", "i"]
         running: true
         stdout: SplitParser {
-            onRead: data => root.percentage = root.parseOutput(data)
+            onRead: data => {
+                const perc = root.parseOutput(data);
+                root._perc = perc;
+                root.percentage = perc;
+            }
         }
     }
 
     Timer {
+        id: timer
         interval: 1000
         running: true
         repeat: true
