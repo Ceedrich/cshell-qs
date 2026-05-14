@@ -4,7 +4,17 @@ import Quickshell
 import Quickshell.Services.Mpris as QSM
 
 Singleton {
-    property QSM.MprisPlayer player: QSM.Mpris.players.values[0] || null
+    readonly property list<QSM.MprisPlayer> players: QSM.Mpris.players.values.filter(p => !p.dbusName.includes("playerctld"))
+
+    property QSM.MprisPlayer player: players[0] || null
+
+    onPlayersChanged: () => {
+        if (player == null) {
+            if (players.length > 0) {
+                player = players[0] || null;
+            }
+        }
+    }
 
     readonly property bool available: player != null || false
     readonly property bool progressAvailable: player?.positionSupported && player?.lengthSupported && player?.canSeek || false
@@ -22,6 +32,10 @@ Singleton {
         default:
             return "󰐊";
         }
+    }
+
+    function setPlayer(p: QSM.MprisPlayer): void {
+        player = p;
     }
 
     function togglePlaying(): void {

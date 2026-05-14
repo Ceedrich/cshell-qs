@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 
+import Quickshell
+
 import qs.widgets
 import qs.services
 import qs.config
@@ -9,9 +11,9 @@ BarPill {
     visible: Mpris.available
     enabled: visible
     RowLayout {
+        id: rootItem
         CTextNoHandlers {
             id: textRoot
-            property int max_length: 30
 
             readonly property string icon: Mpris.playerIcon
 
@@ -85,7 +87,9 @@ BarPill {
 
         BarPopup {
             id: playerPopup
-            barItem: textRoot
+            barItem: rootItem
+
+            anchor.rect.x: 0
 
             MprisPopup {
                 popup: playerPopup

@@ -7,6 +7,7 @@ import qs.config
 
 GridLayout {
     id: root
+    width: Config.mprisPopupWidth
     required property QtObject popup
 
     columnSpacing: Config.spacing
@@ -36,24 +37,30 @@ GridLayout {
 
         CTextNoHandlers {
             id: title
+            Layout.fillWidth: true
             text: titleText.elidedText
             font.pixelSize: Config.fontSize * 1.25
 
-            ElidedText {
+            TextMetrics {
                 id: titleText
                 font: title.font
                 text: Mpris.title
+                elideWidth: title.width
+                elide: Qt.ElideRight
             }
         }
 
         PlainText {
             id: artist
             text: artistText.elidedText
+            Layout.fillWidth: true
 
-            ElidedText {
+            TextMetrics {
                 id: artistText
                 font: artist.font
                 text: Mpris.artist
+                elideWidth: artist.width
+                elide: Qt.ElideRight
             }
         }
 
@@ -61,10 +68,13 @@ GridLayout {
             id: album
             text: albumText.elidedText
 
-            ElidedText {
+            Layout.fillWidth: true
+            TextMetrics {
                 id: albumText
                 font: album.font
                 text: Mpris.album
+                elideWidth: album.width
+                elide: Qt.ElideRight
             }
         }
 
@@ -126,15 +136,22 @@ GridLayout {
         }
     }
 
+    CComboBox {
+        visible: Mpris.players.length > 1
+
+        onActivated: i => Mpris.setPlayer(Mpris.players[i])
+
+        enabled: visible
+        Layout.row: 2
+        Layout.columnSpan: 2
+        Layout.alignment: Qt.AlignHCenter
+        model: Mpris.players.map(p => p.identity)
+    }
+
     function formatMinutes(seconds: real): string {
         const m = String(Math.floor(seconds / 60)).padStart(2, '0');
         const s = String(Math.floor(seconds % 60)).padStart(2, '0');
 
         return `${m}:${s}`;
-    }
-
-    component ElidedText: TextMetrics {
-        elideWidth: Config.maxMprisWidth
-        elide: Qt.ElideRight
     }
 }
