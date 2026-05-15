@@ -36,46 +36,22 @@ GridLayout {
         spacing: 0
 
         CText {
-            id: title
             Layout.fillWidth: true
-            text: titleText.elidedText
+
+            text: Mpris.title
             font.pixelSize: Config.fontSize * 1.25
-
-            TextMetrics {
-                id: titleText
-                font: title.font
-                text: Mpris.title
-                elideWidth: title.width
-                elide: Qt.ElideRight
-            }
         }
 
         CText {
-            id: artist
-            text: artistText.elidedText
             Layout.fillWidth: true
 
-            TextMetrics {
-                id: artistText
-                font: artist.font
-                text: Mpris.artist
-                elideWidth: artist.width
-                elide: Qt.ElideRight
-            }
+            text: Mpris.artist
         }
 
         CText {
-            id: album
-            text: albumText.elidedText
-
             Layout.fillWidth: true
-            TextMetrics {
-                id: albumText
-                font: album.font
-                text: Mpris.album
-                elideWidth: album.width
-                elide: Qt.ElideRight
-            }
+
+            text: Mpris.album
         }
 
         TapHandler {

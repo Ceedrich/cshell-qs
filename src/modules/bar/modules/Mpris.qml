@@ -15,20 +15,11 @@ BarPill {
         CText {
             id: textRoot
 
+            Layout.preferredWidth: Config.maxMprisWidth
             readonly property string icon: Mpris.playerIcon
 
-            text: textMetrics.elidedText
+            text: textRoot.formatText()
             color: Colors.overlay1
-
-            TextMetrics {
-                id: textMetrics
-                font: textRoot.font
-
-                elideWidth: Config.maxMprisWidth
-                elide: Qt.ElideRight
-
-                text: textRoot.formatText()
-            }
 
             function formatText(): string {
                 return `${icon} ${Mpris.title} - ${Mpris.artist}`;

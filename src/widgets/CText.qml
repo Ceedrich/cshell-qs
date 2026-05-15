@@ -12,6 +12,8 @@ Text {
 
     color: defaultColor
 
+    elide: Qt.ElideRight
+
     Rectangle {
         visible: root.underline
         anchors.left: parent.left
