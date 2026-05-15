@@ -8,7 +8,7 @@ import qs.services
 import qs.config
 
 BarPill {
-    visible: Mpris.available
+    visible: MprisService.available
     enabled: visible
     RowLayout {
         id: rootItem
@@ -16,13 +16,13 @@ BarPill {
             id: textRoot
 
             Layout.preferredWidth: Config.maxMprisWidth
-            readonly property string icon: Mpris.playerIcon
+            readonly property string icon: MprisService.playerIcon
 
             text: textRoot.formatText()
             color: Colors.overlay1
 
             function formatText(): string {
-                return `${icon} ${Mpris.title} - ${Mpris.artist}`;
+                return `${icon} ${MprisService.title} - ${MprisService.artist}`;
             }
 
             HoverHandler {
@@ -36,7 +36,7 @@ BarPill {
 
                 function _onClicked(button): void {
                     if (button === Qt.RightButton) {
-                        Mpris.togglePlaying();
+                        MprisService.togglePlaying();
                         return;
                     }
                     if (button === Qt.LeftButton) {
@@ -64,11 +64,11 @@ BarPill {
                     }
                     const delta = evt.angleDelta.x;
                     if (delta < 0) {
-                        Mpris.previous();
+                        MprisService.previous();
                     }
 
                     if (delta > 0) {
-                        Mpris.next();
+                        MprisService.next();
                     }
 
                     handled = true;

@@ -7,8 +7,8 @@ import qs.services
 
 CText {
     property var icons: ["󱩎", "󱩎", "󱩏", "󱩐", "󱩑", "󱩒", "󱩓", "󱩔", "󱩕", "󱩖", "󰛨"]
-    property var icon: Utils.select_from_list(BrightnessCtl.percentage / 100, icons)
-    text: BrightnessCtl.percentage + "% " + icon
+    property var icon: Utils.select_from_list(BrightnessService.percentage / 100, icons)
+    text: BrightnessService.percentage + "% " + icon
 
     underline: true
 
@@ -18,7 +18,7 @@ CText {
         onWheel: wheel => {
             const delta = -wheel.angleDelta.y * Config.scrollFactor;
             const clamp = (low, high, value) => Math.min(Math.max(value, low), high);
-            BrightnessCtl.percentage = clamp(0, 100, BrightnessCtl.percentage + delta);
+            BrightnessService.percentage = clamp(0, 100, BrightnessService.percentage + delta);
         }
     }
 }

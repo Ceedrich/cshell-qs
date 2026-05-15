@@ -8,7 +8,7 @@ CText {
     id: root
     required property QtObject barWindow
 
-    text: Time.time
+    text: TimeService.time
     color: Colors.overlay1
 
     MouseArea {

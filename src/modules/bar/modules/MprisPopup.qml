@@ -17,12 +17,12 @@ GridLayout {
         Layout.preferredWidth: 100
         Layout.preferredHeight: 100
 
-        source: Mpris.trackArtUrl
+        source: MprisService.trackArtUrl
 
         TapHandler {
             onTapped: () => {
                 root.popup.visible = false;
-                Mpris.raise();
+                MprisService.raise();
             }
         }
         HoverHandler {
@@ -31,33 +31,33 @@ GridLayout {
     }
 
     ColumnLayout {
-        visible: Mpris.available
+        visible: MprisService.available
         Layout.alignment: Qt.AlignVCenter
         spacing: 0
 
         CText {
             Layout.fillWidth: true
 
-            text: Mpris.title
+            text: MprisService.title
             font.pixelSize: Config.fontSize * 1.25
         }
 
         CText {
             Layout.fillWidth: true
 
-            text: Mpris.artist
+            text: MprisService.artist
         }
 
         CText {
             Layout.fillWidth: true
 
-            text: Mpris.album
+            text: MprisService.album
         }
 
         TapHandler {
             onTapped: () => {
                 root.popup.visible = false;
-                Mpris.raise();
+                MprisService.raise();
             }
         }
         HoverHandler {
@@ -77,17 +77,17 @@ GridLayout {
             MouseArea {
                 cursorShape: Qt.PointingHandCursor
                 anchors.fill: parent
-                onClicked: () => Mpris.previous()
+                onClicked: () => MprisService.previous()
             }
         }
 
         CText {
-            text: Mpris.isPlaying ? "󰏤" : "󰐊"
+            text: MprisService.isPlaying ? "󰏤" : "󰐊"
             font.pixelSize: Config.fontSize * 1.25
             MouseArea {
                 cursorShape: Qt.PointingHandCursor
                 anchors.fill: parent
-                onClicked: () => Mpris.togglePlaying()
+                onClicked: () => MprisService.togglePlaying()
             }
         }
 
@@ -97,44 +97,44 @@ GridLayout {
             MouseArea {
                 cursorShape: Qt.PointingHandCursor
                 anchors.fill: parent
-                onClicked: () => Mpris.next()
+                onClicked: () => MprisService.next()
             }
         }
     }
 
     RowLayout {
         id: positionDisplay
-        visible: Mpris.progressAvailable
+        visible: MprisService.progressAvailable
 
         CSlider {
             id: slider
             Layout.fillWidth: true
-            value: Mpris.player?.position || 0
+            value: MprisService.player?.position || 0
             from: 0
-            to: Mpris.player?.length || 0
-            onMoved: () => Mpris.player.position = value
+            to: MprisService.player?.length || 0
+            onMoved: () => MprisService.player.position = value
 
             FrameAnimation {
                 running: slider.visible
-                onTriggered: () => Mpris.player.positionChanged()
+                onTriggered: () => MprisService.player.positionChanged()
             }
         }
 
         CText {
-            text: root.formatMinutes(Mpris.player?.position || 0)
+            text: root.formatMinutes(MprisService.player?.position || 0)
         }
     }
 
     CComboBox {
-        visible: Mpris.players.length > 1
+        visible: MprisService.players.length > 1
 
-        onActivated: i => Mpris.setPlayer(Mpris.players[i])
+        onActivated: i => MprisService.setPlayer(MprisService.players[i])
 
         enabled: visible
         Layout.row: 2
         Layout.columnSpan: 2
         Layout.alignment: Qt.AlignHCenter
-        model: Mpris.players.map(p => p.identity)
+        model: MprisService.players.map(p => p.identity)
     }
 
     function formatMinutes(seconds: real): string {

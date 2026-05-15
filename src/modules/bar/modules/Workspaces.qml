@@ -16,7 +16,7 @@ WrapperMouseArea {
             CText {
                 id: ws
                 required property HyprlandWorkspace modelData
-                property var isActive: Workspaces.isActive(modelData)
+                property var isActive: WorkspacesService.isActive(modelData)
                 property bool hovered: false
 
                 padding: Config.spacing / 2
@@ -27,7 +27,7 @@ WrapperMouseArea {
 
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: () => Workspaces.focus(ws.modelData)
+                    onClicked: () => WorkspacesService.focus(ws.modelData)
                     cursorShape: Qt.PointingHandCursor
                 }
             }
@@ -41,11 +41,11 @@ WrapperMouseArea {
     function _onWheel(evt: WheelEvent): void {
         delta += evt.angleDelta.y * Config.scrollFactor * 0.1;
         if (delta <= -1) {
-            Workspaces.prev();
+            WorkspacesService.prev();
             delta += 1;
         }
         if (delta >= 1) {
-            Workspaces.next();
+            WorkspacesService.next();
             delta -= 1;
         }
     }
