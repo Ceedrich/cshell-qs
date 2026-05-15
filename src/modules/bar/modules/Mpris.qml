@@ -12,7 +12,7 @@ BarPill {
     enabled: visible
     RowLayout {
         id: rootItem
-        CTextNoHandlers {
+        CText {
             id: textRoot
 
             readonly property string icon: Mpris.playerIcon

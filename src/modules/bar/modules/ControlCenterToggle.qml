@@ -9,7 +9,12 @@ CText {
 
     text: "󰍜"
     // onClicked: () => root.controlPanelWindow.visible = !root.controlPanelWindow.visible
-    onClicked: () => toggle_swaync.running = true
+    MouseArea {
+      anchors.fill: parent
+
+      cursorShape: Qt.PointingHandCursor
+      onClicked: () => toggle_swaync.running = true
+    }
 
     IpcHandler {
         target: "control-center"

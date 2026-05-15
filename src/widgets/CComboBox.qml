@@ -17,7 +17,7 @@ ComboBox {
         required property int index
 
         width: control.width
-        contentItem: PlainText {
+        contentItem: CText {
             text: delegate.model[control.textRole]
             font: control.font
             elide: Text.ElideRight
@@ -28,7 +28,7 @@ ComboBox {
         background: null
     }
 
-    contentItem: PlainText {
+    contentItem: CText {
         leftPadding: control.spacing
         rightPadding: control.indicator.width + control.spacing
 

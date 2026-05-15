@@ -16,10 +16,15 @@ CText {
 
     color: inhibiting ? defaultColor : Colors.overlay1
 
-    onClicked: () => inhibiting = !inhibiting
-
     WL.IdleInhibitor {
         enabled: root.inhibiting
         window: root.barWindow
+    }
+
+    MouseArea {
+        anchors.fill: parent
+
+        cursorShape: Qt.PointingHandCursor
+        onClicked: () => root.inhibiting = !root.inhibiting
     }
 }

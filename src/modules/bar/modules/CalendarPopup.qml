@@ -16,7 +16,13 @@ ColumnLayout {
             bottomPadding: 0
             topPadding: 0
             text: "󰁍"
-            onClicked: grid.prevMonth
+
+            MouseArea {
+                anchors.fill: parent
+
+                cursorShape: Qt.PointingHandCursor
+                onClicked: () => grid.prevMonth()
+            }
         }
 
         CText {
@@ -26,14 +32,23 @@ ColumnLayout {
             Layout.fillWidth: true
             text: grid.title
             font.bold: true
-            onClicked: grid.selectToday
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: grid.selectToday()
+            }
         }
 
         CText {
             bottomPadding: 0
             topPadding: 0
             text: "󰁔"
-            onClicked: grid.nextMonth
+            MouseArea {
+                cursorShape: Qt.PointingHandCursor
+                anchors.fill: parent
+                onClicked: grid.nextMonth()
+            }
         }
     }
 
@@ -42,7 +57,7 @@ ColumnLayout {
 
         Layout.fillWidth: true
 
-        delegate: PlainText {
+        delegate: CText {
             required property string shortName
 
             font.bold: true
@@ -56,7 +71,7 @@ ColumnLayout {
         id: grid
         property date selectedDate: new Date()
 
-        delegate: PlainText {
+        delegate: CText {
             required property var model
 
             property bool isSelected: (model.day === grid.selectedDate.getDate() && model.month === grid.selectedDate.getMonth() && model.year === grid.selectedDate.getFullYear())

@@ -13,7 +13,7 @@ WrapperMouseArea {
         Repeater {
             model: Hyprland.workspaces
 
-            PlainText {
+            CText {
                 id: ws
                 required property HyprlandWorkspace modelData
                 property var isActive: Workspaces.isActive(modelData)

@@ -1,41 +1,24 @@
 import QtQuick
 
-CTextNoHandlers {
+import qs.config
+
+Text {
     id: root
-    property var onEntered
-    property var onClicked
-    property var onExited
-    property var onWheel
+    property color defaultColor: Colors.text
+    property bool underline: false
 
-    MouseArea {
-        anchors.fill: parent
+    font.family: Config.fontFamily
+    font.pixelSize: Config.fontSize
 
-        hoverEnabled: (root.onEntered || root.onExited || false)
+    color: defaultColor
 
-        onClicked: evt => {
-            if (root.onClicked) {
-                root.onClicked(evt);
-            }
-        }
+    Rectangle {
+        visible: root.underline
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
 
-        cursorShape: (root.onClicked && Qt.PointingHandCursor)
-
-        onEntered: () => {
-            if (root.onEntered) {
-                root.onEntered();
-            }
-        }
-
-        onExited: () => {
-            if (root.onExited) {
-                root.onExited();
-            }
-        }
-
-        onWheel: evt => {
-            if (root.onWheel) {
-                root.onWheel(evt);
-            }
-        }
+        height: 1
+        color: root.color
     }
 }

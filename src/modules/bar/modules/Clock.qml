@@ -1,5 +1,4 @@
 import QtQuick
-import Quickshell
 
 import qs.services
 import qs.config
@@ -12,7 +11,11 @@ CText {
     text: Time.time
     color: Colors.overlay1
 
-    onClicked: () => popup.visible = !popup.visible
+    MouseArea {
+        anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
+        onClicked: () => popup.visible = !popup.visible
+    }
 
     BarPopup {
         id: popup

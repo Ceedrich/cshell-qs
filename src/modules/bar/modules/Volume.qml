@@ -34,10 +34,14 @@ CText {
 
     text: `${Math.round((sink?.audio?.volume || 0) * 100)}% ${icon}`
 
-    onClicked: () => root.sink.audio.muted = !root.sink.audio.muted
-    onWheel: wheel => {
-        const delta = -wheel.angleDelta.y / 100 * Config.scrollFactor;
-        const clamp = (low, high, value) => Math.min(Math.max(value, low), high);
-        root.sink.audio.volume = clamp(0.0, 1.0, root.sink.audio.volume + delta);
+    MouseArea {
+        anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
+        onClicked: () => root.sink.audio.muted = !root.sink.audio.muted
+        onWheel: wheel => {
+            const delta = -wheel.angleDelta.y / 100 * Config.scrollFactor;
+            const clamp = (low, high, value) => Math.min(Math.max(value, low), high);
+            root.sink.audio.volume = clamp(0.0, 1.0, root.sink.audio.volume + delta);
+        }
     }
 }

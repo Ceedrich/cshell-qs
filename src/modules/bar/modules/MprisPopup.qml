@@ -35,7 +35,7 @@ GridLayout {
         Layout.alignment: Qt.AlignVCenter
         spacing: 0
 
-        CTextNoHandlers {
+        CText {
             id: title
             Layout.fillWidth: true
             text: titleText.elidedText
@@ -50,7 +50,7 @@ GridLayout {
             }
         }
 
-        PlainText {
+        CText {
             id: artist
             text: artistText.elidedText
             Layout.fillWidth: true
@@ -64,7 +64,7 @@ GridLayout {
             }
         }
 
-        PlainText {
+        CText {
             id: album
             text: albumText.elidedText
 
@@ -97,19 +97,32 @@ GridLayout {
         CText {
             text: "󰒮"
             font.pixelSize: Config.fontSize * 1.25
-            onClicked: () => Mpris.previous()
+
+            MouseArea {
+                cursorShape: Qt.PointingHandCursor
+                anchors.fill: parent
+                onClicked: () => Mpris.previous()
+            }
         }
 
         CText {
             text: Mpris.isPlaying ? "󰏤" : "󰐊"
             font.pixelSize: Config.fontSize * 1.25
-            onClicked: () => Mpris.togglePlaying()
+            MouseArea {
+                cursorShape: Qt.PointingHandCursor
+                anchors.fill: parent
+                onClicked: () => Mpris.togglePlaying()
+            }
         }
 
         CText {
             text: "󰒭"
             font.pixelSize: Config.fontSize * 1.25
-            onClicked: () => Mpris.next()
+            MouseArea {
+                cursorShape: Qt.PointingHandCursor
+                anchors.fill: parent
+                onClicked: () => Mpris.next()
+            }
         }
     }
 
