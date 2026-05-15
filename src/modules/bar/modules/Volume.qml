@@ -5,7 +5,7 @@ import qs.config
 import qs.utils
 import qs.widgets
 
-CText {
+CBarItem {
     id: root
     property list<string> icons: ["󰕿", "󰖀", "󰕾"]
     property string icon_muted: "󰝟"

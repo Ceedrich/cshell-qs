@@ -5,7 +5,7 @@ import qs.widgets
 import qs.config
 import qs.services
 
-CText {
+CBarItem {
     property var icons: ["󱩎", "󱩎", "󱩏", "󱩐", "󱩑", "󱩒", "󱩓", "󱩔", "󱩕", "󱩖", "󰛨"]
     property var icon: Utils.select_from_list(BrightnessService.percentage / 100, icons)
     text: BrightnessService.percentage + "% " + icon

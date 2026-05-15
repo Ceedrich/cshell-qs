@@ -4,7 +4,7 @@ import qs.config
 import qs.utils
 import qs.widgets
 
-CText {
+CBarItem {
     property var iconsCharging: ["󰢜", "󰂇", "󰢝", "󰢞", "󰂅"]
     property var iconsDischarging: ["󰁺", "󰁼", "󰁾", "󰂀", "󰂂", "󰁹"]
 
