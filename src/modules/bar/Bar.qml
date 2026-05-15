@@ -1,4 +1,5 @@
 import Quickshell
+import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
 
@@ -14,6 +15,9 @@ Scope {
 
         PanelWindow {
             id: window
+
+            WlrLayershell.layer: WlrLayer.Top
+            WlrLayershell.namespace: "cshell-bar"
 
             margins {
                 top: Config.margin
