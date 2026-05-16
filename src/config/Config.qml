@@ -17,4 +17,6 @@ Singleton {
             width: 1,
             radius: spacing
         })
+
+    readonly property int barHeight: 35
 }

@@ -1,54 +1,30 @@
-import Quickshell
-import Quickshell.Wayland
 import QtQuick
 
 import qs.config
 import qs.modules.bar.modules
 
-Scope {
+Rectangle {
     id: root
-    property string time
 
-    Variants {
-        model: Quickshell.screens
+    required property QtObject window
 
-        PanelWindow {
-            id: window
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: parent.top
+    anchors.margins: Config.margin
 
-            WlrLayershell.layer: WlrLayer.Top
-            WlrLayershell.namespace: "cshell-bar"
+    implicitHeight: Config.barHeight
 
-            margins {
-                top: Config.margin
-                right: Config.margin
-                left: Config.margin
-            }
-            required property var modelData
-            screen: modelData
+    color: "transparent"
 
-            color: "transparent"
+    Mpris {}
 
-            anchors {
-                top: true
-                left: true
-                right: true
-            }
-
-            implicitHeight: 45
-
-            Mpris {
-                anchors.left: parent.left
-            }
-
-            WidgetsCenter {
-                barWindow: window
-                anchors.centerIn: parent
-            }
-
-            WidgetsRight {
-                barWindow: window
-                anchors.right: parent.right
-            }
-        }
+    WidgetsCenter {
+        anchors.horizontalCenter: parent.horizontalCenter
+        barWindow: root.window
+    }
+    WidgetsRight {
+        anchors.right: parent.right
+        barWindow: root.window
     }
 }
