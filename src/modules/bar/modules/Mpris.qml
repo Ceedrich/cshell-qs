@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import Quickshell
+import Quickshell.Widgets
 
 import qs.widgets
 import qs.services
@@ -12,17 +13,34 @@ BarPill {
     enabled: visible
     RowLayout {
         id: rootItem
+        ClippingRectangle {
+            Layout.preferredWidth: 20
+            Layout.preferredHeight: 20
+            radius: 6
+            color: "transparent"
+
+            CText {
+                anchors.centerIn: parent
+                text: MprisService.playerIcon
+            }
+            Image {
+                anchors.centerIn: parent
+                width: 20
+                height: 20
+                source: MprisService.trackArtUrl
+            }
+        }
+
         CBarItem {
             id: textRoot
 
             Layout.maximumWidth: Config.maxMprisWidth
-            readonly property string icon: MprisService.playerIcon
 
             text: textRoot.formatText()
             textColor: Colors.overlay1
 
             function formatText(): string {
-                return `${icon} ${MprisService.title} - ${MprisService.artist}`;
+                return `${MprisService.title} - ${MprisService.artist}`;
             }
 
             onClicked: playerPopup.visible = !playerPopup.visible
