@@ -1,7 +1,6 @@
 import Quickshell
 import Quickshell.Wayland
 import QtQuick
-import QtQuick.Layouts
 
 import qs.config
 import qs.modules.bar.modules
@@ -37,34 +36,18 @@ Scope {
 
             implicitHeight: 45
 
-            Mpris {}
+            Mpris {
+                anchors.left: parent.left
+            }
 
-            Center {
+            WidgetsCenter {
                 barWindow: window
                 anchors.centerIn: parent
             }
 
-            RowLayout {
+            WidgetsRight {
+                barWindow: window
                 anchors.right: parent.right
-                BarPill {
-                    RowLayout {
-                        spacing: Config.spacing
-                        IdleInhibitor {
-                            barWindow: window
-                        }
-                        Tray {
-                            barWindow: window
-                        }
-                    }
-                }
-
-                BarPill {
-                    RowLayout {
-                        ControlCenterToggle {
-                            barWindow: window
-                        }
-                    }
-                }
             }
         }
     }

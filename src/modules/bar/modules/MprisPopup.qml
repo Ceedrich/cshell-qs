@@ -70,35 +70,20 @@ GridLayout {
         Layout.alignment: Qt.AlignHCenter
         spacing: Config.spacing
 
-        CText {
+        CButton {
             text: "󰒮"
-            font.pixelSize: Config.fontSize * 1.25
 
-            MouseArea {
-                cursorShape: Qt.PointingHandCursor
-                anchors.fill: parent
-                onClicked: () => MprisService.previous()
-            }
+            onClicked: MprisService.previous()
         }
 
-        CText {
+        CButton {
             text: MprisService.isPlaying ? "󰏤" : "󰐊"
-            font.pixelSize: Config.fontSize * 1.25
-            MouseArea {
-                cursorShape: Qt.PointingHandCursor
-                anchors.fill: parent
-                onClicked: () => MprisService.togglePlaying()
-            }
+            onClicked: MprisService.togglePlaying()
         }
 
-        CText {
+        CButton {
             text: "󰒭"
-            font.pixelSize: Config.fontSize * 1.25
-            MouseArea {
-                cursorShape: Qt.PointingHandCursor
-                anchors.fill: parent
-                onClicked: () => MprisService.next()
-            }
+            onClicked: MprisService.next()
         }
     }
 

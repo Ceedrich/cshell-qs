@@ -2,7 +2,6 @@ import QtQuick
 
 import qs.utils
 import qs.widgets
-import qs.config
 import qs.services
 
 CBarItem {
@@ -12,13 +11,5 @@ CBarItem {
 
     underline: true
 
-    MouseArea {
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
-        onWheel: wheel => {
-            const delta = -wheel.angleDelta.y * Config.scrollFactor;
-            const clamp = (low, high, value) => Math.min(Math.max(value, low), high);
-            BrightnessService.percentage = clamp(0, 100, BrightnessService.percentage + delta);
-        }
-    }
+    onScrollY: delta => BrightnessService.percentage = Utils.clamp(0, 100, BrightnessService.percentage + delta)
 }

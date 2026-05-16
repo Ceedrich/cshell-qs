@@ -3,18 +3,13 @@ import Quickshell.Io
 
 import qs.widgets
 
-CText {
+CBarItem {
     id: root
     required property QtObject barWindow
 
     text: "󰍜"
+    onClicked: toggle_swaync.running = true
     // onClicked: () => root.controlPanelWindow.visible = !root.controlPanelWindow.visible
-    MouseArea {
-      anchors.fill: parent
-
-      cursorShape: Qt.PointingHandCursor
-      onClicked: () => toggle_swaync.running = true
-    }
 
     IpcHandler {
         target: "control-center"

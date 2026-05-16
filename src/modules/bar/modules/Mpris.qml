@@ -12,68 +12,21 @@ BarPill {
     enabled: visible
     RowLayout {
         id: rootItem
-        CText {
+        CBarItem {
             id: textRoot
 
-            Layout.preferredWidth: Config.maxMprisWidth
+            Layout.maximumWidth: Config.maxMprisWidth
             readonly property string icon: MprisService.playerIcon
 
             text: textRoot.formatText()
-            color: Colors.overlay1
+            textColor: Colors.overlay1
 
             function formatText(): string {
                 return `${icon} ${MprisService.title} - ${MprisService.artist}`;
             }
 
-            HoverHandler {
-                cursorShape: hovered && Qt.CursorShape.PointingHandCursor
-            }
-
-            TapHandler {
-                acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-                onTapped: (eventPoint, button) => _onClicked(button)
-
-                function _onClicked(button): void {
-                    if (button === Qt.RightButton) {
-                        MprisService.togglePlaying();
-                        return;
-                    }
-                    if (button === Qt.LeftButton) {
-                        playerPopup.visible = !playerPopup.visible;
-                        return;
-                    }
-                }
-            }
-
-            WheelHandler {
-                property bool handled: false
-                acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-                orientation: Qt.Horizontal
-
-                onActiveChanged: () => {
-                    if (!active) {
-                        handled = false;
-                    }
-                }
-                onWheel: evt => _onWheel(evt)
-
-                function _onWheel(evt: WheelEvent): void {
-                    if (handled) {
-                        return;
-                    }
-                    const delta = evt.angleDelta.x;
-                    if (delta < 0) {
-                        MprisService.previous();
-                    }
-
-                    if (delta > 0) {
-                        MprisService.next();
-                    }
-
-                    handled = true;
-                }
-            }
+            onClicked: playerPopup.visible = !playerPopup.visible
+            onRightClicked: MprisService.togglePlaying()
         }
 
         BarPopup {

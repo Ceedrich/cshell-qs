@@ -4,18 +4,13 @@ import qs.services
 import qs.config
 import qs.widgets
 
-CText {
+CBarItem {
     id: root
     required property QtObject barWindow
 
     text: TimeService.time
-    color: Colors.overlay1
-
-    MouseArea {
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
-        onClicked: () => popup.visible = !popup.visible
-    }
+    textColor: Colors.overlay1
+    onClicked: popup.visible = !popup.visible
 
     BarPopup {
         id: popup

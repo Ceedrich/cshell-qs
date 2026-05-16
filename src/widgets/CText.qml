@@ -15,10 +15,16 @@ Text {
     elide: Qt.ElideRight
 
     Rectangle {
+        id: spacer
+        anchors.top: parent.baseline
+        height: 8
+    }
+
+    Rectangle {
         visible: root.underline
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.bottom: spacer.bottom
 
         height: 1
         color: root.color

@@ -21,7 +21,7 @@ CBarItem {
     text: perc + "% " + icon
     underline: true
 
-    color: {
+    textColor: {
         if (!UPower.onBattery) {
             return Colors.green;
         }
@@ -31,6 +31,5 @@ CBarItem {
         if (perc < 30) {
             return Colors.yellow;
         }
-        return defaultColor;
     }
 }

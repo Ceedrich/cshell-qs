@@ -4,7 +4,7 @@ import QtQuick
 import qs.config
 import qs.widgets
 
-CText {
+CBarItem {
     id: root
     required property QtObject barWindow
 
@@ -12,19 +12,12 @@ CText {
 
     text: inhibiting ? "󰈈" : "󰈉"
 
-    defaultColor: Colors.blue
-
-    color: inhibiting ? defaultColor : Colors.overlay1
+    textColor: inhibiting ? Colors.blue : Colors.overlay1
 
     WL.IdleInhibitor {
         enabled: root.inhibiting
         window: root.barWindow
     }
 
-    MouseArea {
-        anchors.fill: parent
-
-        cursorShape: Qt.PointingHandCursor
-        onClicked: () => root.inhibiting = !root.inhibiting
-    }
+    onClicked: root.inhibiting = !root.inhibiting
 }

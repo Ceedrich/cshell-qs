@@ -2,13 +2,14 @@ import QtQuick.Layouts
 import QtQuick
 
 import qs.config
+import qs.modules.bar.modules
 
 BarPill {
     id: root
     required property QtObject barWindow
 
     RowLayout {
-        spacing: Config.spacing
+        spacing: Config.spacing / 2
         Clock {
             barWindow: root.barWindow
         }
