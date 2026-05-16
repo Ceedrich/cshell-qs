@@ -12,17 +12,9 @@ ColumnLayout {
     spacing: 0
 
     RowLayout {
-        CText {
-            bottomPadding: 0
-            topPadding: 0
+        CButton {
             text: "󰁍"
-
-            MouseArea {
-                anchors.fill: parent
-
-                cursorShape: Qt.PointingHandCursor
-                onClicked: () => grid.prevMonth()
-            }
+            onClicked: grid.prevMonth()
         }
 
         CText {
@@ -40,15 +32,9 @@ ColumnLayout {
             }
         }
 
-        CText {
-            bottomPadding: 0
-            topPadding: 0
+        CButton {
             text: "󰁔"
-            MouseArea {
-                cursorShape: Qt.PointingHandCursor
-                anchors.fill: parent
-                onClicked: grid.nextMonth()
-            }
+            onClicked: grid.nextMonth()
         }
     }
 

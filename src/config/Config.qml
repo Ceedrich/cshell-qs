@@ -18,5 +18,5 @@ Singleton {
             radius: spacing
         })
 
-    readonly property int barHeight: 35
+    readonly property int barHeight: 45
 }

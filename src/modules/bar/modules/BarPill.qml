@@ -4,7 +4,7 @@ import QtQuick
 import qs.config
 
 WrapperRectangle {
-    implicitHeight: 45
+    implicitHeight: Config.barHeight
 
     color: Colors.base
     leftMargin: 16
