@@ -31,5 +31,6 @@ CBarItem {
         if (perc < 30) {
             return Colors.yellow;
         }
+        return defaultColor;
     }
 }
