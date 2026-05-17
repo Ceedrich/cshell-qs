@@ -11,7 +11,7 @@ Singleton {
     readonly property int fontSize: 14
 
     readonly property int maxMprisWidth: 400
-    readonly property int mprisPopupWidth: 500
+    readonly property int mprisPopupWidth: 400
 
     readonly property var border: ({
             width: 1,

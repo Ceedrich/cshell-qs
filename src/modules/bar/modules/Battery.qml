@@ -18,6 +18,8 @@ CBarItem {
         }
     }
 
+    mouseareaEnabled: false
+
     text: perc + "% " + icon
     underline: true
 

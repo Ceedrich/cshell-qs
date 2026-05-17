@@ -9,7 +9,7 @@ BarPill {
     required property QtObject barWindow
 
     RowLayout {
-        spacing: Config.spacing / 2
+        spacing: Config.spacing
         Clock {
             barWindow: root.barWindow
         }

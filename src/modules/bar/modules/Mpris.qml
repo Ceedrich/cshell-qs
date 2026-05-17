@@ -13,6 +13,7 @@ BarPill {
     enabled: visible
     RowLayout {
         id: rootItem
+        spacing: Config.spacing
         ClippingRectangle {
             Layout.preferredWidth: 20
             Layout.preferredHeight: 20

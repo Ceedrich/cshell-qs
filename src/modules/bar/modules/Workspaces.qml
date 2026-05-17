@@ -13,15 +13,18 @@ WrapperMouseArea {
         Repeater {
             model: Hyprland.workspaces
 
-            CText {
+            CButton {
                 id: ws
                 required property HyprlandWorkspace modelData
                 property var isActive: WorkspacesService.isActive(modelData)
-                property bool hovered: false
 
-                padding: Config.spacing / 2
+                scrollGestureEnabled: false
+
+                leftPadding: Config.spacing / 2
+                rightPadding: Config.spacing / 2
+
                 text: modelData.name
-                color: isActive ? Colors.accent : (modelData.urgent ? Colors.red : Colors.overlay1)
+                textColor: isActive ? Colors.accent : (modelData.urgent ? Colors.red : Colors.overlay1)
 
                 underline: isActive
 
@@ -39,7 +42,7 @@ WrapperMouseArea {
     property real delta: 0
 
     function _onWheel(evt: WheelEvent): void {
-        delta += evt.angleDelta.y * Config.scrollFactor * 0.1;
+        delta += -evt.angleDelta.y * Config.scrollFactor * 0.1;
         if (delta <= -1) {
             WorkspacesService.prev();
             delta += 1;

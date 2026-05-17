@@ -18,10 +18,11 @@ ColumnLayout {
         }
 
         CText {
-            bottomPadding: 0
-            topPadding: 0
-            horizontalAlignment: Text.AlignHCenter
             Layout.fillWidth: true
+        }
+
+        CButton {
+            horizontalAlignment: Text.AlignHCenter
             text: grid.title
             font.bold: true
 
@@ -30,6 +31,10 @@ ColumnLayout {
                 cursorShape: Qt.PointingHandCursor
                 onClicked: grid.selectToday()
             }
+        }
+
+        CText {
+            Layout.fillWidth: true
         }
 
         CButton {
@@ -57,13 +62,14 @@ ColumnLayout {
         id: grid
         property date selectedDate: new Date()
 
-        delegate: CText {
+        delegate: CButton {
             required property var model
+            eventsEnabled: false
 
             property bool isSelected: (model.day === grid.selectedDate.getDate() && model.month === grid.selectedDate.getMonth() && model.year === grid.selectedDate.getFullYear())
 
             // color: model.month === grid.month ? model.today ? Colors.accent : defaultColor : Colors.overlay1
-            color: {
+            textColor: {
                 if (model.month === grid.month) {
                     if (model.today) {
                         return Colors.accent;
@@ -84,7 +90,11 @@ ColumnLayout {
 
         Layout.fillWidth: true
 
-        onClicked: date => selectedDate = date
+        onClicked: date => {
+            if (date.getMonth() === month) {
+                selectedDate = date;
+            }
+        }
 
         function prevMonth() {
             if (month == Calendar.January) {

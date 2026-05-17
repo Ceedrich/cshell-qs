@@ -54,20 +54,24 @@ RowLayout {
             id: controls
             Layout.row: 1
             Layout.column: 0
+            Layout.alignment: Qt.AlignHCenter
             spacing: Config.spacing
 
             CButton {
                 text: "󰒮"
+                font.pixelSize: 1.25 * Config.fontSize
                 onClicked: MprisService.previous()
             }
 
             CButton {
                 text: MprisService.isPlaying ? "󰏤" : "󰐊"
+                font.pixelSize: 1.25 * Config.fontSize
                 onClicked: MprisService.togglePlaying()
             }
 
             CButton {
                 text: "󰒭"
+                font.pixelSize: 1.25 * Config.fontSize
                 onClicked: MprisService.next()
             }
         }
