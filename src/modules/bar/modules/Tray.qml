@@ -1,6 +1,5 @@
 import Quickshell.Services.SystemTray
 import Quickshell.Widgets
-import Quickshell
 import QtQuick
 
 import qs.modules.bar
@@ -21,7 +20,7 @@ Repeater {
             acceptedButtons: Qt.RightButton | Qt.LeftButton
 
             onClicked: evt => {
-                if (!model.modelData.onlyMenu && evt.button & Qt.LeftButton) {
+                if (!model.modelData.onlyMenu && evt.button === Qt.LeftButton) {
                     model.primaryAction();
                     return;
                 }

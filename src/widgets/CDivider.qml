@@ -10,8 +10,8 @@ Rectangle {
 
     required property int orientation
 
-    width: (orientation === CDivider.Orientation.Vertical) ? 4 : parent.width
-    height: (orientation === CDivider.Orientation.Vertical) ? parent.height : 4
+    width: (orientation === CDivider.Orientation.Vertical) ? 2 : parent.width
+    height: (orientation === CDivider.Orientation.Vertical) ? parent.height : 2
 
     color: Colors.overlay1
 }

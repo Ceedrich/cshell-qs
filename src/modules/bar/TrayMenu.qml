@@ -1,3 +1,5 @@
+// heavily inspired by <https://github.com/noctalia-dev/noctalia-shell/blob/main/Modules/Bar/Extras/TrayMenu.qml> licenced MIT
+
 pragma ComponentBehavior: Bound
 
 import Quickshell
@@ -10,8 +12,13 @@ import qs.widgets
 
 PopupWindow {
     id: root
-    required property var trayItem
-    property var anchorItem
+
+    property var trayItem
+    property var anchorItem: null
+
+    property int anchorX
+    property int anchorY
+    property bool isSubMenu: false
 
     readonly property QsMenuHandle menu: trayItem ? trayItem.menu : null
     readonly property int menuWidth: 280
@@ -19,21 +26,39 @@ PopupWindow {
     implicitWidth: menuWidth
     implicitHeight: rect.implicitHeight
     visible: false
+
     anchor.item: anchorItem
+    anchor.rect.x: anchorX
+    anchor.rect.y: anchorY
 
     grabFocus: true
 
     color: "transparent"
 
-    function showAt(anchorItem: Item) {
-        if (anchorItem) {
-            this.anchorItem = anchorItem;
+    function showAt(anchorItem: Item, x: real, y: real) {
+        if (!anchorItem) {
+            console.warn("could not create context menu");
+            return;
         }
+
+        this.anchorItem = anchorItem;
+        anchorX = x;
+        anchorY = y;
+
         visible = true;
     }
 
-    function close() {
+    function hideMenu() {
         visible = false;
+
+        // close submenus recursively
+        for (const child of menuColumn.children) {
+            if (child?.subMenu) {
+                child.subMenu.hideMenu();
+                child.subMenu.destroy();
+                child.subMenu = null;
+            }
+        }
     }
 
     QsMenuOpener {
@@ -63,11 +88,12 @@ PopupWindow {
                 delegate: Rectangle {
                     id: entry
                     required property QsMenuEntry modelData
+                    property var subMenu: null
 
                     readonly property bool isSeparator: modelData?.isSeparator || false
 
                     Layout.fillWidth: true
-                    Layout.preferredHeight: isSeparator ? 8 : text.implicitHeight
+                    Layout.preferredHeight: isSeparator ? 8 : content.implicitHeight
 
                     color: "transparent"
 
@@ -77,21 +103,66 @@ PopupWindow {
                         anchors.centerIn: entry
                     }
 
-                    CButton {
-                        id: text
-                        visible: !entry.isSeparator
+                    RowLayout {
+                        id: content
+                        width: parent.width
 
-                        width: entry.width
+                        IconImage {
+                            implicitSize: 16
+                            source: entry.modelData?.icon || ""
+                        }
 
-                        text: (entry.modelData?.hasChildren ? ">" : " ") + (entry.modelData?.text || "")
-                        disabled: !entry.modelData?.enabled
+                        CButton {
+                            id: text
+                            visible: !entry.isSeparator
 
-                        onClicked: {
-                            if (disabled) {
-                                return;
+                            Layout.fillWidth: true
+
+                            text: (entry.modelData?.text || "")
+                            disabled: !entry.modelData?.enabled
+
+                            onClicked: {
+                                if (entry.modelData?.hasChildren) {
+                                    entry.openSubMenu();
+                                } else {
+                                    root.hideMenu();
+                                    entry.modelData?.triggered();
+                                }
                             }
-                            root.close();
-                            entry.modelData?.triggered();
+                        }
+
+                        CText {
+                            text: entry.modelData?.hasChildren ? ">" : ""
+                        }
+                    }
+
+                    function openSubMenu() {
+                        if (subMenu) {
+                            // Close submenu if it exists
+                            subMenu.hideMenu();
+                            subMenu.destroy();
+                            subMenu = null;
+                        }
+
+                        // close other submenus
+                        for (const child of menuColumn.children) {
+                            if (child !== entry && child.subMenu) {
+                                child.subMenu.hideMenu();
+                                child.subMenu.destroy();
+                                child.subMenu = null;
+                            }
+                        }
+
+                        entry.subMenu = Qt.createComponent("TrayMenu.qml").createObject(root, {
+                            menu: modelData,
+                            isSubMenu: true
+                        });
+
+                        if (entry.subMenu) {
+                            entry.subMenu.anchorItem = entry;
+                            entry.subMenu.anchorY = 0;
+                            entry.subMenu.anchorX = -root.menuWidth;
+                            entry.subMenu.visible = true;
                         }
                     }
                 }
@@ -100,6 +171,10 @@ PopupWindow {
     }
 
     function removeDuplicateSeparators(arr) {
-        return arr.reduce((list, next) => (list.slice(-1)[0]?.isSeparator && next?.isSeparator) ? list : [...list, next], []);
+        arr = arr.reduce((list, next) => (list.slice(-1)[0]?.isSeparator && next?.isSeparator) ? list : [...list, next], []);
+        if (arr.slice(-1)[0]?.isSeparator) {
+            arr.pop();
+        }
+        return arr;
     }
 }
