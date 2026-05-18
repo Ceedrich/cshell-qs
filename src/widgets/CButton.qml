@@ -5,14 +5,15 @@ import qs.config
 
 Item {
     id: root
+    property bool disabled: false
+
     property alias text: content.text
 
     property alias mouseareaEnabled: mousearea.enabled
     property alias hoverEnabled: mousearea.hoverEnabled
     property bool scrollingEnabled: true
+    property bool clickingEnabled: true
     property alias propagateComposedEvents: mousearea.propagateComposedEvents
-
-    property bool eventsEnabled: true
 
     // Hoverarea/Background
     property real backgroundOffset: 4
@@ -29,7 +30,7 @@ Item {
     property alias verticalAlignment: content.verticalAlignment
     property alias horizontalAlignment: content.horizontalAlignment
 
-    property alias textColor: content.color
+    property color textColor: defaultColor
     property alias defaultColor: content.defaultColor
 
     property alias underline: content.underline
@@ -94,27 +95,24 @@ Item {
         leftPadding: 8
         rightPadding: 8
         text: ""
+        color: root.disabled ? Colors.overlay1 : root.textColor
+        width: parent.width
     }
 
     MouseArea {
         id: mousearea
         anchors.fill: parent
+        enabled: !root.disabled
         visible: enabled
 
         cursorShape: Qt.PointingHandCursor
-        acceptedButtons: Qt.RightButton | Qt.LeftButton | Qt.MiddleButton
+        acceptedButtons: root.clickingEnabled ? Qt.RightButton | Qt.LeftButton | Qt.MiddleButton : 0
 
         hoverEnabled: true
         scrollGestureEnabled: true
 
         onEntered: root.hovered = true
         onExited: root.hovered = false
-
-        onPressed: evt => {
-            if (!root.eventsEnabled) {
-                evt.accepted = false;
-            }
-        }
 
         onClicked: evt => _onClicked(evt)
         onWheel: evt => _onWheel(evt)

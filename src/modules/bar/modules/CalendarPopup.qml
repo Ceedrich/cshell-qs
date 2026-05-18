@@ -56,6 +56,7 @@ ColumnLayout {
 
     MonthGrid {
         id: grid
+        spacing: Config.spacing
         property date selectedDate: new Date()
 
         delegate: CButton {
