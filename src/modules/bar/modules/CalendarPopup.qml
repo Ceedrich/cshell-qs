@@ -63,20 +63,22 @@ ColumnLayout {
 
             property bool isSelected: (model.day === grid.selectedDate.getDate() && model.month === grid.selectedDate.getMonth() && model.year === grid.selectedDate.getFullYear())
 
-            // color: model.month === grid.month ? model.today ? Colors.accent : defaultColor : Colors.overlay1
+            mouseareaEnabled: model.month === grid.month
+
             textColor: {
                 if (model.month === grid.month) {
-                    if (model.today) {
-                        return Colors.accent;
-                    }
                     if (isSelected) {
+                        return Colors.base;
+                    }
+                    if (model.today) {
                         return Colors.accent;
                     }
                     return defaultColor;
                 }
                 return Colors.overlay1;
             }
-            font.bold: isSelected
+            backgroundColor: isSelected ? Colors.accent : "transparent"
+            font.bold: isSelected || model.today
 
             onClicked: {
                 if (model.date.getMonth() === grid.month) {
