@@ -28,7 +28,10 @@ RowLayout {
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
-                onClicked: MprisService.raise()
+                onClicked: {
+                  root.popup.visible = false
+                  MprisService.raise()
+                }
             }
         }
 

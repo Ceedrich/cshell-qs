@@ -26,11 +26,7 @@ ColumnLayout {
             text: grid.title
             font.bold: true
 
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: grid.selectToday()
-            }
+            onClicked: grid.selectToday()
         }
 
         CText {
@@ -64,7 +60,6 @@ ColumnLayout {
 
         delegate: CButton {
             required property var model
-            eventsEnabled: false
 
             property bool isSelected: (model.day === grid.selectedDate.getDate() && model.month === grid.selectedDate.getMonth() && model.year === grid.selectedDate.getFullYear())
 
@@ -83,18 +78,18 @@ ColumnLayout {
             }
             font.bold: isSelected
 
+            onClicked: {
+                if (model.date.getMonth() === grid.month) {
+                    grid.selectedDate = model.date;
+                }
+            }
+
             text: model.day
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
 
         Layout.fillWidth: true
-
-        onClicked: date => {
-            if (date.getMonth() === month) {
-                selectedDate = date;
-            }
-        }
 
         function prevMonth() {
             if (month == Calendar.January) {
