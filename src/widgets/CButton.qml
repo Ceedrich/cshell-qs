@@ -44,7 +44,7 @@ Item {
         id: background
         anchors.fill: parent
 
-        color: Colors.overlay1
+        color: Colors.overlay2
 
         radius: Config.border.radius
 

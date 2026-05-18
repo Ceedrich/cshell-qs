@@ -24,6 +24,12 @@ RowLayout {
             Layout.column: 0
 
             source: MprisService.trackArtUrl
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: MprisService.raise()
+            }
         }
 
         ColumnLayout {
