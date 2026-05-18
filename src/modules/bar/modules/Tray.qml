@@ -3,6 +3,8 @@ import Quickshell.Widgets
 import Quickshell
 import QtQuick
 
+import qs.modules.bar
+
 Repeater {
     id: root
     required property QtObject barWindow
@@ -28,28 +30,34 @@ Repeater {
                 }
             }
         }
-        PopupWindow {
+        TrayMenu {
             id: popup
-            anchor.window: root.barWindow
-
-            implicitWidth: 1
-            implicitHeight: 1
-
-            color: "transparent"
-
-            grabFocus: true
+            anchorItem: model
+            trayItem: model.modelData
         }
+        // PopupWindow {
+        //     id: popup
+        //     anchor.window: root.barWindow
+        //
+        //     implicitWidth: 1
+        //     implicitHeight: 1
+        //
+        //     color: "transparent"
+        //
+        //     grabFocus: true
+        // }
 
         function primaryAction() {
             modelData.activate();
         }
 
         function openMenu(evt) {
-            const p = parent.mapToItem(popup.contentItem, evt.x, evt.y);
-
-            popup.visible = true;
-
-            modelData.display(popup, p.x, p.y);
+            popup.showAt(model);
+            // const p = parent.mapToItem(popup.contentItem, evt.x, evt.y);
+            //
+            // popup.visible = true;
+            //
+            // modelData.display(popup, p.x, p.y);
         }
 
         // from <https://github.com/AvengeMedia/DankMaterialShell/blob/7c991bc4e3ca3a559b31ae76572eae96c25d2b57/quickshell/Modules/DankBar/Widgets/SystemTrayBar.qml#L47-L70>
