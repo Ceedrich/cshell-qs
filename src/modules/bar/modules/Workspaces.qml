@@ -18,21 +18,18 @@ WrapperMouseArea {
                 required property HyprlandWorkspace modelData
                 property var isActive: WorkspacesService.isActive(modelData)
 
-                scrollGestureEnabled: false
+                scrollingEnabled: false
 
                 leftPadding: Config.spacing / 2
                 rightPadding: Config.spacing / 2
 
                 text: modelData.name
-                textColor: isActive ? Colors.accent : (modelData.urgent ? Colors.red : Colors.overlay1)
+                textColor: isActive ? Colors.accent : (modelData.urgent ? Colors.base : Colors.overlay1)
+                backgroundColor: modelData.urgent ? Colors.red : "transparent"
 
                 underline: isActive
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: () => WorkspacesService.focus(ws.modelData)
-                    cursorShape: Qt.PointingHandCursor
-                }
+                onClicked: WorkspacesService.focus(ws.modelData)
             }
         }
     }
