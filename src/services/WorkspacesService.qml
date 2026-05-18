@@ -14,7 +14,11 @@ Singleton {
         if (ws == null) {
             return;
         }
-        Hyprland.dispatch(`workspace ${ws.id}`);
+        if (Hyprland.usingLua) {
+            Hyprland.dispatch(`hl.dsp.focus({workspace = "${ws.id}"})`);
+        } else {
+            Hyprland.dispatch(`workspace ${ws.id}`);
+        }
     }
 
     function prev() {
