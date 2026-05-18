@@ -1,3 +1,4 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 
 import qs.config
@@ -8,10 +9,16 @@ Item {
 
     property alias mouseareaEnabled: mousearea.enabled
     property alias hoverEnabled: mousearea.hoverEnabled
+    property bool scrollingEnabled: true
     property alias propagateComposedEvents: mousearea.propagateComposedEvents
-    property alias scrollGestureEnabled: mousearea.scrollGestureEnabled
 
     property bool eventsEnabled: true
+
+    // Hoverarea/Background
+    property real backgroundOffset: 4
+    property real backgroundOffsetX: backgroundOffset
+    property real backgroundOffsetY: backgroundOffset
+    property alias backgroundColor: background.color
 
     // Text aliases
     property alias topPadding: content.topPadding
@@ -24,7 +31,6 @@ Item {
 
     property alias textColor: content.color
     property alias defaultColor: content.defaultColor
-    property alias backgroundColor: background.color
 
     property alias underline: content.underline
     property alias font: content.font
@@ -40,14 +46,30 @@ Item {
     implicitWidth: content.implicitWidth
     implicitHeight: content.implicitHeight
 
-    Rectangle {
-        id: background
-        anchors.fill: parent
-
-        color: Colors.overlay2
+    component BgRect: Rectangle {
+        anchors.top: root.top
+        anchors.left: root.left
+        width: root.width + 2 * root.backgroundOffsetX
+        height: root.height + 2 * root.backgroundOffsetY
 
         radius: Config.border.radius
 
+        transform: [
+            Translate {
+                x: -root.backgroundOffsetX
+                y: -root.backgroundOffsetY
+            }
+        ]
+    }
+
+    BgRect {
+        id: background
+        color: "transparent"
+    }
+
+    BgRect {
+        id: hoverarea
+        color: Colors.overlay2
         opacity: mousearea.pressed ? 0.3 : root.hovered ? 0.2 : 0.0
     }
 
@@ -63,6 +85,7 @@ Item {
     MouseArea {
         id: mousearea
         anchors.fill: parent
+        visible: enabled
 
         cursorShape: Qt.PointingHandCursor
         acceptedButtons: Qt.RightButton | Qt.LeftButton | Qt.MiddleButton
@@ -95,6 +118,10 @@ Item {
         }
 
         function _onWheel(evt: WheelEvent) {
+            if (!root.scrollingEnabled) {
+                evt.accepted = false;
+                return;
+            }
             const deltaX = -evt.angleDelta.x * Config.scrollFactor;
             const deltaY = -evt.angleDelta.y * Config.scrollFactor;
 
