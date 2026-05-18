@@ -19,4 +19,12 @@ Singleton {
         })
 
     readonly property int barHeight: 45
+
+    // animations
+    readonly property var animationDuration: ({
+            quick: 40
+        })
+    readonly property var animationEasingTypes: ({
+            quick: Easing.Linear
+        })
 }
