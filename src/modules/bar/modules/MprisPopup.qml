@@ -91,6 +91,8 @@ RowLayout {
             Layout.column: 1
             visible: MprisService.progressAvailable
 
+            property bool showRemaining: false
+
             CSlider {
                 id: slider
                 Layout.fillWidth: true
@@ -105,8 +107,21 @@ RowLayout {
                 }
             }
 
-            CText {
-                text: root.formatMinutes(MprisService.player?.position || 0)
+            CTextButton {
+                topPadding: 0
+                bottomPadding: 0
+                leftPadding: 0
+                rightPadding: 0
+                text: {
+                    if (positionDisplay.showRemaining) {
+                        const remaining = root.formatMinutes(MprisService.player?.length - (MprisService.player?.position || 0));
+                        return `-${remaining} `;
+                    } else {
+                        const text = root.formatMinutes(MprisService.player?.position || 0);
+                        return ` ${text} `;
+                    }
+                }
+                onClicked: positionDisplay.showRemaining = !positionDisplay.showRemaining
             }
         }
 
