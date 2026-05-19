@@ -105,16 +105,42 @@ PopupWindow {
 
                     RowLayout {
                         id: content
+                        visible: !entry?.isSeparator
                         width: parent.width
 
-                        IconImage {
-                            implicitSize: 16
-                            source: entry.modelData?.icon || ""
+                        Item {
+                            id: iconContainer
+                            implicitWidth: 16
+                            implicitHeight: 16
+
+                            readonly property bool isCheckbox: entry.modelData?.buttonType === QsMenuButtonType.CheckBox
+                            readonly property bool isRadioButton: entry.modelData?.buttonType === QsMenuButtonType.RadioButton
+                            readonly property bool isIcon: entry.modelData?.buttonType === QsMenuButtonType.None && entry.modelData?.icon
+
+                            CRadioButton {
+                                visible: iconContainer.isRadioButton
+                                anchors.fill: parent
+
+                                checked: entry.modelData?.checkState || false
+                            }
+
+                            CCheckbox {
+                                visible: iconContainer.isCheckbox
+                                anchors.fill: parent
+
+                                checkState: entry.modelData?.checkState || 0
+                            }
+
+                            IconImage {
+                                visible: iconContainer.isIcon
+                                anchors.fill: parent
+
+                                source: entry.modelData?.icon || ""
+                            }
                         }
 
                         CButton {
                             id: text
-                            visible: !entry.isSeparator
 
                             Layout.fillWidth: true
 
