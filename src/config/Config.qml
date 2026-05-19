@@ -13,6 +13,8 @@ Singleton {
     readonly property int maxMprisWidth: 400
     readonly property int mprisPopupWidth: 400
 
+    readonly property int longHoverTime: 500
+
     readonly property var border: ({
             width: 1,
             radius: spacing

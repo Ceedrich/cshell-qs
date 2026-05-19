@@ -39,6 +39,7 @@ Item {
     property bool hovered: false
 
     signal clicked
+    signal longHover
     signal rightClicked
     signal middleClicked
     signal scrollX(delta: real)
@@ -99,6 +100,12 @@ Item {
         width: parent.width
     }
 
+    Timer {
+        id: longHoverTimer
+        interval: Config.longHoverTime
+        onTriggered: root.longHover()
+    }
+
     MouseArea {
         id: mousearea
         anchors.fill: parent
@@ -111,8 +118,14 @@ Item {
         hoverEnabled: true
         scrollGestureEnabled: true
 
-        onEntered: root.hovered = true
-        onExited: root.hovered = false
+        onEntered: {
+            root.hovered = true;
+            longHoverTimer.running = true;
+        }
+        onExited: {
+            root.hovered = false;
+            longHoverTimer.running = false;
+        }
 
         onClicked: evt => _onClicked(evt)
         onWheel: evt => _onWheel(evt)
