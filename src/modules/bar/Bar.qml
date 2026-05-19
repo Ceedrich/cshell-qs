@@ -1,4 +1,5 @@
 import QtQuick
+import Quickshell
 
 import qs.config
 import qs.modules.bar.modules
@@ -17,13 +18,31 @@ Rectangle {
 
     color: "transparent"
 
-    Mpris {}
+    readonly property Region regionMask: Region {
+        intersection: Intersection.Subtract
+
+        Region {
+            item: left
+        }
+        Region {
+            item: center
+        }
+        Region {
+            item: right
+        }
+    }
+
+    Mpris {
+        id: left
+    }
 
     WidgetsCenter {
+        id: center
         anchors.horizontalCenter: parent.horizontalCenter
         barWindow: root.window
     }
     WidgetsRight {
+        id: right
         anchors.right: parent.right
         barWindow: root.window
     }

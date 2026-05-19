@@ -17,14 +17,7 @@ PanelWindow {
         height: root.height
         intersection: Intersection.Xor
 
-        regions: [barRegion]
-
-        Region {
-            id: barRegion
-            item: bar
-
-            intersection: Intersection.Subtract
-        }
+        regions: [bar.regionMask]
     }
 
     color: "transparent"
