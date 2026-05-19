@@ -21,6 +21,18 @@ Singleton {
         }
     }
 
+    function moveWindowToWorkspace(ws: HyprlandWorkspace, windowAdress: string): void {
+        if (ws == null) {
+            return;
+        }
+        if (Hyprland.usingLua) {
+            // TODO: add lua implementation
+        } else {
+            const text = `movetoworkspacesilent ${ws.id}` + (windowAdress ? `,address:0x${windowAdress}` : "");
+            Hyprland.dispatch(text);
+        }
+    }
+
     function prev() {
         let idx = Hyprland.workspaces.indexOf(Hyprland.focusedWorkspace);
         idx = Utils.clamp(0, Hyprland.workspaces.values.length - 1, idx - 1);
