@@ -11,6 +11,10 @@ ColumnLayout {
     id: root
     spacing: 0
 
+    property alias year: grid.year
+    property alias month: grid.month
+    property alias selectedDate: grid.selectedDate
+
     RowLayout {
         CTextButton {
             text: "󰁍"

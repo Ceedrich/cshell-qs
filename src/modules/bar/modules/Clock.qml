@@ -16,6 +16,6 @@ CBarItem {
         id: popup
         barItem: root
 
-        CalendarPopup {}
+        CCalendar {}
     }
 }
