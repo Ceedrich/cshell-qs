@@ -61,6 +61,13 @@ PopupWindow {
         }
     }
 
+    // clean up when hidden
+    onVisibleChanged: {
+        if (!visible) {
+            hideMenu();
+        }
+    }
+
     QsMenuOpener {
         id: opener
         menu: root.menu
@@ -107,11 +114,12 @@ PopupWindow {
                         id: content
                         visible: !entry?.isSeparator
                         width: parent.width
+                        spacing: 8
 
                         Item {
                             id: iconContainer
-                            implicitWidth: 16
-                            implicitHeight: 16
+                            Layout.preferredWidth: 16
+                            Layout.preferredHeight: 16
 
                             readonly property bool isCheckbox: entry.modelData?.buttonType === QsMenuButtonType.CheckBox
                             readonly property bool isRadioButton: entry.modelData?.buttonType === QsMenuButtonType.RadioButton
@@ -144,8 +152,18 @@ PopupWindow {
 
                             Layout.fillWidth: true
 
+                            topPadding: 0
+                            bottomPadding: 0
+                            leftPadding: 0
+                            rightPadding: 0
                             text: (entry.modelData?.text || "")
                             disabled: !entry.modelData?.enabled
+
+                            onLongHover: {
+                                if (!entry.subMenu && entry.modelData?.hasChildren) {
+                                    entry.openSubMenu();
+                                }
+                            }
 
                             onClicked: {
                                 if (entry.modelData?.hasChildren) {
