@@ -110,73 +110,78 @@ PopupWindow {
                         anchors.centerIn: entry
                     }
 
-                    RowLayout {
+                    CButton {
                         id: content
                         visible: !entry?.isSeparator
                         width: parent.width
-                        spacing: 8
+                        disabled: !entry.modelData?.enabled
 
-                        Item {
-                            id: iconContainer
-                            Layout.preferredWidth: 16
-                            Layout.preferredHeight: 16
-
-                            readonly property bool isCheckbox: entry.modelData?.buttonType === QsMenuButtonType.CheckBox
-                            readonly property bool isRadioButton: entry.modelData?.buttonType === QsMenuButtonType.RadioButton
-                            readonly property bool isIcon: entry.modelData?.buttonType === QsMenuButtonType.None && entry.modelData?.icon
-
-                            CRadioButton {
-                                visible: iconContainer.isRadioButton
-                                anchors.fill: parent
-
-                                checked: entry.modelData?.checkState || false
-                            }
-
-                            CCheckbox {
-                                visible: iconContainer.isCheckbox
-                                anchors.fill: parent
-
-                                checkState: entry.modelData?.checkState || 0
-                            }
-
-                            IconImage {
-                                visible: iconContainer.isIcon
-                                anchors.fill: parent
-
-                                source: entry.modelData?.icon || ""
+                        onLongHover: {
+                            if (!entry.subMenu && entry.modelData?.hasChildren) {
+                                entry.openSubMenu();
                             }
                         }
 
-                        CButton {
-                            id: text
-
-                            Layout.fillWidth: true
-
-                            topPadding: 0
-                            bottomPadding: 0
-                            leftPadding: 0
-                            rightPadding: 0
-                            text: (entry.modelData?.text || "")
-                            disabled: !entry.modelData?.enabled
-
-                            onLongHover: {
-                                if (!entry.subMenu && entry.modelData?.hasChildren) {
-                                    entry.openSubMenu();
-                                }
-                            }
-
-                            onClicked: {
-                                if (entry.modelData?.hasChildren) {
-                                    entry.openSubMenu();
-                                } else {
-                                    root.hideMenu();
-                                    entry.modelData?.triggered();
-                                }
+                        onClicked: {
+                            if (entry.modelData?.hasChildren) {
+                                entry.openSubMenu();
+                            } else {
+                                root.hideMenu();
+                                entry.modelData?.triggered();
                             }
                         }
 
-                        CText {
-                            text: entry.modelData?.hasChildren ? ">" : ""
+                        content: RowLayout {
+                            spacing: 8
+
+                            Item {
+                                id: iconContainer
+                                Layout.preferredWidth: 16
+                                Layout.preferredHeight: 16
+
+                                readonly property bool isCheckbox: entry.modelData?.buttonType === QsMenuButtonType.CheckBox
+                                readonly property bool isRadioButton: entry.modelData?.buttonType === QsMenuButtonType.RadioButton
+                                readonly property bool isIcon: entry.modelData?.buttonType === QsMenuButtonType.None && entry.modelData?.icon
+
+                                CRadioButton {
+                                    visible: iconContainer.isRadioButton
+                                    anchors.fill: parent
+
+                                    checked: entry.modelData?.checkState || false
+                                }
+
+                                CCheckbox {
+                                    visible: iconContainer.isCheckbox
+                                    anchors.fill: parent
+
+                                    checkState: entry.modelData?.checkState || 0
+                                }
+
+                                IconImage {
+                                    visible: iconContainer.isIcon
+                                    anchors.fill: parent
+
+                                    source: entry.modelData?.icon || ""
+                                }
+                            }
+
+                            CText {
+                                id: text
+
+                                Layout.fillWidth: true
+
+                                color: content.disabled ? Colors.overlay1 : defaultColor
+
+                                topPadding: 0
+                                bottomPadding: 0
+                                leftPadding: 0
+                                rightPadding: 0
+                                text: (entry.modelData?.text || "")
+                            }
+
+                            CText {
+                                text: entry.modelData?.hasChildren ? ">" : ""
+                            }
                         }
                     }
 
