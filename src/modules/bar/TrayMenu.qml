@@ -5,6 +5,7 @@ pragma ComponentBehavior: Bound
 import Quickshell
 import Quickshell.Widgets
 import QtQuick
+import QtQuick.Shapes
 import QtQuick.Layouts
 
 import qs.config
@@ -179,8 +180,29 @@ PopupWindow {
                                 text: (entry.modelData?.text || "")
                             }
 
-                            CText {
-                                text: entry.modelData?.hasChildren ? ">" : ""
+                            Shape {
+                                id: shape
+                                visible: (entry.modelData?.hasChildren)
+                                implicitWidth: 8
+                                implicitHeight: 10
+                                ShapePath {
+                                    strokeWidth: 0
+                                    fillColor: Colors.text
+                                    startX: 0
+                                    startY: 0
+                                    PathLine {
+                                        x: shape.width
+                                        y: shape.height / 2
+                                    }
+                                    PathLine {
+                                        x: 0
+                                        y: shape.height
+                                    }
+                                    PathLine {
+                                        x: 0
+                                        y: 0
+                                    }
+                                }
                             }
                         }
                     }
