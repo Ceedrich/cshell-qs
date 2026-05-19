@@ -13,7 +13,7 @@ WrapperMouseArea {
         Repeater {
             model: Hyprland.workspaces
 
-            CButton {
+            CTextButton {
                 id: ws
                 required property HyprlandWorkspace modelData
                 property var isActive: WorkspacesService.isActive(modelData)

@@ -12,7 +12,7 @@ ColumnLayout {
     spacing: 0
 
     RowLayout {
-        CButton {
+        CTextButton {
             text: "󰁍"
             onClicked: grid.prevMonth()
         }
@@ -21,7 +21,7 @@ ColumnLayout {
             Layout.fillWidth: true
         }
 
-        CButton {
+        CTextButton {
             horizontalAlignment: Text.AlignHCenter
             text: grid.title
             font.bold: true
@@ -33,7 +33,7 @@ ColumnLayout {
             Layout.fillWidth: true
         }
 
-        CButton {
+        CTextButton {
             text: "󰁔"
             onClicked: grid.nextMonth()
         }
@@ -59,7 +59,7 @@ ColumnLayout {
         spacing: Config.spacing
         property date selectedDate: new Date()
 
-        delegate: CButton {
+        delegate: CTextButton {
             required property var model
 
             property bool isSelected: (model.day === grid.selectedDate.getDate() && model.month === grid.selectedDate.getMonth() && model.year === grid.selectedDate.getFullYear())

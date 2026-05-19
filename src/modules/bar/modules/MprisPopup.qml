@@ -29,8 +29,8 @@ RowLayout {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
-                  root.popup.visible = false
-                  MprisService.raise()
+                    root.popup.visible = false;
+                    MprisService.raise();
                 }
             }
         }
@@ -66,19 +66,19 @@ RowLayout {
             Layout.alignment: Qt.AlignHCenter
             spacing: Config.spacing
 
-            CButton {
+            CTextButton {
                 text: "󰒮"
                 font.pixelSize: 1.25 * Config.fontSize
                 onClicked: MprisService.previous()
             }
 
-            CButton {
+            CTextButton {
                 text: MprisService.isPlaying ? "󰏤" : "󰐊"
                 font.pixelSize: 1.25 * Config.fontSize
                 onClicked: MprisService.togglePlaying()
             }
 
-            CButton {
+            CTextButton {
                 text: "󰒭"
                 font.pixelSize: 1.25 * Config.fontSize
                 onClicked: MprisService.next()

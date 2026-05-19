@@ -1,6 +1,6 @@
 import QtQuick
 
-CButton {
+CTextButton {
     backgroundOffset: 4
     topPadding: 0
     bottomPadding: 0
