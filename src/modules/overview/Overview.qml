@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 
 import Quickshell.Hyprland
+import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
 
@@ -145,6 +146,19 @@ Item {
                     }
                 }
             }
+        }
+    }
+
+    IpcHandler {
+        target: "overview"
+        function open(): void {
+            root.overviewWindow.visible = true;
+        }
+        function close(): void {
+            root.overviewWindow.visible = false;
+        }
+        function toggle(): void {
+            root.overviewWindow.visible = !root.overviewWindow.visible;
         }
     }
 }
