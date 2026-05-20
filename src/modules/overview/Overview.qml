@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 
 import Quickshell.Hyprland
+import Quickshell.Widgets
 import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
@@ -31,74 +32,111 @@ Item {
         }
     }
 
-    ColumnLayout {
-        width: parent.width
-        RowLayout {
-            Layout.alignment: Qt.AlignHCenter
-            Repeater {
-                model: root.worskpaces
+    component DropWorkspace: Item {
+        id: ws
+        required property HyprlandWorkspace workspace
+        property alias text: wsName.text
 
-                Item {
-                    id: ws
-                    required property HyprlandWorkspace modelData
-                    implicitWidth: rect.implicitWidth
-                    implicitHeight: rect.implicitHeight
+        implicitWidth: rect.implicitWidth
+        implicitHeight: rect.implicitHeight
 
-                    Rectangle {
-                        id: rect
-                        implicitWidth: 200
-                        implicitHeight: 100
+        Rectangle {
+            id: rect
+            implicitWidth: 200
+            implicitHeight: 100
 
-                        color: Colors.base
-                        opacity: 0.9
+            color: Colors.base
+            opacity: 0.9
 
-                        CText {
-                            anchors.centerIn: parent
-                            text: ws.modelData.id
-                        }
-                    }
+            border.color: HyprlandService.isActiveWorkspace(ws.workspace?.id) ? Colors.accent : Colors.overlay1
+            border.width: 2
+            radius: Config.border.radius
 
-                    Rectangle {
-                        id: bg
-                        anchors.fill: parent
+            CText {
+                id: wsName
+                anchors.centerIn: parent
+                text: ws.workspace.id
+            }
+        }
 
-                        color: Colors.overlay2
+        Rectangle {
+            id: bg
+            anchors.fill: parent
 
-                        opacity: droparea.containsDrag ? 0.3 : 0.0
+            color: Colors.overlay2
 
-                        Behavior on opacity {
-                            NumberAnimation {
-                                duration: Config.animationDuration.quick
-                                easing.type: Config.animationEasingTypes.quick
-                            }
-                        }
-                    }
+            opacity: (droparea.containsDrag || dropmousearea.hovered) ? 0.3 : 0.0
 
-                    DropArea {
-                        id: droparea
-                        anchors.fill: parent
-
-                        onDropped: function (drop: DragEvent) {
-                            if (drop.action === Qt.MoveAction) {
-                                const address = drop.text;
-                                WorkspacesService.moveWindowToWorkspace(ws.modelData, address);
-                            }
-                        }
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            WorkspacesService.focus(ws.modelData);
-                            root.overviewWindow.visible = false;
-                        }
-                    }
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: Config.animationDuration.quick
+                    easing.type: Config.animationEasingTypes.quick
                 }
             }
         }
 
+        DropArea {
+            id: droparea
+            anchors.fill: parent
+
+            onDropped: function (drop: DragEvent) {
+                if (drop.action === Qt.MoveAction) {
+                    HyprlandService.moveWindowToWorkspace(ws.workspace?.id || "emptyn", drop.text);
+                }
+            }
+        }
+
+        MouseArea {
+            id: dropmousearea
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+
+            hoverEnabled: true
+
+            property bool hovered
+            onEntered: hovered = true
+            onExited: hovered = false
+
+            onClicked: {
+                if (ws.workspace) {
+                    HyprlandService.focusWorkspace(ws.workspace?.id || "emptyn");
+                }
+                root.overviewWindow.visible = false;
+            }
+        }
+    }
+
+    ColumnLayout {
+        spacing: Config.spacing
+        anchors.horizontalCenter: parent.horizontalCenter
+        RowLayout {
+            Layout.alignment: Qt.AlignHCenter
+            spacing: Config.spacing
+            Repeater {
+                model: root.worskpaces
+
+                DropWorkspace {
+                    required property var modelData
+                    workspace: modelData
+                }
+            }
+
+            DropWorkspace {
+                workspace: null
+                text: "+"
+            }
+        }
+
+        // CDivider {
+        //     orientation: CDivider.Orientation.Horizontal
+        //     Layout.fillWidth: true
+        // }
+
         GridLayout {
             Layout.alignment: Qt.AlignHCenter
+            rowSpacing: Config.spacing
+            columnSpacing: Config.spacing
+
             Repeater {
                 model: root.toplevels
 
@@ -114,7 +152,7 @@ Item {
                         anchors.fill: parent
                         drag.target: draggable
 
-                        cursorShape: Qt.PointingHandCursor
+                        cursorShape: Qt.OpenHandCursor
 
                         drag.onActiveChanged: if (drag.active) {
                             parent.grabToImage(function (result) {
@@ -140,9 +178,38 @@ Item {
                         }
                     }
 
-                    CWindowCapture {
+                    ClippingRectangle {
                         id: window
-                        window: item.modelData?.wayland
+
+                        implicitWidth: capture.width
+                        implicitHeight: capture.height
+
+                        color: "transparent"
+
+                        Rectangle {
+                            id: windowBg
+                            anchors.fill: parent
+                            color: Colors.overlay2
+                            opacity: 0.3
+                        }
+
+                        radius: Config.border.radius
+                        border.width: 2
+                        border.color: Colors.text
+
+                        CWindowCapture {
+                            id: capture
+                            anchors.centerIn: parent
+                            visible: !draggable.Drag.active
+                            window: item.modelData?.wayland
+
+                            Connections {
+                                target: root
+                                function onVisibleChanged() {
+                                    capture.captureFrame();
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -12,6 +12,10 @@ Item {
     implicitWidth: screen.sourceSize.width * windowScale || 200
     implicitHeight: screen.sourceSize.height * windowScale || 200
 
+    function captureFrame() {
+        screen.captureFrame();
+    }
+
     ScreencopyView {
         id: screen
         anchors.fill: parent
