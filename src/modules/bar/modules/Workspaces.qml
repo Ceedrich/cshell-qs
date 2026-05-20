@@ -16,7 +16,7 @@ WrapperMouseArea {
             CTextButton {
                 id: ws
                 required property HyprlandWorkspace modelData
-                property var isActive: WorkspacesService.isActive(modelData)
+                property var isActive: HyprlandService.isActiveWorkspace(modelData.id)
 
                 scrollingEnabled: false
 
@@ -29,7 +29,7 @@ WrapperMouseArea {
 
                 underline: isActive
 
-                onClicked: WorkspacesService.focus(ws.modelData)
+                onClicked: HyprlandService.focusWorkspace(ws.modelData.id)
             }
         }
     }
@@ -41,11 +41,11 @@ WrapperMouseArea {
     function _onWheel(evt: WheelEvent): void {
         delta += -evt.angleDelta.y * Config.scrollFactor * 0.1;
         if (delta <= -1) {
-            WorkspacesService.prev();
+            HyprlandService.focusPreviousWorkspace();
             delta += 1;
         }
         if (delta >= 1) {
-            WorkspacesService.next();
+            HyprlandService.focusNextWorkspace();
             delta -= 1;
         }
     }
