@@ -32,6 +32,43 @@ Item {
         }
     }
 
+    ColumnLayout {
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        spacing: Config.spacing
+
+        RowLayout {
+            Layout.alignment: Qt.AlignHCenter
+            spacing: Config.spacing
+            Repeater {
+                model: root.worskpaces
+
+                DropWorkspace {
+                    required property var modelData
+                    workspace: modelData
+                }
+            }
+            DropWorkspace {
+                workspace: null
+                text: "+"
+            }
+        }
+        WorkspaceCopy {}
+    }
+
+    IpcHandler {
+        target: "overview"
+        function open(): void {
+            root.overviewWindow.visible = true;
+        }
+        function close(): void {
+            root.overviewWindow.visible = false;
+        }
+        function toggle(): void {
+            root.overviewWindow.visible = !root.overviewWindow.visible;
+        }
+    }
+
     component DropWorkspace: Item {
         id: ws
         required property HyprlandWorkspace workspace
@@ -103,129 +140,6 @@ Item {
                 }
                 root.overviewWindow.visible = false;
             }
-        }
-    }
-
-    ColumnLayout {
-        spacing: Config.spacing
-        anchors.horizontalCenter: parent.horizontalCenter
-        RowLayout {
-            Layout.alignment: Qt.AlignHCenter
-            spacing: Config.spacing
-            Repeater {
-                model: root.worskpaces
-
-                DropWorkspace {
-                    required property var modelData
-                    workspace: modelData
-                }
-            }
-
-            DropWorkspace {
-                workspace: null
-                text: "+"
-            }
-        }
-
-        // CDivider {
-        //     orientation: CDivider.Orientation.Horizontal
-        //     Layout.fillWidth: true
-        // }
-
-        GridLayout {
-            Layout.alignment: Qt.AlignHCenter
-            rowSpacing: Config.spacing
-            columnSpacing: Config.spacing
-
-            Repeater {
-                model: root.toplevels
-
-                Item {
-                    id: item
-                    required property var modelData
-
-                    implicitHeight: window.implicitHeight
-                    implicitWidth: window.implicitWidth
-
-                    MouseArea {
-                        id: mouseArea
-                        anchors.fill: parent
-                        drag.target: draggable
-
-                        cursorShape: Qt.OpenHandCursor
-
-                        drag.onActiveChanged: if (drag.active) {
-                            parent.grabToImage(function (result) {
-                                draggable.Drag.imageSource = result.url;
-                                draggable.Drag.active = true;
-                            });
-                        } else {
-                            draggable.Drag.active = false;
-                        }
-                    }
-
-                    Item {
-                        id: draggable
-                        anchors.fill: parent
-
-                        Drag.hotSpot.x: width / 2
-                        Drag.hotSpot.y: height / 2
-
-                        Drag.supportedActions: Qt.MoveAction
-                        Drag.dragType: Drag.Automatic
-                        Drag.mimeData: {
-                            "text/plain": item.modelData?.address || ""
-                        }
-                    }
-
-                    ClippingRectangle {
-                        id: window
-
-                        implicitWidth: capture.width
-                        implicitHeight: capture.height
-
-                        color: "transparent"
-
-                        Rectangle {
-                            id: windowBg
-                            anchors.fill: parent
-                            color: Colors.overlay2
-                            opacity: 0.3
-                        }
-
-                        radius: Config.border.radius
-                        border.width: 2
-                        border.color: Colors.text
-
-                        CWindowCapture {
-                            id: capture
-                            anchors.centerIn: parent
-                            visible: !draggable.Drag.active
-                            window: item.modelData?.wayland
-
-                            Connections {
-                                target: root
-                                function onVisibleChanged() {
-                                    capture.captureFrame();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    IpcHandler {
-        target: "overview"
-        function open(): void {
-            root.overviewWindow.visible = true;
-        }
-        function close(): void {
-            root.overviewWindow.visible = false;
-        }
-        function toggle(): void {
-            root.overviewWindow.visible = !root.overviewWindow.visible;
         }
     }
 }
