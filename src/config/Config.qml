@@ -16,7 +16,7 @@ Singleton {
     readonly property int longHoverTime: 500
 
     readonly property var border: ({
-            width: 1,
+            width: 2,
             radius: spacing
         })
 
