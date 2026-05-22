@@ -1,29 +1,28 @@
 pragma ComponentBehavior: Bound
 
 import Quickshell.Hyprland
+import Quickshell.Wayland
 import Quickshell.Widgets
 import QtQuick
 
-import qs.widgets
 import qs.config
 
-Rectangle {
+Item {
     id: root
     property HyprlandWorkspace focusedWS: Hyprland.focusedWorkspace
+
     property real windowScale: 0.5
     property var toplevels: focusedWS?.toplevels.values || []
 
-    onToplevelsChanged: blub()
-    onFocusedWSChanged: blub()
+    onFocusedWSChanged: update()
+    onToplevelsChanged: update()
 
-    signal blub
+    implicitWidth: focusedWS?.monitor.width * windowScale
+    implicitHeight: focusedWS?.monitor.height * windowScale
 
-    onBlub: Hyprland.refreshToplevels()
+    signal update
 
-    implicitWidth: focusedWS?.monitor.width / 2 || null
-    implicitHeight: focusedWS?.monitor.height / 2 || null
-
-    color: "transparent"
+    onUpdate: Hyprland.refreshToplevels()
 
     Repeater {
         model: root.toplevels
@@ -33,82 +32,67 @@ Rectangle {
             required property var modelData
             readonly property HyprlandToplevel toplevel: modelData
 
-            Connections {
-                target: root
-                function onBlub() {
-                    item.x = item.toplevel.lastIpcObject.at?.[0] * root.windowScale;
-                    item.y = item.toplevel.lastIpcObject.at?.[1] * root.windowScale;
-                    item.width = item.toplevel.lastIpcObject.size?.[0] * root.windowScale;
-                    item.height = item.toplevel.lastIpcObject.size?.[1] * root.windowScale;
-                }
-            }
-
             x: toplevel.lastIpcObject.at?.[0] * root.windowScale
             y: toplevel.lastIpcObject.at?.[1] * root.windowScale
-            width: toplevel.lastIpcObject.size?.[0] * root.windowScale
-            height: toplevel.lastIpcObject.size?.[1] * root.windowScale
+            implicitWidth: toplevel.lastIpcObject.size?.[0] * root.windowScale
+            implicitHeight: toplevel.lastIpcObject.size?.[1] * root.windowScale
 
-            MouseArea {
-                id: mouseArea
-                anchors.fill: parent
-                drag.target: draggable
-
-                cursorShape: Qt.OpenHandCursor
-
-                drag.onActiveChanged: if (drag.active) {
-                    parent.grabToImage(function (result) {
-                        draggable.Drag.imageSource = result.url;
-                        draggable.Drag.active = true;
-                    });
-                } else {
-                    draggable.Drag.active = false;
-                }
-            }
-
-            Item {
-                id: draggable
+            WrapperItem {
+                id: bg
                 anchors.fill: parent
 
-                Drag.supportedActions: Qt.MoveAction
-                Drag.dragType: Drag.Automatic
-                Drag.mimeData: {
-                    "text/plain": item.modelData?.address || ""
-                }
-            }
+                margin: 5
 
-            ClippingRectangle {
-                id: window
-
-                anchors.fill: parent
-
-                color: "transparent"
-
-                Rectangle {
-                    id: windowBg
+                ClippingRectangle {
+                    id: iteminner
                     anchors.fill: parent
-                    color: Colors.overlay2
-                    opacity: 0.3
-                }
+                    color: "transparent"
+                    radius: Config.border.radius
+                    border.width: Config.border.width
+                    border.color: Colors.text
 
-                radius: Config.border.radius
-                border.width: 2
-                border.color: Colors.text
+                    Rectangle {
+                        id: bgrect
+                        anchors.fill: parent
+                        color: Colors.base
+                        opacity: 0.8
+                    }
 
-                CWindowCapture {
-                    id: capture
-                    anchors.fill: parent
-                    visible: !draggable.Drag.active
-                    window: item.modelData?.wayland
+                    Item {
+                        id: dragitem
+                        anchors.fill: parent
 
-                    live: true
+                        Drag.supportedActions: Qt.MoveAction
+                        Drag.dragType: Drag.Automatic
+                        Drag.mimeData: {
+                            "text/plain": item.modelData?.address || ""
+                        }
+                    }
 
-                    // Connections {
-                    //     target: root
-                    //     function onBlub() {
-                    //         console.log("capture");
-                    //         Qt.callLater(() => capture.captureFrame());
-                    //     }
-                    // }
+                    MouseArea {
+                        id: dragarea
+                        anchors.fill: parent
+                        drag.target: dragitem
+                        cursorShape: Qt.OpenHandCursor
+
+                        drag.onActiveChanged: if (drag.active) {
+                            capture.grabToImage(function (result) {
+                                dragitem.Drag.imageSource = result.url;
+                                dragitem.Drag.active = true;
+                            });
+                        } else {
+                            dragitem.Drag.active = false;
+                        }
+                    }
+
+                    ScreencopyView {
+                        id: capture
+                        enabled: visible
+                        visible: !dragarea.drag.active
+                        anchors.fill: parent
+                        captureSource: item.modelData.wayland
+                        live: true
+                    }
                 }
             }
         }

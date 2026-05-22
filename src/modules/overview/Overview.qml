@@ -16,6 +16,13 @@ Item {
     required property QtObject overviewWindow
     Keys.onEscapePressed: overviewWindow.visible = false
 
+    Connections {
+        target: root.overviewWindow
+        function onVisibleChanged() {
+            workspace.update();
+        }
+    }
+
     property var toplevels: Hyprland.focusedWorkspace?.toplevels.values || []
     property var worskpaces: Hyprland.workspaces?.values || []
 
@@ -53,7 +60,9 @@ Item {
                 text: "+"
             }
         }
-        WorkspaceCopy {}
+        WorkspaceCopy {
+            id: workspace
+        }
     }
 
     IpcHandler {
@@ -69,76 +78,45 @@ Item {
         }
     }
 
-    component DropWorkspace: Item {
+    component DropWorkspace: WrapperRectangle {
         id: ws
         required property HyprlandWorkspace workspace
         property alias text: wsName.text
 
-        implicitWidth: rect.implicitWidth
-        implicitHeight: rect.implicitHeight
+        color: Colors.base
+        opacity: 0.9
 
-        Rectangle {
-            id: rect
+        border.color: HyprlandService.isActiveWorkspace(ws.workspace?.id) ? Colors.accent : Colors.overlay1
+        border.width: 2
+        radius: Config.border.radius
+
+        CDropZone {
             implicitWidth: 200
             implicitHeight: 100
-
-            color: Colors.base
-            opacity: 0.9
-
-            border.color: HyprlandService.isActiveWorkspace(ws.workspace?.id) ? Colors.accent : Colors.overlay1
-            border.width: 2
-            radius: Config.border.radius
 
             CText {
                 id: wsName
                 anchors.centerIn: parent
-                text: ws.workspace.id
+                text: ws.workspace?.id || "[id]"
             }
-        }
-
-        Rectangle {
-            id: bg
-            anchors.fill: parent
-
-            color: Colors.overlay2
-
-            opacity: (droparea.containsDrag || dropmousearea.hovered) ? 0.3 : 0.0
-
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: Config.animationDuration.quick
-                    easing.type: Config.animationEasingTypes.quick
-                }
-            }
-        }
-
-        DropArea {
-            id: droparea
-            anchors.fill: parent
 
             onDropped: function (drop: DragEvent) {
                 if (drop.action === Qt.MoveAction) {
                     HyprlandService.moveWindowToWorkspace(ws.workspace?.id || "emptyn", drop.text);
                 }
             }
-        }
 
-        MouseArea {
-            id: dropmousearea
-            anchors.fill: parent
-            cursorShape: Qt.PointingHandCursor
+            MouseArea {
+                id: dropmousearea
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
 
-            hoverEnabled: true
-
-            property bool hovered
-            onEntered: hovered = true
-            onExited: hovered = false
-
-            onClicked: {
-                if (ws.workspace) {
-                    HyprlandService.focusWorkspace(ws.workspace?.id || "emptyn");
+                onClicked: {
+                    if (ws.workspace) {
+                        HyprlandService.focusWorkspace(ws.workspace?.id || "emptyn");
+                    }
+                    root.overviewWindow.visible = false;
                 }
-                root.overviewWindow.visible = false;
             }
         }
     }
