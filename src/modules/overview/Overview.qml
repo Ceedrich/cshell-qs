@@ -15,11 +15,17 @@ Item {
 
     required property QtObject overviewWindow
     Keys.onEscapePressed: overviewWindow.visible = false
+    Keys.onPressed: function (event: KeyEvent) {
+        if (event.key === Qt.Key_R) {
+            workspace.resetPosition();
+        }
+    }
 
     Connections {
         target: root.overviewWindow
         function onVisibleChanged() {
             workspace.update();
+            workspace.resetPosition();
         }
     }
 
@@ -32,16 +38,10 @@ Item {
 
         color: Colors.base
         opacity: 0.3
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: root.overviewWindow.visible = false
-        }
     }
 
     ColumnLayout {
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
+        anchors.fill: parent
         spacing: Config.spacing
 
         RowLayout {
@@ -60,8 +60,43 @@ Item {
                 text: "+"
             }
         }
-        WorkspaceCopy {
-            id: workspace
+        Item {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            MouseArea {
+                cursorShape: drag.active ? Qt.ClosedHandCursor : Qt.ArrowCursor
+                anchors.fill: parent
+                drag.target: workspace
+                onClicked: root.overviewWindow.visible = false
+            }
+
+            WorkspaceCopy {
+                id: workspace
+                x: parent.width / 2 - width / 2
+                y: 0
+
+                onUpdate: resetPosition()
+
+                Behavior on x {
+                    NumberAnimation {
+                        duration: 400
+                        easing.type: Easing.OutQuad
+                    }
+                }
+
+                Behavior on y {
+                    NumberAnimation {
+                        duration: 400
+                        easing.type: Easing.OutQuad
+                    }
+                }
+
+                function resetPosition() {
+                    x = parent.width / 2 - width / 2;
+                    y = 0;
+                }
+            }
         }
     }
 

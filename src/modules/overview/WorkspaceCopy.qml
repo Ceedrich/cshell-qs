@@ -6,6 +6,7 @@ import Quickshell.Widgets
 import QtQuick
 
 import qs.config
+import qs.widgets
 
 Item {
     id: root
@@ -14,13 +15,17 @@ Item {
     property real windowScale: 0.5
     property var toplevels: focusedWS?.toplevels.values || []
 
-    onFocusedWSChanged: update()
+    onFocusedWSChanged: {
+        onWorkspaceUpdate();
+        update();
+    }
     onToplevelsChanged: update()
 
     implicitWidth: focusedWS?.monitor.width * windowScale
     implicitHeight: focusedWS?.monitor.height * windowScale
 
     signal update
+    signal onWorkspaceUpdate
 
     onUpdate: Hyprland.refreshToplevels()
 
@@ -76,12 +81,32 @@ Item {
                         cursorShape: Qt.OpenHandCursor
 
                         drag.onActiveChanged: if (drag.active) {
-                            capture.grabToImage(function (result) {
+                            let item;
+                            if (capture.hasContent) {
+                                item = capture;
+                            } else {
+                                item = no_caputre;
+                            }
+                            item.grabToImage(function (result) {
                                 dragitem.Drag.imageSource = result.url;
                                 dragitem.Drag.active = true;
                             });
                         } else {
                             dragitem.Drag.active = false;
+                        }
+                    }
+
+                    Rectangle {
+                        id: no_caputre
+                        visible: !capture.hasContent && !dragarea.drag.active
+                        anchors.fill: parent
+                        color: Colors.base
+
+                        CText {
+                            anchors.centerIn: parent
+                            textFormat: Text.RichText
+                            horizontalAlignment: Qt.AlignCenter
+                            text: `<b>${item.toplevel.title || ""}</b><br/>[No Preview Available]`
                         }
                     }
 
