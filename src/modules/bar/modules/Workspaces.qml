@@ -11,7 +11,7 @@ WrapperMouseArea {
     RowLayout {
         id: workspaces
         Repeater {
-            model: Hyprland.workspaces
+            model: HyprlandService.workspaces
 
             CTextButton {
                 id: ws

@@ -5,6 +5,8 @@ import Quickshell.Hyprland
 import qs.utils
 
 Singleton {
+    readonly property var workspaces: [...(Hyprland.workspaces?.values || [])].sort((a, b) => a.id - b.id) || []
+
     function isActiveWorkspace(wsId: string): bool {
         return (`${wsId}` === `${Hyprland.focusedWorkspace?.id}`);
     }
@@ -14,6 +16,12 @@ Singleton {
             Hyprland.dispatch(`hl.dsp.focus({ workspace = "${wsId}" })`);
         } else {
             Hyprland.dispatch(`workspace ${wsId}`);
+        }
+    }
+
+    function focusWindow(address: string): void {
+        if (Hyprland.usingLua) {} else {
+            Hyprland.dispatch(`focuswindow address:${address}`);
         }
     }
 

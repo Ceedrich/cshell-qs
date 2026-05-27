@@ -76,7 +76,10 @@ Item {
                 x: parent.width / 2 - width / 2
                 y: 0
 
-                onUpdate: resetPosition()
+                onOpenApp: function (address: string) {
+                    HyprlandService.focusWindow(address);
+                    handler.close();
+                }
 
                 Behavior on x {
                     NumberAnimation {
@@ -101,6 +104,7 @@ Item {
     }
 
     IpcHandler {
+        id: handler
         target: "overview"
         function open(): void {
             root.overviewWindow.visible = true;
@@ -147,9 +151,7 @@ Item {
                 cursorShape: Qt.PointingHandCursor
 
                 onClicked: {
-                    if (ws.workspace) {
-                        HyprlandService.focusWorkspace(ws.workspace?.id || "emptyn");
-                    }
+                    HyprlandService.focusWorkspace(ws.workspace?.id || "emptyn");
                     root.overviewWindow.visible = false;
                 }
             }

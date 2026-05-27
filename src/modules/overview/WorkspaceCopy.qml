@@ -27,6 +27,8 @@ Item {
     signal update
     signal onWorkspaceUpdate
 
+    signal openApp(address: string)
+
     onUpdate: Hyprland.refreshToplevels()
 
     Repeater {
@@ -79,6 +81,8 @@ Item {
                         anchors.fill: parent
                         drag.target: dragitem
                         cursorShape: Qt.OpenHandCursor
+
+                        onClicked: root.openApp(item.toplevel.address)
 
                         drag.onActiveChanged: if (drag.active) {
                             let item;
