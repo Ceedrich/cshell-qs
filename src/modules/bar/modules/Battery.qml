@@ -5,6 +5,7 @@ import qs.utils
 import qs.widgets
 
 CBarItem {
+    visible: bat.ready
     property var iconsCharging: ["󰢜", "󰂇", "󰢝", "󰢞", "󰂅"]
     property var iconsDischarging: ["󰁺", "󰁼", "󰁾", "󰂀", "󰂂", "󰁹"]
 
