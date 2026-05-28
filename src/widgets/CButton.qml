@@ -26,6 +26,7 @@ Item {
     property bool hovered: false
 
     signal clicked
+    signal doubleClicked
     signal longHover
     signal rightClicked
     signal middleClicked
@@ -111,6 +112,7 @@ Item {
 
         onClicked: evt => _onClicked(evt)
         onWheel: evt => _onWheel(evt)
+        onDoubleClicked: evt => root.doubleClicked()
 
         function _onClicked(evt: MouseEvent) {
             if (evt.button === Qt.LeftButton) {
