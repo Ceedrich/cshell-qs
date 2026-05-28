@@ -21,7 +21,7 @@ Singleton {
 
     function focusWindow(address: string): void {
         if (Hyprland.usingLua) {} else {
-            Hyprland.dispatch(`focuswindow address:${address}`);
+            Hyprland.dispatch(`focuswindow address:0x${address}`);
         }
     }
 
@@ -44,15 +44,15 @@ Singleton {
     }
 
     function focusPreviousWorkspace(): void {
-        let idx = Hyprland.workspaces.indexOf(Hyprland.focusedWorkspace);
-        idx = Utils.clamp(0, Hyprland.workspaces.values.length - 1, idx - 1);
-        let new_ws = Hyprland.workspaces.values[idx];
+        let idx = workspaces.indexOf(Hyprland.focusedWorkspace);
+        idx = Utils.clamp(0, workspaces.length - 1, idx - 1);
+        let new_ws = workspaces[idx];
         focusWorkspace(new_ws.id);
     }
     function focusNextWorkspace(): void {
-        let idx = Hyprland.workspaces.indexOf(Hyprland.focusedWorkspace);
-        idx = Utils.clamp(0, Hyprland.workspaces.values.length - 1, idx + 1);
-        let new_ws = Hyprland.workspaces.values[idx];
+        let idx = workspaces.indexOf(Hyprland.focusedWorkspace);
+        idx = Utils.clamp(0, workspaces.length - 1, idx + 1);
+        let new_ws = workspaces[idx];
         focusWorkspace(new_ws.id);
     }
 }

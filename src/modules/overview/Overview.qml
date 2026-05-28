@@ -30,7 +30,7 @@ Item {
     }
 
     property var toplevels: Hyprland.focusedWorkspace?.toplevels.values || []
-    property var worskpaces: Hyprland.workspaces?.values || []
+    property var worskpaces: HyprlandService.workspaces
 
     Rectangle {
         id: background
@@ -69,6 +69,10 @@ Item {
                 anchors.fill: parent
                 drag.target: workspace
                 onClicked: root.overviewWindow.visible = false
+                onWheel: evt => {
+                    const delta = evt.angleDelta.y * Config.scrollFactor * 0.01;
+                    workspace.scale *= Math.exp(delta);
+                }
             }
 
             WorkspaceCopy {
@@ -95,7 +99,18 @@ Item {
                     }
                 }
 
+                NumberAnimation {
+                    id: resetScaleAnimation
+                    running: false
+                    target: workspace
+                    property: "scale"
+                    duration: 400
+                    easing.type: Easing.OutQuad
+                    to: 1
+                }
+
                 function resetPosition() {
+                    resetScaleAnimation.running = true;
                     x = parent.width / 2 - width / 2;
                     y = 0;
                 }
