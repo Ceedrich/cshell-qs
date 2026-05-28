@@ -10,6 +10,8 @@ Singleton {
     id: root
     property int percentage: _perc
 
+    property bool available
+
     property int _perc: 100
 
     onPercentageChanged: () => {
@@ -19,6 +21,17 @@ Singleton {
         timer.restart();
         query_proc.running = false;
         set_proc.running = true;
+    }
+
+    Process {
+        id: visibleProces
+        command: ["brightnessctl", "--class=backlight", "-m", "i"]
+        running: true
+        onExited: exitCode => {
+            if (exitCode === 0) {
+                root.available = true;
+            }
+        }
     }
 
     Process {
