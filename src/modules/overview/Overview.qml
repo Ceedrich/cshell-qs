@@ -44,20 +44,32 @@ Item {
         anchors.fill: parent
         spacing: Config.spacing
 
-        RowLayout {
+        Item {
             Layout.alignment: Qt.AlignHCenter
-            spacing: Config.spacing
-            Repeater {
-                model: root.worskpaces
+            implicitWidth: dropspaces.implicitWidth
+            implicitHeight: dropspaces.implicitHeight
 
-                DropWorkspace {
-                    required property var modelData
-                    workspace: modelData
-                }
+            CDiscreteScrollMouseArea {
+              anchors.fill: parent
+              onNext: HyprlandService.focusNextWorkspace()
+              onPrevious: HyprlandService.focusPreviousWorkspace()
             }
-            DropWorkspace {
-                workspace: null
-                text: "+"
+
+            RowLayout {
+                id: dropspaces
+                spacing: Config.spacing
+                Repeater {
+                    model: root.worskpaces
+
+                    DropWorkspace {
+                        required property var modelData
+                        workspace: modelData
+                    }
+                }
+                DropWorkspace {
+                    workspace: null
+                    text: "+"
+                }
             }
         }
         Item {

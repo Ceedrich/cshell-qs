@@ -1,5 +1,4 @@
 import Quickshell.Hyprland
-import Quickshell.Widgets
 import QtQuick
 import QtQuick.Layouts
 
@@ -7,7 +6,16 @@ import qs.config
 import qs.services
 import qs.widgets
 
-WrapperMouseArea {
+Item {
+    implicitWidth: workspaces.implicitWidth
+    implicitHeight: workspaces.implicitHeight
+
+    CDiscreteScrollMouseArea {
+        anchors.fill: parent
+        onPrevious: HyprlandService.focusPreviousWorkspace()
+        onNext: HyprlandService.focusNextWorkspace()
+    }
+
     RowLayout {
         id: workspaces
         Repeater {
@@ -31,22 +39,6 @@ WrapperMouseArea {
 
                 onClicked: HyprlandService.focusWorkspace(ws.modelData.id)
             }
-        }
-    }
-
-    onWheel: evt => _onWheel(evt)
-
-    property real delta: 0
-
-    function _onWheel(evt: WheelEvent): void {
-        delta += -evt.angleDelta.y * Config.scrollFactor * 0.1;
-        if (delta <= -1) {
-            HyprlandService.focusPreviousWorkspace();
-            delta += 1;
-        }
-        if (delta >= 1) {
-            HyprlandService.focusNextWorkspace();
-            delta -= 1;
         }
     }
 }
