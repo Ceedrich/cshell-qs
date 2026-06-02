@@ -13,6 +13,8 @@ ShellRoot {
 
     BarExclusionZone {}
 
+    BackgroundWindow {}
+
     MainWindow {}
 
     OverviewWindow {}
