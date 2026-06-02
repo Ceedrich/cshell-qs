@@ -7,7 +7,7 @@ import qs.config
 
 RowLayout {
     id: root
-    required property QtObject popup
+    required property BarPopup popup
     spacing: 0
     GridLayout {
         Layout.preferredWidth: Config.mprisPopupWidth
@@ -29,7 +29,7 @@ RowLayout {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
-                    root.popup.visible = false;
+                    root.popup.close();
                     MprisService.raise();
                 }
             }

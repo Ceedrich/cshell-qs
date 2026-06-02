@@ -10,7 +10,7 @@ CBarItem {
 
     text: TimeService.time
     textColor: Colors.overlay1
-    onClicked: popup.visible = !popup.visible
+    onClicked: popup.toggle()
 
     BarPopup {
         id: popup

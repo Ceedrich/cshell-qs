@@ -37,4 +37,16 @@ PopupWindow {
             children: [root.child]
         }
     }
+
+    function close(): void {
+        root.visible = false;
+    }
+
+    function open(): void {
+        root.visible = true;
+    }
+
+    function toggle(): void {
+        root.visible ? close() : open();
+    }
 }
