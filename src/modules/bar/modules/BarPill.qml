@@ -14,5 +14,5 @@ WrapperRectangle {
 
     border.color: Colors.overlay0
     border.width: 0.5
-    radius: 200
+    radius: Config.border.radius
 }

@@ -17,7 +17,7 @@ Singleton {
 
     readonly property var border: ({
             width: 2,
-            radius: spacing
+            radius: barHeight / 2
         })
 
     readonly property int barHeight: 45
