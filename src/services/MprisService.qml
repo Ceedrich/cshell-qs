@@ -34,6 +34,11 @@ Singleton {
         }
     }
 
+    readonly property string formattedTime: formatMinutes(player?.position || 0) || ""
+    readonly property string formattedRemainingTime: formatMinutes(player?.length - (player?.position || 0)) || ""
+
+    // readonly property string timeLeftString:
+
     function setPlayer(p: QSM.MprisPlayer): void {
         player = p;
     }
@@ -52,5 +57,12 @@ Singleton {
 
     function raise(): void {
         player.raise();
+    }
+
+    function formatMinutes(seconds: real): string {
+        const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+        const s = String(Math.floor(seconds % 60)).padStart(2, '0');
+
+        return `${m}:${s}`;
     }
 }
