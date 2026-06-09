@@ -18,10 +18,7 @@ Item {
         opacity: (droparea.containsDrag || mousearea.containsMouse) ? 0.3 : 0.0
 
         Behavior on opacity {
-            NumberAnimation {
-                duration: Config.animationDuration.quick
-                easing.type: Config.animationEasingTypes.quick
-            }
+            Config.NumberAnimationQuick {}
         }
     }
 

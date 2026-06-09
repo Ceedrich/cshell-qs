@@ -52,17 +52,11 @@ Item {
         ]
 
         Behavior on color {
-            ColorAnimation {
-                duration: Config.animationDuration.quick
-                easing.type: Config.animationEasingTypes.quick
-            }
+            Config.ColorAnimationQuick {}
         }
 
         Behavior on opacity {
-            NumberAnimation {
-                duration: Config.animationDuration.quick
-                easing.type: Config.animationEasingTypes.quick
-            }
+            Config.NumberAnimationQuick {}
         }
     }
 

@@ -22,11 +22,17 @@ Singleton {
 
     readonly property int barHeight: 45
 
-    // animations
-    readonly property var animationDuration: ({
-            quick: 40
-        })
-    readonly property var animationEasingTypes: ({
-            quick: Easing.Linear
-        })
+    component NumberAnimationSimple: NumberAnimation {
+        duration: 300
+        easing: Easing.InOutCubic
+    }
+
+    component NumberAnimationQuick: NumberAnimation {
+        duration: 40
+        easing: Easing.Linear
+    }
+    component ColorAnimationQuick: ColorAnimation {
+        duration: 40
+        easing: Easing.Linear
+    }
 }

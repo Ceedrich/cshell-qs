@@ -50,9 +50,9 @@ Item {
             implicitHeight: dropspaces.implicitHeight
 
             CDiscreteScrollMouseArea {
-              anchors.fill: parent
-              onNext: HyprlandService.focusNextWorkspace()
-              onPrevious: HyprlandService.focusPreviousWorkspace()
+                anchors.fill: parent
+                onNext: HyprlandService.focusNextWorkspace()
+                onPrevious: HyprlandService.focusPreviousWorkspace()
             }
 
             RowLayout {
@@ -98,17 +98,11 @@ Item {
                 }
 
                 Behavior on x {
-                    NumberAnimation {
-                        duration: 400
-                        easing.type: Easing.OutQuad
-                    }
+                    Config.NumberAnimationSimple {}
                 }
 
                 Behavior on y {
-                    NumberAnimation {
-                        duration: 400
-                        easing.type: Easing.OutQuad
-                    }
+                    Config.NumberAnimationSimple {}
                 }
 
                 NumberAnimation {
