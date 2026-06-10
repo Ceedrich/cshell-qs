@@ -10,6 +10,9 @@ WrapperRectangle {
     id: root
     readonly property bool isOpen: hover.hovered
 
+    visible: MprisService.available
+    enabled: visible
+
     margin: Config.spacing
     color: Colors.base
     radius: Config.border.radius
