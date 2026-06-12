@@ -24,7 +24,7 @@ Singleton {
 
     component NumberAnimationSimple: NumberAnimation {
         duration: 300
-        easing: Easing.InOutCubic
+        easing: Easing.OutCubic
     }
 
     component NumberAnimationQuick: NumberAnimation {
