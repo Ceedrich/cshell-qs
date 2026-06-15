@@ -6,7 +6,7 @@ import qs.services
 import qs.widgets
 import qs.config
 
-WrapperRectangle {
+ClippingWrapperRectangle {
     id: root
     readonly property bool isOpen: hover.hovered
 
