@@ -3,11 +3,11 @@ pragma Singleton
 import Quickshell
 import QtQuick
 
+import qs.utils
+
 Singleton {
     id: root
-    readonly property string time: {
-        Qt.formatDateTime(clock.date, "dd.MM.yyyy | hh:mm");
-    }
+    readonly property string time: `${Utils.formatDate(clock.date)} | ${Utils.formatTime(clock.date)}`
 
     SystemClock {
         id: clock

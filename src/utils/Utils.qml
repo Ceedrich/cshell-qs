@@ -1,5 +1,6 @@
 pragma Singleton
 import Quickshell
+import QtQuick
 
 Singleton {
     function select_from_list(ratio: real, list: var): var {
@@ -9,5 +10,13 @@ Singleton {
 
     function clamp(low, high, value) {
         return Math.min(Math.max(value, low), high);
+    }
+
+    function formatTime(date: date): string {
+        return Qt.formatTime(date, "hh:mm");
+    }
+
+    function formatDate(date: date): string {
+        return Qt.formatDate(date, "dd.MM.yyyy");
     }
 }
