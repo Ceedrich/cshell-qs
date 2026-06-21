@@ -7,6 +7,7 @@ import qs.utils
 
 Singleton {
     id: root
+
     readonly property string formattedTime: Utils.formatTime(clock.date)
     readonly property string formattedDate: Utils.formatDate(clock.date)
 

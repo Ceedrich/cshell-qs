@@ -6,6 +6,7 @@ import QtQuick
 
 import qs.modules.bar
 import qs.modules.overview
+import qs.modules.desktopwidgets
 import qs.modules
 
 ShellRoot {
@@ -14,6 +15,8 @@ ShellRoot {
     BarExclusionZone {}
 
     BackgroundWindow {}
+
+    DesktopWidgets {}
 
     MainWindow {}
 
