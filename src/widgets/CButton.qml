@@ -3,6 +3,7 @@ import Quickshell.Widgets
 import QtQuick
 
 import qs.config
+import qs.services
 
 Item {
     id: root
@@ -125,8 +126,9 @@ Item {
                 evt.accepted = false;
                 return;
             }
-            const deltaX = -evt.angleDelta.x * Config.scrollFactor;
-            const deltaY = -evt.angleDelta.y * Config.scrollFactor;
+            const inverted = SettingsService.data.invertScrolling ? -1 : 1;
+            const deltaX = inverted * evt.angleDelta.x * Config.scrollFactor;
+            const deltaY = inverted * evt.angleDelta.y * Config.scrollFactor;
 
             root.scrollX(deltaX);
             root.scrollY(deltaY);
