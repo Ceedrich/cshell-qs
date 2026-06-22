@@ -62,7 +62,7 @@ DesktopWidget {
 
         property vector2d hourVector: {
             const hour = TimeService.hoursReal;
-            const angle = (2 * Math.PI) * (hour % 12) / 12 - (Math.PI / 4);
+            const angle = (2 * Math.PI) * hour / 12 - (Math.PI / 2);
             return Qt.point(hourLength * Math.cos(angle), hourLength * Math.sin(angle));
         }
 
