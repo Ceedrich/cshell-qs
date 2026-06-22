@@ -7,6 +7,8 @@ import Quickshell.Io
 Singleton {
     id: root
 
+    property bool isLoaded: false
+
     readonly property alias data: adapter
     readonly property string configPath: (Quickshell.env("XDG_CONFIG_HOME") || Quickshell.env("HOME") + "/.config") + "/cshell/"
 
@@ -16,6 +18,10 @@ Singleton {
         watchChanges: true
         onFileChanged: reload()
         onAdapterUpdated: writeAdapter()
+
+        onLoaded: {
+            root.isLoaded = true;
+        }
 
         onLoadFailed: error => {
             if (error === FileViewError.FileNotFound) {
@@ -27,6 +33,23 @@ Singleton {
             id: adapter
             property bool invertScrolling: false
         }
+    }
+
+    Timer {
+        id: saveTimer
+        interval: 500
+        onTriggered: {
+            if (root.isLoaded) {
+                settingsFile.writeAdapter();
+            } else {
+                // try saving again if the file is not yet loaded
+                restart();
+            }
+        }
+    }
+
+    function triggerSave() {
+        saveTimer.restart();
     }
 
     Component.onCompleted: {
