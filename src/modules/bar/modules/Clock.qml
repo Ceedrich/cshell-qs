@@ -8,7 +8,7 @@ CBarItem {
     id: root
     required property QtObject barWindow
 
-    text: TimeService.time
+    text: `${TimeService.formattedDate} | ${TimeService.formattedTime}`
     textColor: Colors.overlay1
     onClicked: popup.toggle()
 
