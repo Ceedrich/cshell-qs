@@ -1,27 +1,45 @@
 import QtQuick
 import Quickshell.Widgets
-import Quickshell
+
+import qs.services
+import qs.utils
 
 WrapperRectangle {
     id: root
+    visible: enabled
+
+    property string identifier: objectName
 
     color: "transparent"
-
-    PersistentProperties {
-        id: persistent
-        reloadableId: `reloadable-${root.objectName}`
-        property real x
-        property real y
-    }
-
-    x: persistent.x
-    y: persistent.y
 
     DragHandler {
         id: handler
         onActiveChanged: {
-            persistent.x = root.x;
-            persistent.y = root.y;
+            if (!active) {
+                root.setStateData({
+                    x: root.x,
+                    y: root.y
+                });
+                SettingsService.triggerSave();
+            }
+        }
+    }
+
+    function setStateData(data) {
+        SettingsService.state.desktopWidgets[identifier] = data;
+    }
+    function setConfigData(data) {
+        SettingsService.data.desktopWidgets[identifier] = data;
+    }
+
+    Connections {
+        target: SettingsService
+        function onLoaded() {
+            root.enabled = Utils.valueOrDefault(SettingsService.data.desktopWidgets[root.identifier]?.enabled, true);
+        }
+        function onStateLoaded() {
+            root.x = Utils.valueOrDefault(SettingsService.state.desktopWidgets[root.identifier]?.x, 0);
+            root.y = Utils.valueOrDefault(SettingsService.state.desktopWidgets[root.identifier]?.y, 0);
         }
     }
 }

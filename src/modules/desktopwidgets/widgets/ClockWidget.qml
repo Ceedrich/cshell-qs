@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Shapes
 
 import qs.config
+import qs.widgets
 import qs.services
 
 DesktopWidget {
@@ -13,8 +14,8 @@ DesktopWidget {
         id: root
 
         property int size: 200
-        property int minuteLength: (size / 2) * 0.8
-        property int hourLength: (size / 2) * 0.6
+        property int minuteLength: (size / 2) * 0.7
+        property int hourLength: (size / 2) * 0.5
 
         implicitWidth: size
         implicitHeight: size
@@ -25,6 +26,13 @@ DesktopWidget {
         radius: 100 * width
 
         color: Colors.base
+
+        CText {
+            text: TimeService.formattedTime
+            anchors.bottom: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.margins: 0.1 * root.size
+        }
 
         Shape {
             implicitWidth: root.size
@@ -56,10 +64,36 @@ DesktopWidget {
                     relativeY: root.minuteVector.y
                 }
             }
+            // ShapePath {
+            //     id: tickPath
+            //     fillColor: "transparent"
+            //
+            //     capStyle: ShapePath.RoundCap
+            //     strokeWidth: 2
+            //     strokeColor: Colors.text
+            //     cosmeticStroke: true
+            //
+            //     property real innerRadius: root.size / 2 * 0.8
+            //     property real outerRadius: root.size / 2 - strokeWidth
+            //
+            //     // qmlformat off
+            //     PathMove { x: root.size / 2; y: tickPath.outerRadius - tickPath.innerRadius }
+            //     PathLine { x: root.size / 2; y: tickPath.outerRadius - tickPath.outerRadius }
+            //
+            //     PathMove { x: root.size / 2; y: tickPath.outerRadius + tickPath.innerRadius }
+            //     PathLine { x: root.size / 2; y: tickPath.outerRadius + tickPath.outerRadius }
+            //
+            //     PathMove { y: root.size / 2; x: tickPath.outerRadius - tickPath.innerRadius }
+            //     PathLine { y: root.size / 2; x: tickPath.outerRadius - tickPath.outerRadius }
+            //
+            //     PathMove { y: root.size / 2; x: tickPath.outerRadius + tickPath.innerRadius }
+            //     PathLine { y: root.size / 2; x: tickPath.outerRadius + tickPath.outerRadius }
+            //     // qmlformat on
+            // }
         }
 
         property vector2d hourVector: {
-            const hour = TimeService.hours;
+            const hour = TimeService.hoursReal;
             const angle = (2 * Math.PI) * (hour % 12) / 12 - (Math.PI / 4);
             return Qt.point(hourLength * Math.cos(angle), hourLength * Math.sin(angle));
         }
@@ -69,5 +103,12 @@ DesktopWidget {
             const angle = (2 * Math.PI) * minute / 60 - (Math.PI / 2);
             return Qt.point(minuteLength * Math.cos(angle), minuteLength * Math.sin(angle));
         }
+    }
+
+    component CPathMove: PathMove {
+        id: cPathMove
+    }
+    component CPathLine: PathLine {
+        id: cPathLine
     }
 }

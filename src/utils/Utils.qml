@@ -19,4 +19,12 @@ Singleton {
     function formatDate(date: date): string {
         return Qt.formatDate(date, "dd.MM.yyyy");
     }
+
+    function valueOrDefault(value, defaultValue) {
+        if (value == null) {
+            return defaultValue;
+        } else {
+            return value;
+        }
+    }
 }
