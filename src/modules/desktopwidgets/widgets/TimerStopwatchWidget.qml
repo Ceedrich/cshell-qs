@@ -22,6 +22,17 @@ DesktopWidget {
 
         property int elapsedMsBuffer: 0
         property int elapsedMs: 0
+
+        onTargetTimeSecondsChanged: {
+            // make sure elapsedMsBuffer is updated
+            if (targetTimeSeconds <= 0) {
+                targetTimeSeconds = 1;
+            }
+            if (running) {
+                root.stop();
+                root.start();
+            }
+        }
     }
 
     readonly property bool isStopwatch: persistent.isStopwatch
@@ -152,7 +163,7 @@ DesktopWidget {
         pollTimer.restart();
         elapsedTimer.restart();
         if (isTimer) {
-            timer.interval = persistent.targetTimeSeconds * 1000 - persistent.elapsedMsBuffer;
+            timer.interval = Math.max(persistent.targetTimeSeconds * 1000 - persistent.elapsedMsBuffer, 1);
             timer.restart();
         }
     }

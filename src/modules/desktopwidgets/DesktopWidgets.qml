@@ -30,6 +30,6 @@ PanelWindow {
         identifier: "widget-calendar"
     }
     TimerStopwatchWidget {
-        identifier: "timer-stopwatch-widget"
+        identifier: "widget-timer-stopwatch"
     }
 }
