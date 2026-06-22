@@ -1,5 +1,6 @@
 pragma ComponentBehavior: Bound
 
+import Quickshell.Widgets
 import QtQuick
 import QtQuick.Shapes
 
@@ -8,8 +9,6 @@ import qs.widgets
 import qs.services
 
 DesktopWidget {
-    objectName: "widget-clock"
-
     Rectangle {
         id: root
 
@@ -27,69 +26,38 @@ DesktopWidget {
 
         color: Colors.base
 
-        CText {
-            text: TimeService.formattedTime
-            anchors.bottom: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.margins: 0.1 * root.size
-        }
-
         Shape {
             implicitWidth: root.size
             implicitHeight: root.size
             antialiasing: true
 
             ShapePath {
-                id: hourHandle
+                id: handles
                 capStyle: ShapePath.RoundCap
                 strokeWidth: 2
                 strokeColor: Colors.text
                 cosmeticStroke: true
 
-                PathMove {
-                    x: root.size / 2
-                    y: root.size / 2
-                }
-                PathLine {
-                    relativeX: root.hourVector.x
-                    relativeY: root.hourVector.y
-                }
+                // qmlformat off
+                PathMove { x: root.size / 2; y: root.size / 2 }
+                PathLine { relativeX: root.hourVector.x; relativeY: root.hourVector.y; }
 
-                PathMove {
-                    x: root.size / 2
-                    y: root.size / 2
-                }
-                PathLine {
-                    relativeX: root.minuteVector.x
-                    relativeY: root.minuteVector.y
-                }
+                PathMove { x: root.size / 2; y: root.size / 2; }
+                PathLine { relativeX: root.minuteVector.x; relativeY: root.minuteVector.y; }
+                // qmlformat on
             }
-            // ShapePath {
-            //     id: tickPath
-            //     fillColor: "transparent"
-            //
-            //     capStyle: ShapePath.RoundCap
-            //     strokeWidth: 2
-            //     strokeColor: Colors.text
-            //     cosmeticStroke: true
-            //
-            //     property real innerRadius: root.size / 2 * 0.8
-            //     property real outerRadius: root.size / 2 - strokeWidth
-            //
-            //     // qmlformat off
-            //     PathMove { x: root.size / 2; y: tickPath.outerRadius - tickPath.innerRadius }
-            //     PathLine { x: root.size / 2; y: tickPath.outerRadius - tickPath.outerRadius }
-            //
-            //     PathMove { x: root.size / 2; y: tickPath.outerRadius + tickPath.innerRadius }
-            //     PathLine { x: root.size / 2; y: tickPath.outerRadius + tickPath.outerRadius }
-            //
-            //     PathMove { y: root.size / 2; x: tickPath.outerRadius - tickPath.innerRadius }
-            //     PathLine { y: root.size / 2; x: tickPath.outerRadius - tickPath.outerRadius }
-            //
-            //     PathMove { y: root.size / 2; x: tickPath.outerRadius + tickPath.innerRadius }
-            //     PathLine { y: root.size / 2; x: tickPath.outerRadius + tickPath.outerRadius }
-            //     // qmlformat on
-            // }
+        }
+
+        Item {
+            implicitWidth: timeText.implicitWidth
+            implicitHeight: timeText.implicitHeight
+            anchors.bottom: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.margins: 0.15 * root.size
+            CText {
+                id: timeText
+                text: TimeService.formattedTime
+            }
         }
 
         property vector2d hourVector: {
@@ -103,12 +71,5 @@ DesktopWidget {
             const angle = (2 * Math.PI) * minute / 60 - (Math.PI / 2);
             return Qt.point(minuteLength * Math.cos(angle), minuteLength * Math.sin(angle));
         }
-    }
-
-    component CPathMove: PathMove {
-        id: cPathMove
-    }
-    component CPathLine: PathLine {
-        id: cPathLine
     }
 }

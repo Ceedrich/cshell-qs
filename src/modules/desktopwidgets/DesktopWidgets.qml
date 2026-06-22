@@ -1,4 +1,5 @@
 import Quickshell
+import QtQuick
 
 import qs.modules.desktopwidgets.widgets
 import qs.config
@@ -22,5 +23,10 @@ PanelWindow {
 
     color: "transparent"
 
-    ClockWidget {}
+    ClockWidget {
+        identifier: "widget-clock"
+    }
+    CalendarWidget {
+        identifier: "widget-calendar"
+    }
 }

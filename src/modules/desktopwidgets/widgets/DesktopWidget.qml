@@ -8,7 +8,8 @@ WrapperRectangle {
     id: root
     visible: enabled
 
-    property string identifier: objectName
+    required property string identifier
+    objectName: identifier
 
     color: "transparent"
 
