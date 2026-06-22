@@ -29,4 +29,7 @@ PanelWindow {
     CalendarWidget {
         identifier: "widget-calendar"
     }
+    TimerStopwatchWidget {
+        identifier: "timer-stopwatch-widget"
+    }
 }

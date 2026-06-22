@@ -27,4 +27,11 @@ Singleton {
             return value;
         }
     }
+
+    function leftPad(str: string, len: int, c: string): string {
+        if (str.length < len) {
+            return ((len - str.length) * c) + str;
+        }
+        return str;
+    }
 }
