@@ -13,32 +13,35 @@ WrapperRectangle {
 
     color: "transparent"
 
+    property var stateData: ({
+            x,
+            y,
+            enabled
+        })
+
     DragHandler {
         id: handler
         onActiveChanged: {
             if (!active) {
-                root.setStateData({
-                    x: root.x,
-                    y: root.y
-                });
-                SettingsService.triggerSave();
+                root.saveState();
             }
         }
     }
 
-    function setStateData(data) {
-        SettingsService.state.desktopWidgets[identifier] = data;
+    function saveState() {
+        SettingsService.state.desktopWidgets[identifier] = stateData;
+        SettingsService.triggerSave();
     }
-    function setConfigData(data) {
-        SettingsService.data.desktopWidgets[identifier] = data;
+
+    function toggleEnabled() {
+        enabled = !enabled;
+        saveState();
     }
 
     Connections {
         target: SettingsService
-        function onLoaded() {
-            root.enabled = Utils.valueOrDefault(SettingsService.data.desktopWidgets[root.identifier]?.enabled, true);
-        }
         function onStateLoaded() {
+            root.enabled = Utils.valueOrDefault(SettingsService.state.desktopWidgets[root.identifier]?.enabled, true);
             root.x = Utils.valueOrDefault(SettingsService.state.desktopWidgets[root.identifier]?.x, 0);
             root.y = Utils.valueOrDefault(SettingsService.state.desktopWidgets[root.identifier]?.y, 0);
         }
