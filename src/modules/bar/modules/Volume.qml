@@ -34,6 +34,8 @@ CBarItem {
 
     text: `${Math.round((sink?.audio?.volume || 0) * 100)}% ${icon}`
 
+    scrollingEnabled: true
+
     onClicked: root.sink.audio.muted = !root.sink.audio.muted
     onScrollY: delta => root.sink.audio.volume = Utils.clamp(0.0, 1.0, root.sink.audio.volume + delta / 100)
 }

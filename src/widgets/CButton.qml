@@ -12,10 +12,15 @@ Item {
 
     property bool disabled: false
 
+    property bool clickEnabled: true
+    property bool leftClickEnabled: true
+    property bool rightClickEnabled: false
+    property bool middleClickEnabled: false
+
+    property bool scrollingEnabled: false
+
     property alias mouseareaEnabled: mousearea.enabled
     property alias hoverEnabled: mousearea.hoverEnabled
-    property bool scrollingEnabled: true
-    property bool clickingEnabled: true
     property alias propagateComposedEvents: mousearea.propagateComposedEvents
 
     // Hoverarea/Background
@@ -27,7 +32,6 @@ Item {
     property bool hovered: false
 
     signal clicked
-    signal doubleClicked
     signal longHover
     signal rightClicked
     signal middleClicked
@@ -91,7 +95,16 @@ Item {
         visible: enabled
 
         cursorShape: Qt.PointingHandCursor
-        acceptedButtons: root.clickingEnabled ? Qt.RightButton | Qt.LeftButton | Qt.MiddleButton : 0
+        acceptedButtons: {
+            let ret = Qt.NoButton;
+            // qmlformat off
+            if (!root.clickEnabled) return ret;
+            if (root.rightClickEnabled) ret |= Qt.RightButton;
+            if (root.leftClickEnabled) ret |= Qt.LeftButton;
+            if (root.middleClickEnabled) ret |= Qt.MiddleButton;
+            // qmlformat on
+            return ret;
+        }
 
         hoverEnabled: true
         scrollGestureEnabled: true
@@ -107,7 +120,6 @@ Item {
 
         onClicked: evt => _onClicked(evt)
         onWheel: evt => _onWheel(evt)
-        onDoubleClicked: evt => root.doubleClicked()
 
         function _onClicked(evt: MouseEvent) {
             if (evt.button === Qt.LeftButton) {

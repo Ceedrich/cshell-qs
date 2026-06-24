@@ -12,7 +12,8 @@ CBarItem {
 
     underline: true
 
-    clickingEnabled: false
+    clickEnabled: false
+    scrollingEnabled: true
 
     onScrollY: delta => BrightnessService.percentage = Utils.clamp(0, 100, BrightnessService.percentage + delta)
 }
