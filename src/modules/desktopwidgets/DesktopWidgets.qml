@@ -39,16 +39,17 @@ PanelWindow {
         id: context
 
         model: [
+            CContextMenuItem {
+                label: "Destkop Widgets"
+                type: CContextMenuItem.Label
+            },
             ItemToggler {
-                label: "Show Clock"
                 target: widgetClock
             },
             ItemToggler {
-                label: "Show Calendar"
                 target: widgetCalendar
             },
             ItemToggler {
-                label: "Show Timer/Stopwatch"
                 target: widgetTimerStopwatch
             }
         ]
@@ -57,19 +58,23 @@ PanelWindow {
     ClockWidget {
         id: widgetClock
         identifier: "widget-clock"
+        name: "Clock"
     }
     CalendarWidget {
         id: widgetCalendar
         identifier: "widget-calendar"
+        name: "Calendar"
     }
     TimerStopwatchWidget {
         id: widgetTimerStopwatch
         identifier: "widget-timer-stopwatch"
+        name: "Timer/Stopwatch"
     }
 
     component ItemToggler: CContextMenuItem {
         property var target
         type: CContextMenuItem.Checkbox
+        label: `Show ${target.name} Widget`
         isChecked: target.enabled
         onTriggered: target.toggleEnabled()
     }

@@ -29,6 +29,7 @@ Popup {
 
             CButton {
                 id: item
+                enabled: (!modelData.isLabel) && (!modelData.isDivider)
                 Layout.fillWidth: true
                 required property CContextMenuItem modelData
                 onClicked: {
@@ -36,8 +37,8 @@ Popup {
                     root.close();
                 }
 
-                implicitWidth: layout.implicitWidth
                 implicitHeight: layout.implicitHeight
+                implicitWidth: layout.implicitWidth
 
                 RowLayout {
                     id: layout
@@ -49,6 +50,8 @@ Popup {
                     }
 
                     CText {
+                        visible: !item.modelData.isDivider
+                        font.bold: item.modelData.isLabel
                         text: item.modelData.label
                     }
                 }

@@ -23,6 +23,8 @@ Item {
     property alias hoverEnabled: mousearea.hoverEnabled
     property alias propagateComposedEvents: mousearea.propagateComposedEvents
 
+    hoverEnabled: enabled
+
     // Hoverarea/Background
     property real backgroundOffset: 4
     property real backgroundOffsetX: backgroundOffset
@@ -106,7 +108,6 @@ Item {
             return ret;
         }
 
-        hoverEnabled: true
         scrollGestureEnabled: true
 
         onEntered: {

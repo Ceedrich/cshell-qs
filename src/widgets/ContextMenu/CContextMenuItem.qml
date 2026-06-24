@@ -4,6 +4,7 @@ QtObject {
     property string label: ""
     enum Type {
         Normal,
+        Label,
         Checkbox,
         Divider
     }
@@ -13,6 +14,7 @@ QtObject {
 
     readonly property bool isCheckbox: type === CContextMenuItem.Checkbox
     readonly property bool isDivider: type === CContextMenuItem.Divider
+    readonly property bool isLabel: type === CContextMenuItem.Label
 
     signal triggered
 }

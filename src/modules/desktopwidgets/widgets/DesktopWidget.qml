@@ -9,6 +9,8 @@ Item {
     visible: enabled
 
     required property string identifier
+    property string name: identifier
+
     property var stateData: ({
             x,
             y,
@@ -17,7 +19,11 @@ Item {
 
     property list<CContextMenuItem> contextMenuModel: [
         CContextMenuItem {
-            label: "disable"
+            label: root.name
+            type: CContextMenuItem.Label
+        },
+        CContextMenuItem {
+            label: "Hide"
             onTriggered: root.disable()
         }
     ]

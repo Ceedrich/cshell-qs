@@ -26,10 +26,6 @@ DesktopWidget {
         property int elapsedMs: 0
 
         onTargetTimeSecondsChanged: {
-            // make sure elapsedMsBuffer is updated
-            if (targetTimeSeconds <= 0) {
-                targetTimeSeconds = 1;
-            }
             if (running) {
                 root.stop();
                 root.start();
@@ -87,43 +83,61 @@ DesktopWidget {
         radius: Config.border.radius
 
         ColumnLayout {
-            spacing: -8
-
             CText {
                 Layout.fillWidth: true
                 text: root.isStopwatch ? "Stopwatch" : "Timer"
                 horizontalAlignment: Text.AlignHCenter
             }
 
-            CText {
+            RowLayout {
                 id: numberDisplay
                 Layout.alignment: Qt.AlignHCenter
-                font.pixelSize: 60
-                text: Utils.leftPad(`${root.displayMinutes}`, 2, "0") //
-                + ":" + Utils.leftPad(`${root.displaySeconds}`, 2, "0") //
-                + ":" + Utils.leftPad(`${root.displayCents}`, 2, "0")
+                spacing: 0
+                property int fontSize: 60
 
-                MouseArea {
-                    anchors.fill: parent
-
-                    acceptedButtons: Qt.RightButton | Qt.LeftButton
-
-                    cursorShape: Qt.PointingHandCursor
-
+                CTextButton {
                     enabled: root.isTimer
-                    onWheel: evt => {
-                        const delta = evt.angleDelta.y * Config.scrollFactor;
-                        persistent.targetTimeSeconds = Utils.clamp(0, Infinity, persistent.targetTimeSeconds + delta);
-                    }
+                    font.pixelSize: numberDisplay.fontSize
+                    text: Utils.leftPad(`${root.displayMinutes}`, 2, "0")
+                    rightClickEnabled: true
+                    scrollingEnabled: true
 
-                    onClicked: evt => {
-                        if (evt.button === Qt.LeftButton) {
-                            persistent.targetTimeSeconds = Utils.clamp(0, Infinity, persistent.targetTimeSeconds + 1);
-                        }
-                        if (evt.button === Qt.RightButton) {
-                            persistent.targetTimeSeconds = Utils.clamp(0, Infinity, persistent.targetTimeSeconds - 1);
-                        }
-                    }
+                    rightPadding: 0
+                    leftPadding: 0
+                    bottomPadding: 0
+                    topPadding: 0
+
+                    onClicked: root.updateTargetSeconds(60)
+                    onRightClicked: root.updateTargetSeconds(-60)
+                    onScrollY: delta => root.updateTargetSeconds(delta * 60)
+                }
+                CText {
+                    font.pixelSize: numberDisplay.fontSize
+                    text: ":"
+                }
+                CTextButton {
+                    enabled: root.isTimer
+                    font.pixelSize: numberDisplay.fontSize
+                    text: Utils.leftPad(`${root.displaySeconds}`, 2, "0")
+                    rightClickEnabled: true
+                    scrollingEnabled: true
+
+                    rightPadding: 0
+                    leftPadding: 0
+                    bottomPadding: 0
+                    topPadding: 0
+
+                    onClicked: root.updateTargetSeconds(1)
+                    onRightClicked: root.updateTargetSeconds(-1)
+                    onScrollY: delta => root.updateTargetSeconds(delta)
+                }
+                CText {
+                    font.pixelSize: numberDisplay.fontSize
+                    text: ":"
+                }
+                CText {
+                    font.pixelSize: numberDisplay.fontSize
+                    text: Utils.leftPad(`${root.displayCents}`, 2, "0")
                 }
             }
 
@@ -177,5 +191,9 @@ DesktopWidget {
     function toggleMode() {
         reset();
         persistent.isStopwatch = !persistent.isStopwatch;
+    }
+
+    function updateTargetSeconds(delta) {
+        persistent.targetTimeSeconds = Utils.clamp(1, 99 * 60 + 59, persistent.targetTimeSeconds + delta);
     }
 }
