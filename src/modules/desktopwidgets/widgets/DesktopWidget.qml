@@ -1,23 +1,28 @@
 import QtQuick
-import Quickshell.Widgets
 
 import qs.services
+import qs.widgets.ContextMenu
 import qs.utils
 
-WrapperRectangle {
+Item {
     id: root
     visible: enabled
 
     required property string identifier
-    objectName: identifier
-
-    color: "transparent"
-
     property var stateData: ({
             x,
             y,
             enabled
         })
+
+    property list<CContextMenuItem> contextMenuModel: [
+        CContextMenuItem {
+            label: "disable"
+            onTriggered: root.disable()
+        }
+    ]
+
+    objectName: identifier
 
     DragHandler {
         id: handler
@@ -26,6 +31,17 @@ WrapperRectangle {
                 root.saveState();
             }
         }
+    }
+
+    CContextMenu {
+        id: contextMenu
+        model: root.contextMenuModel
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.RightButton
+        onClicked: contextMenu.openAtPosition(mouseX, mouseY)
     }
 
     function saveState() {
@@ -37,6 +53,10 @@ WrapperRectangle {
         enabled = !enabled;
         saveState();
     }
+    // qmlformat off
+    function enable() { if (!enabled) toggleEnabled(); }
+    function disable() { if (enabled) toggleEnabled(); }
+    // qmlformat on
 
     Connections {
         target: SettingsService

@@ -1,3 +1,5 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -29,7 +31,10 @@ Popup {
                 id: item
                 Layout.fillWidth: true
                 required property CContextMenuItem modelData
-                onClicked: modelData.triggered()
+                onClicked: {
+                    modelData.triggered();
+                    root.close();
+                }
 
                 implicitWidth: layout.implicitWidth
                 implicitHeight: layout.implicitHeight

@@ -9,6 +9,8 @@ import qs.utils
 
 DesktopWidget {
     id: root
+    implicitWidth: content.implicitWidth
+    implicitHeight: content.implicitHeight
 
     PersistentProperties {
         id: persistent
@@ -52,12 +54,6 @@ DesktopWidget {
     readonly property int displaySeconds: persistent.isStopwatch ? elapsedSeconds : remainingSeconds
     readonly property int displayCents: persistent.isStopwatch ? elapsedCents : remainingCents
 
-    color: Colors.base
-    margin: Config.spacing
-    border.width: Config.border.width
-    border.color: Colors.overlay2
-    radius: Config.border.radius
-
     ElapsedTimer {
         id: elapsedTimer
     }
@@ -81,65 +77,75 @@ DesktopWidget {
         }
     }
 
-    ColumnLayout {
-        spacing: -8
+    WrapperRectangle {
+        id: content
 
-        CText {
-            Layout.fillWidth: true
-            text: root.isStopwatch ? "Stopwatch" : "Timer"
-            horizontalAlignment: Text.AlignHCenter
-        }
+        color: Colors.base
+        margin: Config.spacing
+        border.width: Config.border.width
+        border.color: Colors.overlay2
+        radius: Config.border.radius
 
-        CText {
-            id: numberDisplay
-            Layout.alignment: Qt.AlignHCenter
-            font.pixelSize: 60
-            text: Utils.leftPad(`${root.displayMinutes}`, 2, "0") //
-            + ":" + Utils.leftPad(`${root.displaySeconds}`, 2, "0") //
-            + ":" + Utils.leftPad(`${root.displayCents}`, 2, "0")
+        ColumnLayout {
+            spacing: -8
 
-            MouseArea {
-                anchors.fill: parent
+            CText {
+                Layout.fillWidth: true
+                text: root.isStopwatch ? "Stopwatch" : "Timer"
+                horizontalAlignment: Text.AlignHCenter
+            }
 
-                acceptedButtons: Qt.RightButton | Qt.LeftButton
+            CText {
+                id: numberDisplay
+                Layout.alignment: Qt.AlignHCenter
+                font.pixelSize: 60
+                text: Utils.leftPad(`${root.displayMinutes}`, 2, "0") //
+                + ":" + Utils.leftPad(`${root.displaySeconds}`, 2, "0") //
+                + ":" + Utils.leftPad(`${root.displayCents}`, 2, "0")
 
-                cursorShape: Qt.PointingHandCursor
+                MouseArea {
+                    anchors.fill: parent
 
-                enabled: root.isTimer
-                onWheel: evt => {
-                    const delta = evt.angleDelta.y * Config.scrollFactor;
-                    persistent.targetTimeSeconds = Utils.clamp(0, Infinity, persistent.targetTimeSeconds + delta);
+                    acceptedButtons: Qt.RightButton | Qt.LeftButton
+
+                    cursorShape: Qt.PointingHandCursor
+
+                    enabled: root.isTimer
+                    onWheel: evt => {
+                        const delta = evt.angleDelta.y * Config.scrollFactor;
+                        persistent.targetTimeSeconds = Utils.clamp(0, Infinity, persistent.targetTimeSeconds + delta);
+                    }
+
+                    onClicked: evt => {
+                        if (evt.button === Qt.LeftButton) {
+                            persistent.targetTimeSeconds = Utils.clamp(0, Infinity, persistent.targetTimeSeconds + 1);
+                        }
+                        if (evt.button === Qt.RightButton) {
+                            persistent.targetTimeSeconds = Utils.clamp(0, Infinity, persistent.targetTimeSeconds - 1);
+                        }
+                    }
+                }
+            }
+
+            RowLayout {
+                Layout.alignment: Qt.AlignHCenter
+
+                CTextButton {
+                    font.pixelSize: 24
+                    text: persistent.running ? "󰏤" : "󰐊"
+                    onClicked: persistent.running ? root.stop() : root.start()
                 }
 
-                onClicked: evt => {
-                    if (evt.button === Qt.LeftButton) {
-                        persistent.targetTimeSeconds = Utils.clamp(0, Infinity, persistent.targetTimeSeconds + 1);
-                    }
-                    if (evt.button === Qt.RightButton) {
-                        persistent.targetTimeSeconds = Utils.clamp(0, Infinity, persistent.targetTimeSeconds - 1);
-                    }
+                CTextButton {
+                    font.pixelSize: 24
+                    text: "󰜉"
+                    onClicked: root.reset()
                 }
-            }
-        }
 
-        RowLayout {
-            Layout.alignment: Qt.AlignHCenter
-
-            CTextButton {
-                font.pixelSize: 24
-                text: persistent.running ? "󰏤" : "󰐊"
-                onClicked: persistent.running ? root.stop() : root.start()
-            }
-
-            CTextButton {
-                font.pixelSize: 24
-                text: "󰜉"
-                onClicked: root.reset()
-            }
-
-            CTextButton {
-                text: "󱎫"
-                onClicked: root.toggleMode()
+                CTextButton {
+                    text: "󱎫"
+                    onClicked: root.toggleMode()
+                }
             }
         }
     }

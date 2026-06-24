@@ -9,6 +9,8 @@ import qs.widgets
 import qs.services
 
 DesktopWidget {
+    implicitWidth: root.implicitWidth
+    implicitHeight: root.implicitHeight
     Rectangle {
         id: root
 
