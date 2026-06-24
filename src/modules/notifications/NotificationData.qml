@@ -44,6 +44,10 @@ QtObject {
         }
     }
 
+    function hide() {
+        hidden = true;
+    }
+
     function updateTimeString() {
         const diffMs = Date.now() - time.getTime();
         const diffMinutes = diffMs / 60_000;

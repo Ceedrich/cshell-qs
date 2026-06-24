@@ -1,4 +1,5 @@
 import Quickshell
+import Quickshell.Wayland
 
 import qs.config
 
@@ -9,6 +10,8 @@ PanelWindow {
         top: Config.margin
         right: Config.margin
     }
+
+    WlrLayershell.namespace: "cshell-notifications"
 
     implicitWidth: 360
     implicitHeight: notifications.implicitHeight

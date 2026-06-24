@@ -7,8 +7,6 @@ import qs.modules.notifications
 
 Singleton {
     id: root
-    readonly property ListModel history: ListModel {}
-
     property list<NotificationData> allNotifs: []
     property list<NotificationData> notifications: allNotifs.filter(n => !n.dismissed)
     readonly property list<NotificationData> onScreenNotifications: notifications.filter(n => !n.hidden)
@@ -27,6 +25,19 @@ Singleton {
                 n
             });
             root.allNotifs = [notif, ...root.notifications];
+        }
+    }
+
+    function clearAll() {
+        for (const n of notifications) {
+            n.dismiss();
+        }
+        allNotifs = [];
+    }
+
+    function hideAll() {
+        for (const n of onScreenNotifications) {
+            n.hide();
         }
     }
 
