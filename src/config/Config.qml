@@ -22,6 +22,8 @@ Singleton {
 
     readonly property int barHeight: 45
 
+    readonly property int notificationDismissTimeout: 5000
+
     component NumberAnimationSimple: NumberAnimation {
         duration: 300
         easing: Easing.OutCubic

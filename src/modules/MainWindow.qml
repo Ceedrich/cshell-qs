@@ -3,6 +3,7 @@ import Quickshell.Wayland
 import QtQuick
 
 import qs.modules.bar
+import qs.modules.notifications
 
 PanelWindow {
     id: root
