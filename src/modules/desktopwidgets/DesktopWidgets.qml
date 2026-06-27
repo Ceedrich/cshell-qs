@@ -1,10 +1,10 @@
 pragma ComponentBehavior: Bound
 
 import Quickshell
+import Quickshell.Wayland
 import QtQuick
 
 import qs.modules.desktopwidgets.widgets
-import qs.config
 import qs.widgets.ContextMenu
 
 PanelWindow {
@@ -15,13 +15,7 @@ PanelWindow {
         top: true
     }
 
-    margins {
-        top: Config.margin
-        bottom: Config.margin
-        left: Config.margin
-        right: Config.margin
-    }
-
+    WlrLayershell.exclusionMode: ExclusionMode.Ignore
     aboveWindows: false
 
     color: "transparent"

@@ -19,12 +19,4 @@ RowLayout {
             }
         }
     }
-
-    BarPill {
-        RowLayout {
-            ControlCenterToggle {
-                barWindow: root.barWindow
-            }
-        }
-    }
 }
