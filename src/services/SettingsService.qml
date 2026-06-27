@@ -8,7 +8,7 @@ Singleton {
     id: root
 
     property bool isLoaded: false
-    readonly property alias data: adapter
+    readonly property alias data: settingsAdapter
     readonly property alias state: stateAdapter
 
     readonly property string configPath: (Quickshell.env("XDG_CONFIG_HOME") || Quickshell.env("HOME") + "/.config") + "/cshell/"
@@ -20,12 +20,24 @@ Singleton {
     signal stateLoaded
 
     Timer {
-        id: saveTimer
+        id: stateSaveTimer
+        interval: 500
+        onTriggered: {
+            if (root.isLoaded) {
+                stateFileView.writeAdapter();
+            } else {
+                // try saving again if the file is not yet loaded
+                restart();
+            }
+        }
+    }
+
+    Timer {
+        id: settingsSaveTimer
         interval: 500
         onTriggered: {
             if (root.isLoaded) {
                 settingsFile.writeAdapter();
-                stateFileView.writeAdapter();
             } else {
                 // try saving again if the file is not yet loaded
                 restart();
@@ -38,7 +50,6 @@ Singleton {
         path: root.settingsFilePath
         watchChanges: true
         onFileChanged: reload()
-        onAdapterUpdated: writeAdapter()
 
         onLoaded: {
             root.isLoaded = true;
@@ -52,8 +63,9 @@ Singleton {
         }
 
         adapter: JsonAdapter {
-            id: adapter
+            id: settingsAdapter
             property bool invertScrolling: false
+            property int scrollFactor: 1
             property var desktopWidgets: ({})
         }
     }
@@ -80,8 +92,12 @@ Singleton {
         }
     }
 
-    function triggerSave() {
-        saveTimer.restart();
+    function triggerSettingsSave() {
+        settingsSaveTimer.restart();
+    }
+
+    function triggerStateSave() {
+        stateSaveTimer.restart();
     }
 
     Component.onCompleted: {

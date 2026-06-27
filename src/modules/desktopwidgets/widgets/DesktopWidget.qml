@@ -52,7 +52,7 @@ Item {
 
     function saveState() {
         SettingsService.state.desktopWidgets[identifier] = stateData;
-        SettingsService.triggerSave();
+        SettingsService.triggerStateSave();
     }
 
     function toggleEnabled() {

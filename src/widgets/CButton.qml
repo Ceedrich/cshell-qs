@@ -140,8 +140,8 @@ Item {
                 return;
             }
             const inverted = SettingsService.data.invertScrolling ? -1 : 1;
-            const deltaX = inverted * evt.angleDelta.x * Config.scrollFactor;
-            const deltaY = inverted * evt.angleDelta.y * Config.scrollFactor;
+            const deltaX = inverted * evt.angleDelta.x * SettingsService.data.scrollFactor / 100;
+            const deltaY = inverted * evt.angleDelta.y * SettingsService.data.scrollFactor / 100;
 
             root.scrollX(deltaX);
             root.scrollY(deltaY);
