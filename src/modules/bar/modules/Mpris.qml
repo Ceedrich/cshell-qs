@@ -89,23 +89,50 @@ ClippingWrapperRectangle {
 
                 columnSpacing: Config.spacing
 
-                Image {
-                    id: image
-
-                    Layout.alignment: Qt.AlignHCenter
+                Item {
                     Layout.preferredWidth: 100
                     Layout.preferredHeight: 100
                     Layout.row: 0
                     Layout.column: 0
 
-                    source: MprisService.trackArtUrl
-
-                    MouseArea {
+                    Image {
+                        id: image
                         anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: {
-                            MprisService.raise();
+
+                        Layout.alignment: Qt.AlignHCenter
+
+                        source: MprisService.trackArtUrl
+
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: {
+                                MprisService.raise();
+                            }
                         }
+                    }
+                    CText {
+                      anchors.centerIn: parent
+                      width: parent.width
+                      wrapMode: Text.WordWrap
+                      horizontalAlignment: Text.AlignHCenter
+                      muted: true
+                      visible: text !== ""
+                      text: {
+                        switch (image.State) {
+                          case Image.Error: 
+                            return "[error loading image]"
+                            break
+                          case Image.Ready:
+                            return ""
+                            break
+                          case Image.Loading:
+                            return "[loading...]"
+                            break
+                          default:
+                            return "[image not available]"
+                        }
+                      }
                     }
                 }
 
@@ -116,20 +143,23 @@ ClippingWrapperRectangle {
 
                     CText {
                         Layout.fillWidth: true
-                        text: MprisService.title
+                        text: MprisService.title || "[title not available]"
+                        muted: MprisService.title === ""
                         font.pixelSize: Config.fontSize * 1.25
                     }
 
                     CText {
                         Layout.fillWidth: true
 
-                        text: MprisService.artist
+                        text: MprisService.artist || "[artist not available]"
+                        muted: MprisService.artist === ""
                     }
 
                     CText {
                         Layout.fillWidth: true
 
-                        text: MprisService.album
+                        text: MprisService.album || "[album not available]"
+                        muted: MprisService.album === ""
                     }
                 }
 

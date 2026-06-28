@@ -5,12 +5,14 @@ import qs.config
 Text {
     id: root
     property color defaultColor: Colors.text
+    property color mutedColor: Colors.overlay2
     property bool underline: false
+    property bool muted: false
 
     font.family: Config.fontFamily
     font.pixelSize: Config.fontSize
 
-    color: defaultColor
+    color: muted ? mutedColor : defaultColor
 
     elide: Qt.ElideRight
 
