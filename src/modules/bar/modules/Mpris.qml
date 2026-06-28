@@ -112,27 +112,24 @@ ClippingWrapperRectangle {
                         }
                     }
                     CText {
-                      anchors.centerIn: parent
-                      width: parent.width
-                      wrapMode: Text.WordWrap
-                      horizontalAlignment: Text.AlignHCenter
-                      muted: true
-                      visible: text !== ""
-                      text: {
-                        switch (image.State) {
-                          case Image.Error: 
-                            return "[error loading image]"
-                            break
-                          case Image.Ready:
-                            return ""
-                            break
-                          case Image.Loading:
-                            return "[loading...]"
-                            break
-                          default:
-                            return "[image not available]"
+                        anchors.centerIn: parent
+                        width: parent.width
+                        wrapMode: Text.WordWrap
+                        horizontalAlignment: Text.AlignHCenter
+                        muted: true
+                        visible: text !== ""
+                        text: {
+                            switch (image.status) {
+                            case Image.Error:
+                                return "[error loading image]";
+                            case Image.Ready:
+                                return "";
+                            case Image.Loading:
+                                return "[loading...]";
+                            default:
+                                return "[image not available]";
+                            }
                         }
-                      }
                     }
                 }
 
