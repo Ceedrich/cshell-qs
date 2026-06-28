@@ -53,7 +53,7 @@ QtObject {
         const diffMinutes = diffMs / 60_000;
         if (diffMinutes < 1) {
             const diffSeconds = diffMs / 1000;
-            timeString = `${diffSeconds}s ago`;
+            timeString = `${Math.round(diffSeconds)}s ago`;
         } else {
             timeString = `${Math.floor(diffMinutes)}m ago`;
         }

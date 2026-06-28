@@ -20,6 +20,15 @@ WrapperRectangle {
     signal shouldDismiss
 
     Item {
+        MouseArea {
+            anchors.fill: parent
+            acceptedButtons: Qt.LeftButton
+            hoverEnabled: true
+            onClicked: root.shouldDismiss()
+            onEntered: root.notification.expireTimer.stop()
+            onExited: root.notification.expireTimer.start()
+        }
+
         implicitWidth: layout.implicitWidth
         implicitHeight: layout.implicitHeight
         RowLayout {
@@ -49,10 +58,18 @@ WrapperRectangle {
 
             ColumnLayout {
                 Layout.alignment: Qt.AlignVCenter
-                CText {
-                    Layout.fillWidth: true
-                    text: root.notification.summary
-                    font.bold: true
+                RowLayout {
+                    CText {
+                        text: root.notification.summary
+                        font.bold: true
+                    }
+                    Item {
+                        Layout.fillWidth: true
+                    }
+                    CText {
+                        text: root.notification.timeString
+                        muted: true
+                    }
                 }
 
                 CText {
@@ -63,12 +80,6 @@ WrapperRectangle {
                     maximumLineCount: 2
                 }
             }
-        }
-
-        MouseArea {
-            anchors.fill: parent
-            acceptedButtons: Qt.LeftButton
-            onClicked: root.shouldDismiss()
         }
     }
 }
