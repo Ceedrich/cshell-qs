@@ -200,7 +200,8 @@ ClippingWrapperRectangle {
                         value: MprisService.player?.position || 0
                         from: 0
                         to: MprisService.player?.length || 0
-                        onMoved: () => MprisService.player.position = value
+                        interactionOnMove: false
+                        onInteraction: v => MprisService.player.position = v
 
                         FrameAnimation {
                             running: slider.visible
