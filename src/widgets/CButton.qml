@@ -1,17 +1,11 @@
 pragma ComponentBehavior: Bound
-import Quickshell.Widgets
 import QtQuick
 
 import qs.config
 import qs.services
 
-Item {
+CButtonBase {
     id: root
-
-    property alias content: content.child
-
-    property bool disabled: false
-
     property bool clickEnabled: true
     property bool leftClickEnabled: true
     property bool rightClickEnabled: false
@@ -25,64 +19,16 @@ Item {
 
     hoverEnabled: enabled
 
+    pressed: mousearea.pressed
+    hovered: false
+
     // Hoverarea/Background
-    property real backgroundOffset: 4
-    property real backgroundOffsetX: backgroundOffset
-    property real backgroundOffsetY: backgroundOffset
-    property alias backgroundColor: background.color
-
-    property bool hovered: false
-
     signal clicked
     signal longHover
     signal rightClicked
     signal middleClicked
     signal scrollX(delta: real)
     signal scrollY(delta: real)
-
-    implicitWidth: content.implicitWidth
-    implicitHeight: content.implicitHeight
-
-    component BgRect: Rectangle {
-        anchors.top: root.top
-        anchors.left: root.left
-        width: root.width + 2 * root.backgroundOffsetX
-        height: root.height + 2 * root.backgroundOffsetY
-
-        radius: Config.border.radius
-
-        transform: [
-            Translate {
-                x: -root.backgroundOffsetX
-                y: -root.backgroundOffsetY
-            }
-        ]
-
-        Behavior on color {
-            Config.ColorAnimationQuick {}
-        }
-
-        Behavior on opacity {
-            Config.NumberAnimationQuick {}
-        }
-    }
-
-    BgRect {
-        id: background
-        color: "transparent"
-    }
-
-    BgRect {
-        id: hoverarea
-        color: Colors.overlay2
-        opacity: mousearea.pressed ? 0.3 : root.hovered ? 0.2 : 0.0
-    }
-
-    WrapperRectangle {
-        id: content
-        color: "transparent"
-        width: parent.width
-    }
 
     Timer {
         id: longHoverTimer
