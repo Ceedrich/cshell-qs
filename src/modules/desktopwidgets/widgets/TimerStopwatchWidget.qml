@@ -3,9 +3,10 @@ import Quickshell.Widgets
 import QtQuick
 import QtQuick.Layouts
 
-import qs.widgets
 import qs.config
+import qs.services
 import qs.utils
+import qs.widgets
 
 DesktopWidget {
     id: root
@@ -69,7 +70,7 @@ DesktopWidget {
         running: false
         onTriggered: {
             root.reset();
-            Quickshell.execDetached(["notify-send", "CShell", "Timer Finito"]);
+            ShellService.sendNotification("Timer", "Ahhhhhh, the timer is done");
         }
     }
 
