@@ -15,6 +15,7 @@ PanelWindow {
         top: true
     }
 
+    WlrLayershell.namespace: "cshell-desktop-widgets"
     WlrLayershell.exclusionMode: ExclusionMode.Ignore
     aboveWindows: false
 
