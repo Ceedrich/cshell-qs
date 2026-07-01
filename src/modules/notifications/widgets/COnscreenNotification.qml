@@ -48,6 +48,6 @@ Item {
         width: root.width
         notification: root.notification
 
-        onShouldDismiss: dismissAnimation.running = true
+        onExpired: dismissAnimation.running = true
     }
 }

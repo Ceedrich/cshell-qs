@@ -17,14 +17,22 @@ WrapperRectangle {
     border.width: Config.border.width
     radius: 10
 
-    signal shouldDismiss
+    signal expired
+    signal clicked
+
+    Connections {
+        target: root.notification.expireTimer
+        function onTriggered() {
+            root.expired();
+        }
+    }
 
     Item {
         MouseArea {
             anchors.fill: parent
             acceptedButtons: Qt.LeftButton
             hoverEnabled: true
-            onClicked: root.shouldDismiss()
+            onClicked: root.clicked()
             onEntered: root.notification.expireTimer.stop()
             onExited: root.notification.expireTimer.start()
         }
@@ -60,6 +68,7 @@ WrapperRectangle {
                 Layout.alignment: Qt.AlignVCenter
                 RowLayout {
                     CText {
+                        Layout.fillWidth: true
                         text: root.notification.summary
                         font.bold: true
                     }
