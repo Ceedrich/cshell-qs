@@ -2,24 +2,19 @@ import QtQuick
 import Quickshell.Io
 
 import qs.widgets
+import qs.services
 
 CBarItem {
     id: root
     required property QtObject barWindow
 
     text: "󰍜"
-    onClicked: toggle_swaync.running = true
-    // onClicked: () => root.controlPanelWindow.visible = !root.controlPanelWindow.visible
+    onClicked: ShellService.controlCenterWindow.toggleOpen()
 
     IpcHandler {
         target: "control-center"
         function toggle(): void {
-            toggle_swaync.running = true;
+            ShellService.controlCenterWindow.toggleOpen();
         }
-    }
-
-    Process {
-        id: toggle_swaync
-        command: ["swaync-client", "-t", "-sw"]
     }
 }

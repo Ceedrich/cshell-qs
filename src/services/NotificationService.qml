@@ -4,6 +4,7 @@ import QtQuick
 import Quickshell.Services.Notifications
 
 import qs.modules.notifications
+import qs.services
 
 Singleton {
     id: root
@@ -22,7 +23,8 @@ Singleton {
             n.tracked = true;
 
             const notif = notificationComponent.createObject(root, {
-                n
+                n,
+                hidden: ShellService.controlCenterWindow.isOpen
             });
             root.allNotifs = [notif, ...root.notifications];
         }

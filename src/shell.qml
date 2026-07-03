@@ -8,6 +8,7 @@ import qs.modules.bar
 import qs.modules.overview
 import qs.modules.desktopwidgets
 import qs.modules.notifications
+import qs.modules.controlcenter
 import qs.modules
 
 ShellRoot {
@@ -22,6 +23,8 @@ ShellRoot {
     MainWindow {}
 
     OverviewWindow {}
+
+    ControlCenterWindow {}
 
     NotificationWindow {}
 }

@@ -7,26 +7,12 @@ import qs.widgets
 
 CBarItem {
     id: root
-    property list<string> icons: ["󰕿", "󰖀", "󰕾"]
-    property string icon_muted: "󰝟"
-
     enabled: VolumeService.ready
 
-    property string icon: {
-        if (!VolumeService.ready) {
-            return "";
-        }
-
-        if (VolumeService.muted) {
-            return icon_muted;
-        }
-        const icon = Utils.select_from_list(VolumeService.volume, icons);
-        return icon;
-    }
     textColor: VolumeService.muted ? Colors.overlay1 : defaultColor
     underline: !VolumeService.muted
 
-    text: `${Math.round((VolumeService.volume || 0) * 100)}% ${icon}`
+    text: `${Math.round((VolumeService.volume || 0) * 100)}% ${VolumeService.volumeIcon}`
 
     scrollingEnabled: true
 

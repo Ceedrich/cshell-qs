@@ -12,6 +12,21 @@ Singleton {
     property real volume: sink?.audio?.volume ?? 0
     property bool muted: sink?.audio?.muted ?? false
 
+    readonly property string volumeIcon: {
+        const icons = ["󰕿", "󰖀", "󰕾"];
+        const icon_muted = "󰝟";
+
+        if (!VolumeService.ready) {
+            return "";
+        }
+
+        if (VolumeService.muted) {
+            return icon_muted;
+        }
+        const icon = Utils.select_from_list(VolumeService.volume, icons);
+        return icon;
+    }
+
     readonly property bool ready: Pipewire.ready && sink != null
     readonly property PwNode sink: Pipewire.defaultAudioSink
 
