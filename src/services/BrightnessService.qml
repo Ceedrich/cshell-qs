@@ -19,6 +19,9 @@ Singleton {
 
     property bool interactive: false
 
+    readonly property var icon: Utils.select_from_list(BrightnessService.percentage / 100, icons)
+    readonly property var icons: ["󱩎", "󱩎", "󱩏", "󱩐", "󱩑", "󱩒", "󱩓", "󱩔", "󱩕", "󱩖", "󰛨"]
+
     Process {
         id: visibleProces
         command: ["brightnessctl", "--class=backlight", "-m", "i"]

@@ -14,17 +14,20 @@ Slider {
 
     signal interaction(value: real)
 
+    readonly property color fgColor: enabled ? Colors.text : Colors.overlay1
+    readonly property color bgColor: enabled ? Colors.surface2 : Colors.surface1
+
     implicitWidth: 200
     implicitHeight: 8
 
     contentItem: Rectangle {
         anchors.fill: parent
-        color: Colors.surface2
+        color: root.bgColor
         radius: 100
 
         Rectangle {
             id: filled
-            color: Colors.overlay2
+            color: root.fgColor
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
             implicitHeight: root.height
