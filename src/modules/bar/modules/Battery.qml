@@ -19,7 +19,7 @@ CBarItem {
         }
     }
 
-    mouseareaEnabled: false
+    enabled: false
 
     text: perc + "% " + icon
     underline: true

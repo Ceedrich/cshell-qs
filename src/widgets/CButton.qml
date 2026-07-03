@@ -7,28 +7,49 @@ import qs.services
 CButtonBase {
     id: root
     property bool clickEnabled: true
-    property bool leftClickEnabled: true
+    property bool leftClickEnabled: clickEnabled
     property bool rightClickEnabled: false
     property bool middleClickEnabled: false
+    property bool doubleClickEnabled: false
 
-    property bool scrollingEnabled: false
+    property alias scrollingEnabled: wheel.enabled
+    property alias hoverEnabled: hover.enabled
 
-    property alias mouseareaEnabled: mousearea.enabled
-    property alias hoverEnabled: mousearea.hoverEnabled
-    property alias propagateComposedEvents: mousearea.propagateComposedEvents
+    readonly property bool anyClickEnabled: clickEnabled || root.doubleClickEnabled || root.rightClickEnabled || root.leftClickEnabled || root.middleClickEnabled
 
-    hoverEnabled: enabled
-
-    pressed: mousearea.pressed
-    hovered: false
+    scrollingEnabled: false
+    hoverEnabled: enabled && (anyClickEnabled || scrollingEnabled)
+    pressed: tap.pressed
+    hovered: hover.hovered
 
     // Hoverarea/Background
     signal clicked
+    signal doubleClicked
     signal longHover
     signal rightClicked
     signal middleClicked
     signal scrollX(delta: real)
     signal scrollY(delta: real)
+
+    TapHandler {
+        id: tap
+        enabled: root.anyClickEnabled
+        gesturePolicy: TapHandler.ReleaseWithinBounds
+        exclusiveSignals: root.doubleClickEnabled ? TapHandler.SingleTap | TapHandler.DoubleTap : TapHandler.SingleTap
+        onTapped: (p, button) => {
+            if (button === Qt.LeftButton) {
+                root.clicked();
+            }
+            if (button === Qt.RightButton) {
+                root.rightClicked();
+            }
+            if (button === Qt.MiddleButton) {
+                root.middleClicked();
+            }
+        }
+
+        onDoubleTapped: root.doubleClicked()
+    }
 
     Timer {
         id: longHoverTimer
@@ -36,55 +57,20 @@ CButtonBase {
         onTriggered: root.longHover()
     }
 
-    MouseArea {
-        id: mousearea
-        anchors.fill: parent
-        enabled: !root.disabled
-        visible: enabled
+    HoverHandler {
+        id: hover
+        onHoveredChanged: if (hovered)
+            longHoverTimer.restart()
+        cursorShape: root.anyClickEnabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+    }
 
-        cursorShape: Qt.PointingHandCursor
-        acceptedButtons: {
-            let ret = Qt.NoButton;
-            // qmlformat off
-            if (!root.clickEnabled) return ret;
-            if (root.rightClickEnabled) ret |= Qt.RightButton;
-            if (root.leftClickEnabled) ret |= Qt.LeftButton;
-            if (root.middleClickEnabled) ret |= Qt.MiddleButton;
-            // qmlformat on
-            return ret;
-        }
+    WheelHandler {
+        id: wheel
+        onWheel: e => _onWheel(e)
 
-        scrollGestureEnabled: true
-
-        onEntered: {
-            root.hovered = true;
-            longHoverTimer.running = true;
-        }
-        onExited: {
-            root.hovered = false;
-            longHoverTimer.running = false;
-        }
-
-        onClicked: evt => _onClicked(evt)
-        onWheel: evt => _onWheel(evt)
-
-        function _onClicked(evt: MouseEvent) {
-            if (evt.button === Qt.LeftButton) {
-                root.clicked();
-            }
-            if (evt.button === Qt.RightButton) {
-                root.rightClicked();
-            }
-            if (evt.button === Qt.MiddleButton) {
-                root.middleClicked();
-            }
-        }
+        acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
 
         function _onWheel(evt: WheelEvent) {
-            if (!root.scrollingEnabled) {
-                evt.accepted = false;
-                return;
-            }
             const inverted = SettingsService.data.invertScrolling ? -1 : 1;
             const deltaX = inverted * evt.angleDelta.x * SettingsService.data.scrollFactor / 100;
             const deltaY = inverted * evt.angleDelta.y * SettingsService.data.scrollFactor / 100;

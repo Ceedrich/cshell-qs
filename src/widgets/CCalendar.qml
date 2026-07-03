@@ -68,7 +68,7 @@ ColumnLayout {
 
             property bool isSelected: (model.day === grid.selectedDate.getDate() && model.month === grid.selectedDate.getMonth() && model.year === grid.selectedDate.getFullYear())
 
-            mouseareaEnabled: model.month === grid.month
+            enabled: model.month === grid.month
 
             textColor: {
                 if (model.month === grid.month) {
