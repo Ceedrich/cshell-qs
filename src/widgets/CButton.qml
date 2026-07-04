@@ -37,7 +37,7 @@ CButtonBase {
         gesturePolicy: TapHandler.ReleaseWithinBounds
         exclusiveSignals: root.doubleClickEnabled ? TapHandler.SingleTap | TapHandler.DoubleTap : TapHandler.SingleTap
         onTapped: (p, button) => {
-            if (button === Qt.LeftButton) {
+            if (button === Qt.LeftButton || button == Qt.NoButton) /* touchscreen */ {
                 root.clicked();
             }
             if (button === Qt.RightButton) {

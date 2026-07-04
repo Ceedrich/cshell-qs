@@ -65,7 +65,7 @@ Singleton {
         adapter: JsonAdapter {
             id: settingsAdapter
             property bool invertScrolling: false
-            property int scrollFactor: 1
+            property real scrollFactor: 1
             property var desktopWidgets: ({})
         }
     }
