@@ -24,13 +24,6 @@ QtObject {
 
     default property Notification n
 
-    readonly property Timer updateStringTimer: Timer {
-        running: !root.dismissed
-        interval: 5000
-        repeat: true
-        onTriggered: root.updateTimeString()
-    }
-
     readonly property Timer expireTimer: Timer {
         running: !root.dismissed
         interval: (root.n?.expireTimeout > 0) ? root.n.expireTimeout : Config.notificationDismissTimeout

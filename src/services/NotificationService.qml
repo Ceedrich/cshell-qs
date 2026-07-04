@@ -30,6 +30,17 @@ Singleton {
         }
     }
 
+    Timer {
+        running: root.notifications.length > 0
+        interval: 5000
+        repeat: true
+        onTriggered: {
+            for (const n of root.notifications) {
+                n.updateTimeString();
+            }
+        }
+    }
+
     function clearAll() {
         for (const n of notifications) {
             n.dismiss();

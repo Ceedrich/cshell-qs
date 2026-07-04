@@ -27,67 +27,69 @@ WrapperRectangle {
         }
     }
 
-    Item {
-        MouseArea {
-            anchors.fill: parent
+    RowLayout {
+        id: layout
+
+        TapHandler {
+            id: tap
             acceptedButtons: Qt.LeftButton
-            hoverEnabled: true
-            onClicked: root.clicked()
-            onEntered: root.notification.expireTimer.stop()
-            onExited: root.notification.expireTimer.start()
+            onTapped: root.clicked()
         }
 
-        implicitWidth: layout.implicitWidth
-        implicitHeight: layout.implicitHeight
-        RowLayout {
-            id: layout
-            width: parent.width
-            height: parent.height
-
-            Item {
-                Layout.alignment: Qt.AlignTop
-                Layout.preferredWidth: 32
-                Layout.preferredHeight: 32
-
-                Image {
-                    id: image
-                    anchors.fill: parent
-                    visible: source.toString() != ""
-                    source: root.notification.image
+        HoverHandler {
+            id: hover
+            onHoveredChanged: {
+                if (hovered) {
+                    root.notification.expireTimer.stop();
+                } else {
+                    root.notification.expireTimer.start();
                 }
+            }
+        }
 
-                Image {
-                    id: fallbackImage
-                    visible: !image.visible
-                    source: "image://icon/dialog-information-symbolic"
-                    anchors.fill: parent
+        Item {
+            Layout.alignment: Qt.AlignTop
+            Layout.preferredWidth: 32
+            Layout.preferredHeight: 32
+
+            Image {
+                id: image
+                anchors.fill: parent
+                visible: source.toString() != ""
+                source: root.notification.image
+            }
+
+            Image {
+                id: fallbackImage
+                visible: !image.visible
+                source: "image://icon/dialog-information-symbolic"
+                anchors.fill: parent
+            }
+        }
+
+        ColumnLayout {
+            Layout.alignment: Qt.AlignVCenter
+            RowLayout {
+                CText {
+                    Layout.fillWidth: true
+                    text: root.notification.summary
+                    font.bold: true
+                }
+                Item {
+                    Layout.fillWidth: true
+                }
+                CText {
+                    text: root.notification.timeString
+                    muted: true
                 }
             }
 
-            ColumnLayout {
-                Layout.alignment: Qt.AlignVCenter
-                RowLayout {
-                    CText {
-                        Layout.fillWidth: true
-                        text: root.notification.summary
-                        font.bold: true
-                    }
-                    Item {
-                        Layout.fillWidth: true
-                    }
-                    CText {
-                        text: root.notification.timeString
-                        muted: true
-                    }
-                }
-
-                CText {
-                    visible: text != ""
-                    Layout.fillWidth: true
-                    text: root.notification.body
-                    wrapMode: Text.WordWrap
-                    maximumLineCount: 2
-                }
+            CText {
+                visible: text != ""
+                Layout.fillWidth: true
+                text: root.notification.body
+                wrapMode: Text.WordWrap
+                maximumLineCount: 2
             }
         }
     }

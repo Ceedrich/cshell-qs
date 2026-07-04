@@ -12,6 +12,7 @@ Item {
     implicitHeight: n.implicitHeight
 
     ParallelAnimation {
+        id: fadeInAnimation
         running: n.notification.isNew
         onFinished: n.notification.isNew = false
 
@@ -22,7 +23,7 @@ Item {
     }
 
     ParallelAnimation {
-        id: hideAnimaiton
+        id: fadeOutAnimation
         running: n.notification.shouldExpire
 
         // qmlformat off
@@ -32,22 +33,12 @@ Item {
         onFinished: n.notification.hidden = true
     }
 
-    ParallelAnimation {
-        id: dismissAnimation
-        running: false
-
-        // qmlformat off
-        Config.NumberAnimationSimple { target: n; property: "opacity"; from: 1; to: 0 }
-        Config.NumberAnimationSimple { target: n; property: "x"; from: 0; to: -200 }
-        // qmlformat on
-        onFinished: n.notification.dismiss()
-    }
-
     CNotification {
         id: n
         width: root.width
         notification: root.notification
 
-        onExpired: dismissAnimation.running = true
+        onExpired: fadeOutAnimation.start()
+        onClicked: fadeOutAnimation.start()
     }
 }

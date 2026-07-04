@@ -7,7 +7,6 @@ import qs.modules.notifications.widgets
 
 ColumnLayout {
     id: onScreenCol
-    width: parent.width
 
     spacing: Config.spacing
 
