@@ -30,6 +30,8 @@ CButtonBase {
     signal middleClicked
     signal scrollX(delta: real)
     signal scrollY(delta: real)
+    signal scrollXInt(delta: int)
+    signal scrollYInt(delta: int)
 
     TapHandler {
         id: tap
@@ -68,6 +70,9 @@ CButtonBase {
         id: wheel
         onWheel: e => _onWheel(e)
 
+        property real dx: 0
+        property real dy: 0
+
         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
 
         function _onWheel(evt: WheelEvent) {
@@ -75,8 +80,19 @@ CButtonBase {
             const deltaX = inverted * evt.angleDelta.x * SettingsService.data.scrollFactor / 100;
             const deltaY = inverted * evt.angleDelta.y * SettingsService.data.scrollFactor / 100;
 
+            dx += deltaX;
+            dy += deltaY;
+
             root.scrollX(deltaX);
             root.scrollY(deltaY);
+
+            const intDx = Math.trunc(dx);
+            const intDy = Math.trunc(dy);
+            dx -= intDx;
+            dy -= intDy;
+
+            root.scrollXInt(intDx);
+            root.scrollYInt(intDy);
         }
     }
 }

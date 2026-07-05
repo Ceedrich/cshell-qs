@@ -21,7 +21,9 @@ DesktopWidget {
 
         property bool running: false
 
-        property int targetTimeSeconds: 10
+        readonly property int targetTimeSeconds: targetSeconds + 60 * targetMinutes
+        property int targetSeconds: 10
+        property int targetMinutes: 0
 
         property int elapsedMsBuffer: 0
         property int elapsedMs: 0
@@ -108,9 +110,9 @@ DesktopWidget {
                     bottomPadding: 0
                     topPadding: 0
 
-                    onClicked: root.updateTargetSeconds(60)
-                    onRightClicked: root.updateTargetSeconds(-60)
-                    onScrollY: delta => root.updateTargetSeconds(delta * 60)
+                    onClicked: root.addMinutes()
+                    onRightClicked: root.subtractMinutes()
+                    onScrollYInt: delta => root.addMinutes(delta)
                 }
                 CText {
                     font.pixelSize: numberDisplay.fontSize
@@ -128,9 +130,9 @@ DesktopWidget {
                     bottomPadding: 0
                     topPadding: 0
 
-                    onClicked: root.updateTargetSeconds(1)
-                    onRightClicked: root.updateTargetSeconds(-1)
-                    onScrollY: delta => root.updateTargetSeconds(delta)
+                    onClicked: root.addSeconds()
+                    onRightClicked: root.subtractSeconds()
+                    onScrollYInt: delta => root.addSeconds(delta)
                 }
                 CText {
                     font.pixelSize: numberDisplay.fontSize
@@ -194,7 +196,22 @@ DesktopWidget {
         persistent.isStopwatch = !persistent.isStopwatch;
     }
 
-    function updateTargetSeconds(delta) {
-        persistent.targetTimeSeconds = Utils.clamp(1, 99 * 60 + 59, persistent.targetTimeSeconds + delta);
+    function setSeconds(secs: int) {
+        persistent.targetSeconds = ((secs % 60) + 60) % 60;
+    }
+    function addSeconds(delta = 1) {
+        setSeconds(persistent.targetSeconds + delta);
+    }
+    function subtractSeconds(delta = 1) {
+        setSeconds(persistent.targetSeconds - delta);
+    }
+    function setMinutes(mins: int) {
+        persistent.targetMinutes = Math.max(0, mins);
+    }
+    function addMinutes(delta = 1) {
+        setMinutes(persistent.targetMinutes + delta);
+    }
+    function subtractMinutes(delta = 1) {
+        setMinutes(persistent.targetMinutes - delta);
     }
 }
