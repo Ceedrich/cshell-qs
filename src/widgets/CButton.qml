@@ -37,6 +37,19 @@ CButtonBase {
         id: tap
         enabled: root.anyClickEnabled
         gesturePolicy: TapHandler.ReleaseWithinBounds
+        acceptedButtons: {
+            let res = Qt.NoButton;
+            if (root.leftClickEnabled) {
+                res |= Qt.LeftButton;
+            }
+            if (root.rightClickEnabled) {
+                res |= Qt.RightButton;
+            }
+            if (root.middleClickEnabled) {
+                res |= Qt.MiddleButton;
+            }
+            return res;
+        }
         exclusiveSignals: root.doubleClickEnabled ? TapHandler.SingleTap | TapHandler.DoubleTap : TapHandler.SingleTap
         onTapped: (p, button) => {
             if (button === Qt.LeftButton || button == Qt.NoButton) /* touchscreen */ {

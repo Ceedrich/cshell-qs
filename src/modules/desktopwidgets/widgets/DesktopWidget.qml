@@ -44,10 +44,9 @@ Item {
         model: root.contextMenuModel
     }
 
-    MouseArea {
-        anchors.fill: parent
+    TapHandler {
         acceptedButtons: Qt.RightButton
-        onClicked: contextMenu.openAtPosition(mouseX, mouseY)
+        onTapped: p => contextMenu.openAtPosition(p.pressPosition.x, p.pressPosition.y)
     }
 
     function saveState() {
