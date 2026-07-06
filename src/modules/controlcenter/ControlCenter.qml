@@ -1,8 +1,10 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Layouts
 
 import qs.widgets
-import qs.config
+import qs.widgets.icons
 import qs.modules.controlcenter.modules
 import qs.services
 
@@ -12,44 +14,40 @@ ColumnLayout {
         font.bold: true
     }
 
-    GridLayout {
+    CStyledSlider {
+        id: volumeSlider
+        indicator: VolumeIcon {
+            volume: VolumeService.volume
+            implicitWidth: 20
+            implicitHeight: 20
+            color: volumeSlider.iconColor
+        }
+        icon: VolumeService.volumeIcon
         Layout.fillWidth: true
-        columns: 2
-
-        CTextButton {
-            text: VolumeService.volumeIcon
-            onClicked: VolumeService.toggleMuted()
-            textColor: VolumeService.muted ? Colors.overlay2 : Colors.text
+        value: VolumeService.volume
+        onInteraction: v => {
+            if (VolumeService.muted) {
+                VolumeService.muted = false;
+            }
+            VolumeService.setVolume(v);
         }
+    }
 
-        CSlider {
-            Layout.fillWidth: true
-            value: VolumeService.volume
-            onInteraction: v => VolumeService.setVolume(v)
-            enabled: !VolumeService.muted
+    CStyledSlider {
+        id: brightnessSlider
+        indicator: BrightnessIcon {
+            brightness: BrightnessService.percentage / 100.0
+            implicitWidth: 20
+            implicitHeight: 20
+            color: brightnessSlider.iconColor
         }
-
-        Repeater {
-            id: volumeControls
-            property bool expanded: false
-        }
-
-        CText {
-            text: BrightnessService.icon
-            topPadding: 4
-            bottomPadding: 4
-            leftPadding: 8
-            rightPadding: 8
-        }
-
-        CSlider {
-            visible: BrightnessService.available
-            Layout.fillWidth: true
-            from: 0
-            to: 100
-            value: BrightnessService.percentage
-            onInteraction: v => BrightnessService.setBrightness(v)
-        }
+        icon: BrightnessService.icon
+        visible: BrightnessService.available
+        Layout.fillWidth: true
+        from: 0
+        to: 100
+        value: BrightnessService.percentage
+        onInteraction: v => BrightnessService.setBrightness(v)
     }
 
     NotificationCenter {

@@ -1,3 +1,5 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import Quickshell.Widgets
 
@@ -6,13 +8,22 @@ import qs.config
 CSliderBase {
     id: root
     property int size: 50
+
     property string icon: "󰋽"
-    property color iconColor: Colors.blue
+    property color activeIconColor: Colors.base
+
+    readonly property color iconColor: indicatorLoader.pos > pos ? fgColor : activeIconColor
 
     implicitWidth: horizontal ? 2 * size : size
     implicitHeight: horizontal ? size : 2 * size
 
+    property Component indicator: CText {
+        text: root.icon
+        color: root.iconColor
+    }
+
     contentItem: ClippingRectangle {
+        id: content
         anchors.fill: parent
         radius: 1000
         color: root.bgColor
@@ -26,9 +37,10 @@ CSliderBase {
             color: root.fgColor
         }
 
-        Text {
-            text: root.icon
-            color: root.iconColor
+        Loader {
+            id: indicatorLoader
+
+            property real pos: (anchors.margins + (root.horizontal ? width : height)) / (root.horizontal ? root.width : root.height)
 
             anchors.bottom: root.vertical ? parent.bottom : undefined
             anchors.left: root.horizontal ? parent.left : undefined
@@ -37,6 +49,8 @@ CSliderBase {
             anchors.verticalCenter: root.horizontal ? parent.verticalCenter : undefined
 
             anchors.margins: Config.spacing
+
+            sourceComponent: root.indicator
         }
 
         // CText {
