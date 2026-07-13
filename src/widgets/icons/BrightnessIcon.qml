@@ -2,18 +2,9 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Shapes
 
-import qs.config
-
-Item {
+IconBase {
     id: root
-    property color color: Colors.text
-
     property real brightness: 1
-
-    implicitWidth: 200
-    implicitHeight: 200
-
-    property int strokeWidth: 8
 
     Shape {
         id: shape

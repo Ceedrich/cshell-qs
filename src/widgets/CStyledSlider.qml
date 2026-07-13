@@ -40,7 +40,10 @@ CSliderBase {
         Loader {
             id: indicatorLoader
 
-            property real pos: (anchors.margins + (root.horizontal ? width : height)) / (root.horizontal ? root.width : root.height)
+            property real horizontalPos: (anchors.leftMargin + width / 2) / root.width
+            property real verticalPos: (anchors.bottomMargin + height / 2) / root.height
+
+            property real pos: root.horizontal ? horizontalPos : verticalPos
 
             anchors.bottom: root.vertical ? parent.bottom : undefined
             anchors.left: root.horizontal ? parent.left : undefined
@@ -52,14 +55,5 @@ CSliderBase {
 
             sourceComponent: root.indicator
         }
-
-        // CText {
-        //     anchors.verticalCenter: root.horizontal ? root.verticalCenter : undefined
-        //     anchors.horizontalCenter: root.verticalCenter ? root.horizontalCenter : undefined
-        //     text: root.icon
-        //     color: "red"
-        //     anchors.left: root.horizontal ? root.left : undefined
-        //     anchors.bottom: root.vertical ? root.bottom : undefined
-        // }
     }
 }

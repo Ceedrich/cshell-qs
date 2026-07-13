@@ -2,27 +2,14 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Shapes
 
-import qs.config
-
-Item {
+IconBase {
     id: root
 
     required property real volume
 
-    implicitWidth: shape.implicitWidth
-    implicitHeight: shape.implicitHeight
-
-    property color color: Colors.text
-
-    property int strokeWidth: 8
-    property color strokeColor: color
-    property color fillColor: color
-
     Shape {
         id: shape
         preferredRendererType: Shape.CurveRenderer
-        implicitWidth: 200
-        implicitHeight: 200
         anchors.fill: parent
         fillMode: Shape.PreserveAspectFit
 
@@ -96,12 +83,5 @@ Item {
         strokeWidth: root.strokeWidth
         joinStyle: ShapePath.RoundJoin
         capStyle: ShapePath.RoundCap
-
-        Behavior on strokeColor {
-            Config.ColorAnimationQuick {}
-        }
-        Behavior on fillColor {
-            Config.ColorAnimationQuick {}
-        }
     }
 }
