@@ -62,7 +62,7 @@ ColumnLayout {
                 indicator: Image {
                     width: 20
                     height: 20
-                    source: `image://icon/${nodeslider.node.properties["application.icon-name"] || (nodeslider.node.name === "spotify" ? "spotify" : "audio-player")}`
+                    source: `image://icon/${nodeslider.node?.properties["application.icon-name"] || (nodeslider.node?.name === "spotify" ? "spotify" : "audio-player")}`
                 }
                 value: nodeslider.node.audio.volume
                 onInteraction: v => {

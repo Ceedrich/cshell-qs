@@ -22,7 +22,21 @@ Singleton {
     readonly property string title: player?.trackTitle || ""
     readonly property string album: player?.trackAlbum || ""
     readonly property string artist: player?.trackArtist || ""
-    readonly property string trackArtUrl: player?.trackArtUrl || ""
+    readonly property string imageUrl: {
+        // from https://github.com/caelestia-dots/shell/blob/aa836f2a29bf48b403c57af4bec224aed0412878/services/Players.qml#L25-L38 licenced GPL-3.0
+        if (!player) {
+            return "";
+        }
+        if (player.trackArtUrl) {
+            return player.trackArtUrl;
+        }
+        const url = player.metadata["xesam:url"] || "";
+        if (!url.startsWith("https://www.youtube.com/watch")) {
+            return url;
+        }
+        const id = url.match(/[&?]v=([\w-]{11})/)?.[1];
+        return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : "";
+    }
     readonly property bool isPlaying: player?.isPlaying || false
 
     readonly property string playerIcon: {

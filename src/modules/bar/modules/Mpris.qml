@@ -58,10 +58,11 @@ ClippingWrapperRectangle {
                     text: MprisService.playerIcon
                 }
                 Image {
+                    fillMode: Image.PreserveAspectFit
                     anchors.centerIn: parent
                     width: 20
                     height: 20
-                    source: MprisService.trackArtUrl
+                    source: MprisService.imageUrl
                 }
             }
 
@@ -101,7 +102,9 @@ ClippingWrapperRectangle {
 
                         Layout.alignment: Qt.AlignHCenter
 
-                        source: MprisService.trackArtUrl
+                        fillMode: Image.PreserveAspectFit
+
+                        source: MprisService.imageUrl
 
                         MouseArea {
                             anchors.fill: parent

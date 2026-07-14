@@ -20,7 +20,7 @@ WrapperRectangle {
 
             Image {
                 anchors.fill: parent
-                source: MprisService.trackArtUrl
+                source: MprisService.imageUrl
             }
         }
         CText {
