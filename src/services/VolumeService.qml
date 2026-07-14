@@ -30,40 +30,13 @@ Singleton {
     readonly property bool ready: Pipewire.ready && sink != null
     readonly property PwNode sink: Pipewire.defaultAudioSink
 
-    property list<PwNode> sources
-    property list<PwNode> sinks
-    property list<PwNode> streams
+    property list<PwNode> sinks: Pipewire.nodes.values.filter(n => !n.isStream && n.isSink && n.audio != null)
+    property list<PwNode> sources: Pipewire.nodes.values.filter(n => !n.isStream && !n.isSink && n.audio != null)
+    property list<PwNode> streams: Pipewire.nodes.values.filter(n => n.isStream && n.audio != null && n.type === 21) // Stream/Output/Audio (see https://docs.pipewire.org/page_man_pipewire-props_7.html#node-prop__media_class)
 
     PwObjectTracker {
         id: obj
         objects: [...root.sinks, ...root.streams, ...root.sources, root.sink]
-    }
-
-    Connections {
-        target: Pipewire.nodes
-
-        function onValuesChanged() {
-            const mySinks = [];
-            const mySources = [];
-            const myStreams = [];
-            for (const node of Pipewire.nodes.values) {
-                if (!node.isStream && node.isSink && node.audio != null) {
-                    mySinks.push(node);
-                    continue;
-                }
-                if (!node.isStream && !node.isSink && node.audio != null) {
-                    mySources.push(node);
-                    continue;
-                }
-                if (node.isStream && node.audio != null) {
-                    myStreams.push(node);
-                    continue;
-                }
-            }
-            root.sinks = mySinks;
-            root.sources = mySources;
-            root.streams = myStreams;
-        }
     }
 
     function setNodeVolume(node: PwNode, volume: real) {

@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Layouts
+import Quickshell.Services.Pipewire
 
 import qs.widgets
 import qs.widgets.icons
@@ -30,6 +31,44 @@ ColumnLayout {
                 VolumeService.muted = false;
             }
             VolumeService.setVolume(v);
+        }
+
+        MouseArea {
+            anchors.fill: volumeSlider
+            acceptedButtons: Qt.RightButton
+            onClicked: volumeStreams.expanded = !volumeStreams.expanded
+        }
+    }
+
+    Repeater {
+        id: volumeStreams
+        property bool expanded: false
+
+        model: expanded ? VolumeService.streams : []
+
+        delegate: RowLayout {
+            id: nodeslider
+            spacing: 0
+            required property PwNode modelData
+            property PwNode node: modelData
+
+            Item {
+                implicitWidth: 20
+            }
+
+            CStyledSlider {
+                // icon: VolumeService.getIcon(node)
+                Layout.fillWidth: true
+                indicator: Image {
+                    width: 20
+                    height: 20
+                    source: `image://icon/${nodeslider.node.properties["application.icon-name"] || (nodeslider.node.name === "spotify" ? "spotify" : "audio-player")}`
+                }
+                value: nodeslider.node.audio.volume
+                onInteraction: v => {
+                    nodeslider.node.audio.volume = v;
+                }
+            }
         }
     }
 
