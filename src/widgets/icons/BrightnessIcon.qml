@@ -25,6 +25,15 @@ IconBase {
             // qmlformat on
         }
         // qmlformat off
+        LightRay { radius: 20; strokeColor: Qt.alpha(root.color, 0.2); angle: 0 }
+        LightRay { radius: 20; strokeColor: Qt.alpha(root.color, 0.2); angle: 45 }
+        LightRay { radius: 20; strokeColor: Qt.alpha(root.color, 0.2); angle: 90 }
+        LightRay { radius: 20; strokeColor: Qt.alpha(root.color, 0.2); angle: 135 }
+        LightRay { radius: 20; strokeColor: Qt.alpha(root.color, 0.2); angle: 180 }
+        LightRay { radius: 20; strokeColor: Qt.alpha(root.color, 0.2); angle: 225 }
+        LightRay { radius: 20; strokeColor: Qt.alpha(root.color, 0.2); angle: 270 }
+        LightRay { radius: 20; strokeColor: Qt.alpha(root.color, 0.2); angle: 315 }
+
         LightRay { angle: 0 }
         LightRay { angle: 45 }
         LightRay { angle: 90 }

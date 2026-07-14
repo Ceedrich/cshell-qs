@@ -36,4 +36,7 @@ Singleton {
         duration: 40
         easing: Easing.Linear
     }
+    component CColorAnimation: ColorAnimation {
+        duration: 100
+    }
 }

@@ -13,12 +13,8 @@ Item {
     property int strokeWidth: 8
 
     // qmlformat off
-    Behavior on color { CAnim {} }
-    Behavior on fillColor { CAnim {} }
-    Behavior on strokeColor { CAnim {} }
+    Behavior on color { Config.CColorAnimation {} }
+    Behavior on fillColor { Config.CColorAnimation {} }
+    Behavior on strokeColor { Config.CColorAnimation {} }
     // qmlformat on
-
-    component CAnim: ColorAnimation {
-        duration: 100
-    }
 }
