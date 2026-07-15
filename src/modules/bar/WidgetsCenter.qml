@@ -23,5 +23,8 @@ BarPill {
         Brightness {
             defaultColor: Colors.blue
         }
+        Bluetooth {
+            defaultColor: Colors.mauve
+        }
     }
 }
