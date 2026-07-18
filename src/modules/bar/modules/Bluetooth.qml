@@ -9,9 +9,9 @@ CBarItem {
     id: root
     visible: BluetoothService.connectedDevices.length > 0
 
-    property BT.BluetoothDevice device: BluetoothService.connectedDevices[0]
+    property BT.BluetoothDevice device: BluetoothService.connectedDevices[0] || null
 
-    property bool isAudio: device.icon.includes("audio")
+    property bool isAudio: device?.icon.includes("audio") ?? false
 
     text: `${isAudio ? "󰂰" : "󰂯"} ${device?.name ?? ""}`
     underline: true

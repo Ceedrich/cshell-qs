@@ -66,9 +66,9 @@ Item {
     Connections {
         target: SettingsService
         function onStateLoaded() {
-            root.enabled = Utils.valueOrDefault(SettingsService.state.desktopWidgets[root.identifier]?.enabled, true);
-            root.x = Utils.valueOrDefault(SettingsService.state.desktopWidgets[root.identifier]?.x, 0);
-            root.y = Utils.valueOrDefault(SettingsService.state.desktopWidgets[root.identifier]?.y, 0);
+            root.enabled = SettingsService.state.desktopWidgets[root.identifier]?.enabled ?? true;
+            root.x = SettingsService.state.desktopWidgets[root.identifier]?.x ?? 0;
+            root.y = SettingsService.state.desktopWidgets[root.identifier]?.y ?? 0;
         }
     }
 }
