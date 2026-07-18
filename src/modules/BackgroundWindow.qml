@@ -2,23 +2,25 @@ import QtQuick
 import Quickshell
 import Quickshell.Wayland
 
-PanelWindow {
-    anchors {
-        top: true
-        right: true
-        bottom: true
-        left: true
-    }
+Loader {
+    sourceComponent: PanelWindow {
+        anchors {
+            top: true
+            right: true
+            bottom: true
+            left: true
+        }
 
-    color: "transparent"
+        color: "transparent"
 
-    WlrLayershell.layer: WlrLayer.Background
-    WlrLayershell.exclusionMode: ExclusionMode.Ignore
-    WlrLayershell.namespace: "cshell-background"
+        WlrLayershell.layer: WlrLayer.Background
+        WlrLayershell.exclusionMode: ExclusionMode.Ignore
+        WlrLayershell.namespace: "cshell-background"
 
-    Loader {
-        sourceComponent: Image {
-            source: "../assets/wallpaper.png"
+        Loader {
+            sourceComponent: Image {
+                source: "../assets/wallpaper.png"
+            }
         }
     }
 }
