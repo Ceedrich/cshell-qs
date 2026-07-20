@@ -8,6 +8,8 @@ Singleton {
     id: root
 
     property bool isLoaded: false
+    property bool isStateLoaded: false
+
     readonly property alias data: settingsAdapter
     readonly property alias state: stateAdapter
 
@@ -19,12 +21,16 @@ Singleton {
     signal loaded
     signal stateLoaded
 
+    signal stateUpdated
+    signal settingsUpdated
+
     Timer {
         id: stateSaveTimer
         interval: 500
         onTriggered: {
             if (root.isLoaded) {
                 stateFileView.writeAdapter();
+                root.stateUpdated();
             } else {
                 // try saving again if the file is not yet loaded
                 restart();
@@ -38,6 +44,7 @@ Singleton {
         onTriggered: {
             if (root.isLoaded) {
                 settingsFile.writeAdapter();
+                root.settingsUpdated();
             } else {
                 // try saving again if the file is not yet loaded
                 restart();
@@ -54,6 +61,7 @@ Singleton {
         onLoaded: {
             root.isLoaded = true;
             root.loaded();
+            root.settingsUpdated();
         }
 
         onLoadFailed: error => {
@@ -77,7 +85,9 @@ Singleton {
         onAdapterUpdated: writeAdapter()
 
         onLoaded: {
+            root.isStateLoaded = true;
             root.stateLoaded();
+            root.stateUpdated();
         }
 
         onLoadFailed: error => {

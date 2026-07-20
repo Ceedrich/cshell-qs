@@ -14,17 +14,40 @@ import qs.modules
 ShellRoot {
     id: root
 
-    BarExclusionZone {}
+    Variants {
+        model: Quickshell.screens
 
-    BackgroundWindow {}
+        Scope {
+            id: scope
+            required property ShellScreen modelData
 
-    DesktopWidgets {}
+            BarExclusionZone {
+                screen: scope.modelData
+            }
 
-    MainWindow {}
+            BackgroundWindow {
+                screen: scope.modelData
+            }
 
-    OverviewWindow {}
+            DesktopWidgets {
+                screen: scope.modelData
+            }
 
-    ControlCenterWindow {}
+            MainWindow {
+                screen: scope.modelData
+            }
 
-    NotificationWindow {}
+            OverviewWindow {
+                screen: scope.modelData
+            }
+
+            ControlCenterWindow {
+                screen: scope.modelData
+            }
+
+            NotificationWindow {
+                screen: scope.modelData
+            }
+        }
+    }
 }

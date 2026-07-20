@@ -2,7 +2,6 @@ import QtQuick
 
 import qs.services
 import qs.widgets.ContextMenu
-import qs.utils
 
 Item {
     id: root
@@ -63,12 +62,18 @@ Item {
     function disable() { if (enabled) toggleEnabled(); }
     // qmlformat on
 
+    function updateFromState() {
+        root.enabled = SettingsService.state.desktopWidgets[root.identifier]?.enabled ?? true;
+        root.x = SettingsService.state.desktopWidgets[root.identifier]?.x ?? 0;
+        root.y = SettingsService.state.desktopWidgets[root.identifier]?.y ?? 0;
+    }
+
     Connections {
         target: SettingsService
-        function onStateLoaded() {
-            root.enabled = SettingsService.state.desktopWidgets[root.identifier]?.enabled ?? true;
-            root.x = SettingsService.state.desktopWidgets[root.identifier]?.x ?? 0;
-            root.y = SettingsService.state.desktopWidgets[root.identifier]?.y ?? 0;
+        function onStateUpdated() {
+            root.updateFromState();
         }
     }
+
+    Component.onCompleted: updateFromState()
 }
