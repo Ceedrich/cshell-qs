@@ -13,6 +13,9 @@ Singleton {
     property bool muted: sink?.audio?.muted ?? false
 
     readonly property string volumeIcon: {
+        if (sink?.properties["api.bluez5.address"]) {
+            return "󰂰";
+        }
         const icons = ["󰕿", "󰖀", "󰕾"];
         const icon_muted = "󰝟";
 
