@@ -92,4 +92,8 @@ ColumnLayout {
     NotificationCenter {
         Layout.fillWidth: true
     }
+
+    NetworkCenter {
+        Layout.fillWidth: true
+    }
 }

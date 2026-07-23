@@ -182,7 +182,7 @@ PopupWindow {
 
                             Shape {
                                 id: shape
-                                visible: (entry.modelData?.hasChildren)
+                                visible: (entry.modelData?.hasChildren ?? false)
                                 implicitWidth: 8
                                 implicitHeight: 10
                                 ShapePath {
