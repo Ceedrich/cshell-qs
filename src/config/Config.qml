@@ -41,8 +41,8 @@ Singleton {
 
     component FontConfig: QtObject {
         readonly property int textPixelSize: 14
-        readonly property int headingPixelSize: 16
-        readonly property int titlePixelSize: 18
+        readonly property int headingPixelSize: 18
+        readonly property int titlePixelSize: 20
 
         readonly property string familyMono: "Jetbrains Mono Nerd Font"
     }

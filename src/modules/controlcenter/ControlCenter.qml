@@ -8,11 +8,15 @@ import qs.config
 import qs.modules.controlcenter.modules
 
 ColumnLayout {
-    spacing: Config.spacing
+    spacing: Config.spacing * 2
     CText {
         text: "Control Center"
         font.bold: true
         font.pixelSize: Config.font.titlePixelSize
+    }
+
+    Mpris {
+        Layout.fillWidth: true
     }
 
     Sliders {}
