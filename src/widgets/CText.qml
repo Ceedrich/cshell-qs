@@ -9,8 +9,8 @@ Text {
     property bool underline: false
     property bool muted: false
 
-    font.family: Config.fontFamily
-    font.pixelSize: Config.fontSize
+    font.family: Config.font.familyMono
+    font.pixelSize: Config.font.textPixelSize
 
     color: muted ? mutedColor : defaultColor
 

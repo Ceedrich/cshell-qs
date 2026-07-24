@@ -7,9 +7,10 @@ import Quickshell.Services.Pipewire
 import qs.services
 import qs.widgets
 import qs.widgets.icons
+import qs.config
 
 ColumnLayout {
-
+    spacing: Config.spacing
     CStyledSlider {
         id: volumeSlider
         indicator: VolumeIcon {

@@ -12,6 +12,7 @@ ColumnLayout {
         CText {
             text: "Networks"
             font.bold: true
+            font.pixelSize: Config.font.headingPixelSize
         }
         Item {
             Layout.fillWidth: true
@@ -38,6 +39,7 @@ ColumnLayout {
                 CText {
                     text: wiredDevice.modelData.name
                     color: Colors.overlay2
+                    Layout.fillWidth: true
                 }
 
                 Item {
@@ -66,6 +68,7 @@ ColumnLayout {
                 CText {
                     text: wifiDevice.modelData.name
                     color: Colors.overlay2
+                    Layout.fillWidth: true
                 }
                 Item {
                     Layout.fillWidth: true
@@ -90,6 +93,7 @@ ColumnLayout {
 
                     CText {
                         text: wifiNetwork.modelData.name
+                        Layout.fillWidth: true
                     }
 
                     Item {

@@ -12,6 +12,7 @@ ColumnLayout {
     CText {
         text: "Control Center"
         font.bold: true
+        font.pixelSize: Config.font.titlePixelSize
     }
 
     Sliders {}

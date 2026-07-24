@@ -6,8 +6,7 @@ Singleton {
     readonly property int margin: 8
     readonly property int spacing: 12
 
-    readonly property string fontFamily: "Jetbrains Mono Nerd Font"
-    readonly property int fontSize: 14
+    property FontConfig font: FontConfig {}
 
     readonly property int maxMprisWidth: 400
     readonly property int mprisPopupWidth: 400
@@ -38,5 +37,13 @@ Singleton {
     }
     component CColorAnimation: ColorAnimation {
         duration: 100
+    }
+
+    component FontConfig: QtObject {
+        readonly property int textPixelSize: 14
+        readonly property int headingPixelSize: 16
+        readonly property int titlePixelSize: 18
+
+        readonly property string familyMono: "Jetbrains Mono Nerd Font"
     }
 }

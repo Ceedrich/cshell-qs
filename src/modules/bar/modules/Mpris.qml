@@ -145,7 +145,7 @@ ClippingWrapperRectangle {
                         Layout.fillWidth: true
                         text: MprisService.title || "[title not available]"
                         muted: MprisService.title === ""
-                        font.pixelSize: Config.fontSize * 1.25
+                        font.pixelSize: Config.font.headingPixelSize
                     }
 
                     CText {
@@ -172,19 +172,19 @@ ClippingWrapperRectangle {
 
                     CTextButton {
                         text: "󰒮"
-                        font.pixelSize: 1.25 * Config.fontSize
+                        font.pixelSize: 1.25 * Config.font.textPixelSize
                         onClicked: MprisService.previous()
                     }
 
                     CTextButton {
                         text: MprisService.isPlaying ? "󰏤" : "󰐊"
-                        font.pixelSize: 1.25 * Config.fontSize
+                        font.pixelSize: 1.25 * Config.font.textPixelSize
                         onClicked: MprisService.togglePlaying()
                     }
 
                     CTextButton {
                         text: "󰒭"
-                        font.pixelSize: 1.25 * Config.fontSize
+                        font.pixelSize: 1.25 * Config.font.textPixelSize
                         onClicked: MprisService.next()
                     }
                 }

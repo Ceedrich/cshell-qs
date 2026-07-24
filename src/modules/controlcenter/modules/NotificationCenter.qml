@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import qs.widgets
+import qs.config
 import qs.services
 import qs.modules.notifications.widgets
 
@@ -10,6 +11,7 @@ ColumnLayout {
         CText {
             text: "Notifications"
             font.bold: true
+            font.pixelSize: Config.font.headingPixelSize
         }
 
         Item {
