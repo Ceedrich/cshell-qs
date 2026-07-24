@@ -8,9 +8,19 @@ import qs.config
 import qs.services
 
 ColumnLayout {
-    CText {
-        text: "Networks"
-        font.bold: true
+    RowLayout {
+        CText {
+            text: "Networks"
+            font.bold: true
+        }
+        Item {
+            Layout.fillWidth: true
+        }
+
+        CTextButton {
+            text: Networking.wifiEnabled ? "󰖩" : "󰖪"
+            onClicked: Networking.wifiEnabled = !Networking.wifiEnabled
+        }
     }
 
     Repeater {
@@ -97,9 +107,9 @@ ColumnLayout {
                     }
                 }
             }
+            CSeparator {}
         }
     }
-    CSeparator {}
 
     component ConnectionButton: CTextButton {
         required property Network network
