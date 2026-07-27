@@ -7,6 +7,8 @@ import qs.widgets
 import qs.config
 import qs.services
 
+import qs.modules.controlcenter.widgets
+
 ColumnLayout {
     RowLayout {
         CText {
@@ -46,7 +48,7 @@ ColumnLayout {
                     Layout.fillWidth: true
                 }
 
-                ConnectionButton {
+                NetworkConnectionButton {
                     network: wiredDevice.network
                 }
             }
@@ -81,56 +83,12 @@ ColumnLayout {
 
             Repeater {
                 model: wifiDevice.modelData.networks
-                delegate: RowLayout {
-                    id: wifiNetwork
-                    required property WifiNetwork modelData
-
-                    Layout.fillWidth: true
-
-                    CText {
-                        text: NetworkService.getWirelessIcon(wifiNetwork.modelData)
-                    }
-
-                    CText {
-                        text: wifiNetwork.modelData.name
-                        Layout.fillWidth: true
-                    }
-
-                    Item {
-                        Layout.fillWidth: true
-                    }
-
-                    CTextButton {
-                        visible: wifiNetwork.modelData.known
-                        text: "forget"
-                        onClicked: wifiNetwork.modelData.forget()
-                    }
-
-                    ConnectionButton {
-                        network: wifiNetwork.modelData
-                    }
+                delegate: WifiNetworkRow {
+                    required property var modelData
+                    network: modelData
                 }
             }
             CSeparator {}
         }
-    }
-
-    component ConnectionButton: CTextButton {
-        required property Network network
-
-        text: {
-            switch (network.state // qmllint disable unresolved-type
-            ) {
-            case ConnectionState.Connected:
-                return "disconnect";
-            case ConnectionState.Disconnected:
-                return "connect";
-            default:
-                return `${ConnectionState.toString(network.state).toLowerCase()}...`; // qmllint disable unresolved-type
-            }
-        }
-        enabled: network.state === ConnectionState.Connected || network.state === ConnectionState.Disconnected // qmllint disable unresolved-type
-        disabled: !enabled
-        onClicked: network.connected ? network.disconnect() : network.connect()
     }
 }

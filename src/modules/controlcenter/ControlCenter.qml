@@ -25,7 +25,7 @@ ColumnLayout {
         Layout.fillWidth: true
     }
 
-    NetworkCenter {
+    ConnectivityCenter {
         Layout.fillWidth: true
     }
 }
