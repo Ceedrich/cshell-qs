@@ -20,7 +20,9 @@ Singleton {
     }
 
     function focusWindow(address: string): void {
-        if (Hyprland.usingLua) {} else {
+        if (Hyprland.usingLua) {
+            Hyprland.dispatch(`hl.dsp.focus({ window = "address:0x${address}"})`);
+        } else {
             Hyprland.dispatch(`focuswindow address:0x${address}`);
         }
     }
@@ -28,8 +30,7 @@ Singleton {
     /// Omit windowAddress to use current workspace
     function moveWindowToWorkspace(wsId: string, windowAddress: string): void {
         if (Hyprland.usingLua) {
-            // TODO: lua?
-            // Hyprland.dispatch(`hl.dsp.window.move({ workspace = "${wsId}", follow = false })`);
+            Hyprland.dispatch(`hl.dsp.window.move({ workspace = "${wsId}", follow = false ${windowAddress ? `, window = "address:0x${windowAddress}"` : ""} })`);
         } else {
             Hyprland.dispatch(`movetoworkspacesilent ${wsId}` + (windowAddress ? `,address:0x${windowAddress}` : ""));
         }
