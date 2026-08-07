@@ -4,12 +4,13 @@
 import Quickshell
 import QtQuick
 
+import qs.modules
 import qs.modules.bar
-import qs.modules.overview
+import qs.modules.controlcenter
 import qs.modules.desktopwidgets
 import qs.modules.notifications
-import qs.modules.controlcenter
-import qs.modules
+import qs.modules.osd
+import qs.modules.overview
 
 ShellRoot {
     id: root
@@ -46,6 +47,10 @@ ShellRoot {
             }
 
             NotificationWindow {
+                screen: scope.modelData
+            }
+
+            OsdWindow {
                 screen: scope.modelData
             }
         }

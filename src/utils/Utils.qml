@@ -28,9 +28,9 @@ Singleton {
         }
     }
 
-    function leftPad(str: string, len: int, c: string): string {
+    function leftPad(str: string, len: int, c = ' '): string {
         if (str.length < len) {
-            return ((len - str.length) * c) + str;
+            return (c.repeat(len - str.length)) + str;
         }
         return str;
     }

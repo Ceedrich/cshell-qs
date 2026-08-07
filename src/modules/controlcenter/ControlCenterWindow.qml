@@ -48,6 +48,13 @@ PanelWindow {
         value: root
     }
 
+    Binding {
+        when: root.isOpen
+        target: OsdService
+        property: "enabled"
+        value: false
+    }
+
     HyprlandFocusGrab {
         windows: [root]
         active: root.visible

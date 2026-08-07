@@ -30,12 +30,26 @@ Singleton {
         return icon;
     }
 
-    readonly property bool ready: Pipewire.ready && sink != null
+    readonly property bool ready: Pipewire.ready && sink != null && sink.audio != null
     readonly property PwNode sink: Pipewire.defaultAudioSink
 
     property list<PwNode> sinks: Pipewire.nodes.values.filter(n => !n.isStream && n.isSink && n.audio != null)
     property list<PwNode> sources: Pipewire.nodes.values.filter(n => !n.isStream && !n.isSink && n.audio != null)
     property list<PwNode> streams: Pipewire.nodes.values.filter(n => n.isStream && n.audio != null && n.type === 21) // Stream/Output/Audio (see https://docs.pipewire.org/page_man_pipewire-props_7.html#node-prop__media_class)
+
+    Timer {
+        running: root.ready
+        interval: 10
+        onTriggered: osdWatcher.enabled = true
+    }
+
+    Connections {
+        id: osdWatcher
+        enabled: false
+        function onVolumeChanged() {
+            OsdService.setRange(root.volume, "Volume", Utils.leftPad(`${Math.round(root.volume * 100)}%`, 4));
+        }
+    }
 
     PwObjectTracker {
         id: obj
@@ -63,7 +77,7 @@ Singleton {
     }
 
     function setMuted(muted: bool) {
-        if (ready && sink.audio) {
+        if (ready && sink.audio && sink.audio.muted !== muted) {
             sink.audio.muted = muted;
         }
     }

@@ -10,6 +10,15 @@ Singleton {
     id: root
     readonly property int percentage: Math.round(_percentage)
 
+    onAvailableChanged: Qt.callLater(() => osdWatcher.enabled = available)
+    Connections {
+        id: osdWatcher
+        enabled: false
+        function onPercentageChanged() {
+            OsdService.setRange(root.percentage, "Brightness", Utils.leftPad(`${root.percentage}%`, 4), 0, 100);
+        }
+    }
+
     property real _percentage
 
     readonly property bool available: hasBacklight && didFirstQuery
