@@ -9,6 +9,13 @@ import qs.config
 import qs.utils
 
 Singleton {
+    enum BatteryStatus {
+        Normal,
+        Low,
+        Critical,
+        Charging
+    }
+
     readonly property var _iconsCharging: ["󰢜", "󰂇", "󰢝", "󰢞", "󰂅"]
     readonly property var _iconsDischarging: ["󰁺", "󰁼", "󰁾", "󰂀", "󰂂", "󰁹"]
 
@@ -17,16 +24,39 @@ Singleton {
 
     property int perc: bat.percentage * 100
 
-    readonly property color batteryColor: {
+    onBatteryStatusChanged: {
+        if (batteryStatus === BatteryService.Critical) {
+            return ShellService.sendNotification("Battery Critical", "Please Plug in device");
+        }
+        if (batteryStatus === BatteryService.Low) {
+            return ShellService.sendNotification("Battery Low", "Please Plug in device");
+        }
+    }
+
+    readonly property int batteryStatus: {
+        if (!ready) { 
+          return BatteryService.Normal;
+        }
         if (!UPower.onBattery) {
-            return Colors.green;
+            return BatteryService.Charging;
         }
         if (perc < 15) {
-            return Colors.red;
+            return BatteryService.Critical;
         }
         if (perc < 30) {
-            return Colors.yellow;
+            return BatteryService.Low;
         }
+        return BatteryService.Normal;
+    }
+
+    readonly property color batteryColor: switch (batteryStatus) {
+    case BatteryService.Charging:
+        return Colors.green;
+    case BatteryService.Critical:
+        return Colors.red;
+    case BatteryService.Low:
+        return Colors.yellow;
+    default:
         return Colors.text;
     }
 

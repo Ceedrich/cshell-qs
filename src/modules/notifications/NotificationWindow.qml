@@ -20,6 +20,7 @@ PanelWindow {
     }
 
     WlrLayershell.namespace: "cshell-notifications"
+    WlrLayershell.layer: WlrLayer.Overlay
 
     color: "transparent"
 
