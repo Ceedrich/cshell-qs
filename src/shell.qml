@@ -22,10 +22,6 @@ ShellRoot {
             id: scope
             required property ShellScreen modelData
 
-            BarExclusionZone {
-                screen: scope.modelData
-            }
-
             BackgroundWindow {
                 screen: scope.modelData
             }
@@ -34,7 +30,7 @@ ShellRoot {
                 screen: scope.modelData
             }
 
-            MainWindow {
+            BarWindow {
                 screen: scope.modelData
             }
 

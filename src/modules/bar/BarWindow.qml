@@ -2,13 +2,12 @@ import Quickshell
 import Quickshell.Wayland
 import QtQuick
 
-import qs.modules.bar
-import qs.modules.notifications
+import qs.config
 
 PanelWindow {
     id: root
 
-    WlrLayershell.namespace: "cshell"
+    WlrLayershell.namespace: "cshell-bar"
     WlrLayershell.layer: WlrLayer.Top
 
     mask: Region {
@@ -23,14 +22,17 @@ PanelWindow {
 
     color: "transparent"
 
-    exclusionMode: ExclusionMode.Ignore
+    exclusionMode: ExclusionMode.Normal
+    exclusiveZone: Config.barHeight
 
     anchors {
         top: true
         left: true
         right: true
-        bottom: true
+        bottom: false
     }
+
+    implicitHeight: screen.height
 
     Bar {
         id: bar
