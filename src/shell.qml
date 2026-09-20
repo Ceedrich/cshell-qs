@@ -2,6 +2,7 @@
 //@ pragma IconTheme Papirus-Dark
 
 import Quickshell
+import Quickshell.Hyprland
 import QtQuick
 
 import qs.modules
@@ -15,40 +16,35 @@ import qs.modules.overview
 ShellRoot {
     id: root
 
-    Variants {
-        model: Quickshell.screens
+    property var focusedScreen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) || null
 
-        Scope {
-            id: scope
-            required property ShellScreen modelData
+    Scope {
+        BackgroundWindow {
+            screen: root.focusedScreen
+        }
 
-            BackgroundWindow {
-                screen: scope.modelData
-            }
+        DesktopWidgets {
+            screen: root.focusedScreen
+        }
 
-            DesktopWidgets {
-                screen: scope.modelData
-            }
+        BarWindow {
+            screen: root.focusedScreen
+        }
 
-            BarWindow {
-                screen: scope.modelData
-            }
+        OverviewWindow {
+            screen: root.focusedScreen
+        }
 
-            OverviewWindow {
-                screen: scope.modelData
-            }
+        ControlCenterWindow {
+            screen: root.focusedScreen
+        }
 
-            ControlCenterWindow {
-                screen: scope.modelData
-            }
+        NotificationWindow {
+            screen: root.focusedScreen
+        }
 
-            NotificationWindow {
-                screen: scope.modelData
-            }
-
-            OsdWindow {
-                screen: scope.modelData
-            }
+        OsdWindow {
+            screen: root.focusedScreen
         }
     }
 }
