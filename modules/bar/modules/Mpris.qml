@@ -67,13 +67,9 @@ ClippingWrapperRectangle {
             }
 
             CText {
-                text: formatText()
+                text: MprisService.titleAlbumString
                 color: Colors.overlay1
                 Layout.maximumWidth: Config.maxMprisWidth
-
-                function formatText(): string {
-                    return `${MprisService.title} - ${MprisService.artist}`;
-                }
             }
         }
         RowLayout {
@@ -157,9 +153,9 @@ ClippingWrapperRectangle {
 
                     CText {
                         Layout.fillWidth: true
+                        enabled: text != ""
 
-                        text: MprisService.album || "[album not available]"
-                        muted: MprisService.album === ""
+                        text: MprisService.album || ""
                     }
                 }
 

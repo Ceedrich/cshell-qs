@@ -16,7 +16,14 @@ Singleton {
         }
     }
 
-    readonly property bool available: player != null || false
+    readonly property string titleAlbumString: [title, album].filter(x => x != "").join(" – ")
+
+    readonly property bool available: {
+        if (title || album || artist) {
+            return true;
+        }
+        return false;
+    }
     readonly property bool progressAvailable: player?.positionSupported && player?.lengthSupported && player?.canSeek || false
 
     readonly property string title: player?.trackTitle || ""
