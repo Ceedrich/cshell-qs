@@ -3,13 +3,14 @@ import QtQuick.Layouts
 
 import qs.modules.bar.modules
 import qs.config
+import qs.Components
 
 RowLayout {
     id: root
     required property QtObject barWindow
 
-    BarPill {
-        RowLayout {
+    Container {
+        defaultItem: RowLayout {
             spacing: Config.spacing
             IdleInhibitor {
                 barWindow: root.barWindow
@@ -20,8 +21,8 @@ RowLayout {
         }
     }
 
-    BarPill {
-        RowLayout {
+    Container {
+        defaultItem: RowLayout {
             ControlCenterToggle {
                 barWindow: root.barWindow
             }

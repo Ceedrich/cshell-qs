@@ -6,9 +6,11 @@ import QtQuick
 import Quickshell.Services.UPower
 
 import qs.config
+import qs.widgets
 import qs.utils
 
 Singleton {
+    id: root
     enum BatteryStatus {
         Normal,
         Low,
@@ -24,18 +26,27 @@ Singleton {
 
     property int perc: bat.percentage * 100
 
+    property Item batteryWarning: CText {
+        property string statusText: {
+            if (root.batteryStatus === BatteryService.Critical) {
+                return "Battery Critical";
+            }
+            if (root.batteryStatus === BatteryService.Low) {
+                return "Battery Low";
+            }
+            return "[should not happen]";
+        }
+        text: `${root.icon} ${statusText}`
+        color: root.batteryColor
+    }
+
     onBatteryStatusChanged: {
-        if (batteryStatus === BatteryService.Critical) {
-            return ShellService.sendNotification("Battery Critical", "Please Plug in device");
-        }
-        if (batteryStatus === BatteryService.Low) {
-            return ShellService.sendNotification("Battery Low", "Please Plug in device");
-        }
+        Qt.callLater(() => ShellService.showItem(batteryWarning));
     }
 
     readonly property int batteryStatus: {
-        if (!ready) { 
-          return BatteryService.Normal;
+        if (!ready) {
+            return BatteryService.Normal;
         }
         if (!UPower.onBattery) {
             return BatteryService.Charging;

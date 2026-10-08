@@ -1,14 +1,21 @@
 import QtQuick.Layouts
 import QtQuick
 
+import qs.Components
 import qs.config
+import qs.services
 import qs.modules.bar.modules
 
-BarPill {
+Container {
     id: root
     required property QtObject barWindow
 
-    RowLayout {
+    leftMargin: 16
+    rightMargin: 16
+    topMargin: 8
+    bottomMargin: 8
+
+    defaultItem: RowLayout {
         spacing: Config.spacing
         Clock {
             barWindow: root.barWindow
@@ -26,5 +33,11 @@ BarPill {
         Bluetooth {
             defaultColor: Colors.mauve
         }
+    }
+
+    Binding {
+        target: ShellService
+        property: "mainBarContainer"
+        value: root
     }
 }
