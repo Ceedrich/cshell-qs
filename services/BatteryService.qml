@@ -27,20 +27,11 @@ Singleton {
     property int perc: bat.percentage * 100
 
     property Item batteryWarning: CText {
-        property string statusText: {
-            if (root.batteryStatus === BatteryService.Critical) {
-                return "Battery Critical";
-            }
-            if (root.batteryStatus === BatteryService.Low) {
-                return "Battery Low";
-            }
-            return "[should not happen]";
-        }
-        text: `${root.icon} ${statusText}`
+        text: `${root.icon} Battery ${root.batteryStatusString}...`
         color: root.batteryColor
     }
 
-    onBatteryStatusChanged: {
+    onBatteryStatusChanged: if (root.batteryStatus !== BatteryService.Normal) {
         Qt.callLater(() => ShellService.showItem(batteryWarning));
     }
 
@@ -77,6 +68,21 @@ Singleton {
             return Utils.select_from_list(bat.percentage, _iconsDischarging);
         } else {
             return Utils.select_from_list(bat.percentage, _iconsCharging);
+        }
+    }
+
+    readonly property string batteryStatusString: {
+        switch (batteryStatus) {
+        case BatteryService.Normal:
+            return "Normal";
+        case BatteryService.Low:
+            return "Low";
+        case BatteryService.Critical:
+            return "Critical";
+        case BatteryService.Charging:
+            return "Charging";
+        default:
+            return "[should not happen]";
         }
     }
 }
