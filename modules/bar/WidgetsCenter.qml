@@ -30,9 +30,6 @@ Container {
         Brightness {
             defaultColor: Colors.blue
         }
-        Bluetooth {
-            defaultColor: Colors.mauve
-        }
     }
 
     Binding {
