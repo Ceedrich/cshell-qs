@@ -18,33 +18,35 @@ ShellRoot {
 
     property var focusedScreen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) || null
 
-    Scope {
-        BackgroundWindow {
-            screen: root.focusedScreen
+    Variants {
+        model: Quickshell.screens
+        delegate: BackgroundWindow {
+            property ShellScreen modelData
+            screen: modelData
         }
+    }
 
-        DesktopWidgets {
-            screen: root.focusedScreen
-        }
+    DesktopWidgets {
+        screen: root.focusedScreen
+    }
 
-        BarWindow {
-            screen: root.focusedScreen
-        }
+    BarWindow {
+        screen: root.focusedScreen
+    }
 
-        OverviewWindow {
-            screen: root.focusedScreen
-        }
+    OverviewWindow {
+        screen: root.focusedScreen
+    }
 
-        ControlCenterWindow {
-            screen: root.focusedScreen
-        }
+    ControlCenterWindow {
+        screen: root.focusedScreen
+    }
 
-        NotificationWindow {
-            screen: root.focusedScreen
-        }
+    NotificationWindow {
+        screen: root.focusedScreen
+    }
 
-        OsdWindow {
-            screen: root.focusedScreen
-        }
+    OsdWindow {
+        screen: root.focusedScreen
     }
 }
